@@ -1,0 +1,43 @@
+<!DOCTYPE>
+<html>
+<head>
+<script src="../../core/toolkit.js"></script>
+<style type="text/css">
+
+*{
+  -moz-user-select:none;
+}
+#container {
+  width:300px;
+  height:400px;
+  border:1px solid blue;
+  overflow:hidden;
+}
+
+#container div{
+background-color:red;
+}
+
+.mydiv {
+  width:300px;
+  height:2000px;
+  background-color:red;
+}
+</style>
+<script>
+  window.onload=function(){
+    slider = new Slider({div:"container",mode: Slider.SCROLL_BOTH})
+    var div = slider.getView();
+    div.style.backgroundImage="-moz-linear-gradient(right bottom, rgb(54,15,138) 0%, rgb(171,36,36) 100%)";
+    div.style.width="500%";
+    div.style.height="500%";
+}
+</script>
+</head>
+<body>
+<div id="container">
+<!--div class="mydiv">
+</div-->
+</div>
+</body>
+</html>
