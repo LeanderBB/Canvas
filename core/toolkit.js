@@ -176,7 +176,7 @@ function Slider(options){
     this.mode = new Point2D(0,1);
   }
   //this.slider.css("-moz-transform","translateY(20px)");
-  this.slider.onmouseup = (function(){alert("Mouse up slider");});
+  //this.slider.onmouseup = (function(){alert("Mouse up slider");});
   this.current_offset = new Point2D(0,0);
   //kinetic data
   this.last_points = [];
@@ -194,11 +194,12 @@ function Slider(options){
     evt_down.preventDefault();
     that.div.addEventListener("mousemove",handleMouseMove,true);
     that.div.addEventListener("mouseup",handleMouseUp,true);
-    that.div.addEventListener("mouseleave",handleMouseUp,true);
-
+    //that.div.addEventListener("mouseleave",handleMouseUp,true);
+   
     var delta=0;
     var ismoving = false;
     function handleMouseMove(evt_move){
+      ismoving = true;
       evt_move.stopPropagation();
       evt_move.preventDefault();
       if (that.last_points.length >1){
@@ -220,7 +221,8 @@ function Slider(options){
     }
 
     function handleMouseUp(evt_up){
-      if (ismoving){
+      console.log(total_delta);
+      if (ismoving) {
         evt_up.preventDefault();
         evt_up.stopPropagation();
       }
@@ -240,7 +242,7 @@ function Slider(options){
       that._update();
       that.div.removeEventListener("mousemove",handleMouseMove,true);
       that.div.removeEventListener("mouseup",handleMouseUp,true);
-      that.div.removeEventListener("mouseleave",handleMouseUp,true);
+     // that.div.removeEventListener("mouseleave",handleMouseUp,true);
     }
 
   }
