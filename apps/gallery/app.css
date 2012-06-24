@@ -1,0 +1,55 @@
+
+.g_menu {
+  list-style-type: none;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.g_menu li {
+  margin: 20px 0 0 0;
+  min-height: 20%;
+  max-height: 35%;
+  text-align: right;
+  border-top: solid 2px red;
+  -moz-transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.g_menu li:target {
+  background-color:red;
+  color: black;
+}
+/*
+li:nth-child(odd) {
+  background-color: green;
+}
+
+li:nth-child(even) {
+  background-color: blue;
+}*/
+
+.g_menu li div{
+  padding:0;
+  height: 7.5em;
+  background-image: url('resources/nobg.jpg');
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 4%;
+}
+.g_menu li h1 {
+  padding: 0 4% 0 4%;
+  max-height: 6em;
+  font-size: 3em;
+  line-height: 1;
+}
+.g_menu li h2 {
+  padding: 0 4% 0 4%;
+  font-size: 1em;
+  color: red;
+  font-family: "Arial";
+}
+
+
+.g_main {
+  background-color: RGB(20,20,20);
+}
