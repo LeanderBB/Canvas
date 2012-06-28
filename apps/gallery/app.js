@@ -6,7 +6,25 @@ window.onload = function(){
 
 function Gallery(){
   this.menu_list = new Slider({div:"menu",mode:Slider.SCROLL_VERTICAL});
-  this.content = new Slider({div:"content", mode:Slider.SCROLL_HORIZONTAL});
+  this.content = new Slider({div:"content", mode:Slider.SCROLL_HORIZONTAL,disable_events:true});
+  var that = this;
+
+  // arrow test
+  var arrow_left = document.getElementById("main_arrow_left");
+  var arrow_right = document.getElementById("main_arrow_right");
+  var step = this.content.getView().parentNode.offsetWidth;
+  arrow_left.addEventListener("click",function(e){
+      var cur_pos = that.content.getScrollScalar();
+      cur_pos.x -= step;
+      that.content.setScrollPoint(cur_pos);
+    },false);
+  
+  arrow_right.addEventListener("click",function(e){
+      var cur_pos = that.content.getScrollScalar();
+      cur_pos.x += step;
+      that.content.setScrollPoint(cur_pos);
+
+    },false);
 }
 
 Gallery.prototype.init = function(){

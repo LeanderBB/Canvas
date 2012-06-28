@@ -306,7 +306,9 @@ Slider.prototype.setScrollPercentage=function(x,y){
 }
 /** Return the current scroll offset with scalar values */
 Slider.prototype.getScrollScalar = function(){
-  return this.current_offset.clone();
+  var res = this.current_offset.clone();
+  res.multScalar(-1);
+  return res;
 }
 /** Return the curren scroll offset in percentage */
 Slider.prototype.getScrollPercentage = function(){
