@@ -33,16 +33,26 @@
 <div id="main">
 	<div id="navigation-subscriptions" class="navigation">
 		<div id="subscriptions">
-			<!-- Feed Template -->
+			<!-- Subscriptions Template -->
 			<script id="subscriptionsTemplate" type="text/template">
-				<h2>Title:<%= title %></h2>
+				<h1>Title:<%= title %></h1>
 				<div><%= content %></div>
 			</script>
 			<!-- ***** -->
 		</div>
 	</div>
-	<div id="navigation-feed" class="navigation" ></div>
-	<div id="navigation-item" class="navigation" ></div>
+	<div id="navigation-feed" class="navigation">
+		<script id="feedTemplate" type="text/template">
+			<h1><%= title %></h1>
+			<p>Insert description here.</p>
+		</script>
+	</div>
+	<div id="navigation-item" class="navigation" >
+		<script id="itemTemplate" type="text/template">
+			<h1><%= title %></h1>
+			<p>Insert content here.</p>
+		</script>
+	</div>
 </div>
 <footer>
 
