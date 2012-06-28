@@ -221,7 +221,6 @@ function Slider(options){
     }
 
     function handleMouseUp(evt_up){
-      console.log(total_delta);
       if (ismoving) {
         evt_up.preventDefault();
         evt_up.stopPropagation();
