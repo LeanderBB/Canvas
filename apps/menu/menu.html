@@ -9,6 +9,7 @@ http://fontzone.net/font-details/Avenir-Book/
 	<!-- <script type="text/javascript" src="http://www.google.com/jsapi?key=AIzaSyCiWrig0IC38D_GClrMY9cV3-hopuo5Mgs"></script> -->
 	<!-- <script src="js/calendar.js" type="text/javascript"></script> -->
 	<script src="js/jquery.min.js" type="text/javascript"></script>
+	<script src="js/menu.js" type="text/javascript"></script>
 </header>
 
 
@@ -86,6 +87,8 @@ http://fontzone.net/font-details/Avenir-Book/
 
 <script type="text/javascript">
 
+menu_bind_animations();
+
 var row_selected = 0;
 
 function sidebar_select(i){
@@ -104,25 +107,11 @@ var sidebar_position = 0;
 var sidebar_max_position = -600;
 
 ////////////////////////////////////////////////////////////////////////////////
-$("#main_close").click(function(){
-	if($("#main_menu").css("opacity") == 0){
-			$("#main_menu").css("opacity","1");
-	}else{
-			$("#main_menu").css("opacity","0");
-	}
-});
 
-$("#main_right").click(function(){
-	$("#main_panel").css("-moz-transform", "translateX(-800px");
-	$("#main_panel").css("-webkit-transform", "translateX(-800px");
-});
-
-$("#main_left").click(function(){
-	$("#main_panel").css("-moz-transform", "translateX(0px");
-	$("#main_panel").css("-webkit-transform", "translateX(0px");
-});
 
 ////////////////////////////////////////////////////////////////////////////////
+
+
 
 $("#sidebar_down").click(function(){
 	sidebar_position -= 300;
