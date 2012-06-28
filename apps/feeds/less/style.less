@@ -1,18 +1,53 @@
 @import "normalize.less";
+@import "grid.less"; // Semantic Grid 
 
 
 /* ===== Primary Styles ========================================================
    Author:
    ========================================================================== */
 
+body {
+	color: white;
+}
 
+// main outer div
+#main {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: #f3ece5; // replace this with the background texture
+}
 
+div.navigation {
+	margin: 0 !important;
+}
 
+#navigation-subscriptions {
 
+	.column(4);
+	height: 100%;
 
+	background-color: black;
+}
 
+#navigation-feed {
 
+	.column(4);
+	height: 100%;
 
+	background-color: white;
+}
+
+#navigation-item {
+
+	.column(4);
+	height: 100%;
+
+	//background-color: red;
+
+}
 
 
 @import "media-queries.less";
