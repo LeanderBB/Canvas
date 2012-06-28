@@ -1,5 +1,9 @@
 /* Toolkit.js - Classes and methods useful to be used throughout our applications should be added here and use the model as seen below. */
 
+/* == Resolution Calculation ================================================== */
+function heightForWidth16By9(width){
+  return (9/16) * width;
+}
 /* == POINT 2D CLASS ========================================================== */ 
 /** Point arithemtic abstraction */
 function Point2D(x,y){
@@ -174,6 +178,11 @@ function Slider(options){
         options.mode & Slider.SCROLL_VERTICAL? 1 : 0);
   }else{
     this.mode = new Point2D(0,1);
+  }
+  if (this.mode.x) {
+    this.slider.style.whiteSpace = "nowrap";
+    this.slider.style.cssFloat = "left";
+    this.slider.style.clear = "left";
   }
   //this.slider.css("-moz-transform","translateY(20px)");
   //this.slider.onmouseup = (function(){alert("Mouse up slider");});

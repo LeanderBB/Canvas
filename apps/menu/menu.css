@@ -5,7 +5,6 @@
 	font-weight: normal;
 	cursor: default;
 	-moz-user-select: none;
-	-webkit-user-select: none;
 }
 
 /*
@@ -56,7 +55,6 @@ a:hover {
 
 #sidebar_table{
 	-moz-transition: -moz-transform 0.5s ease;
-	-webkit-transition: -webkit-transform 0.5s ease;
 }
 
 
@@ -70,14 +68,12 @@ a:hover {
 	text-align: right;
 	border-top: 1px solid #FFFF00;
 	-moz-transition: background-color 0.3s ease-in;
-	-webkit-transition: background-color 0.3s ease-in;
 }
 
 #sidebar_table li h1{
 	color: #FFFFFF;
 	font-size: 3em;
 	-moz-transition: color 0.3s ease-in;
-	-webkit-transition: color 0.3s ease-in;
 }
 
 #sidebar_table li h2{
@@ -85,7 +81,6 @@ a:hover {
 	font-family: "Avenir";
 	font-size: 1em;
 	-moz-transition: color 0.3s ease-in;
-	-webkit-transition: color 0.3s ease-in;
 }
 
 /*
@@ -132,11 +127,9 @@ a:hover {
 	bottom: 6%;
 	left: 23.5%;
 	width: 1.5%;
-	height: -webkit-calc(1.5% * 1.7777);
 	height: -moz-calc(1.5% * 1.7777);
 	background: #FFFF00;
 	-moz-transition: opacity 0.5s ease-in-out;
-	-webkit-transition: opacity 0.5s ease-in-out;
 }
 
 #sidebar_up{
@@ -144,12 +137,10 @@ a:hover {
 	top: 23%;
 	left: 23.5%;
 	width: 1.5%;
-	height: -webkit-calc(1.5% * 1.7777);
 	height: -moz-calc(1.5% * 1.7777);
 	background: #FFFF00;
 	opacity: 0.2;
 	-moz-transition: opacity 0.5s ease-in-out;
-	-webkit-transition: opacity 0.5s ease-in-out;
 }
 
 /** main **********************************************************************/
@@ -169,7 +160,6 @@ a:hover {
 	background: #DCCCB9;
 	opacity: 0;
 	-moz-transition: opacity 0.3s ease-in-out;
-	-webkit-transition: opacity 0.3s ease-in-out;
 }
 
 .main_menu_item{
@@ -178,12 +168,11 @@ a:hover {
 
 #main_close{
 	position: fixed;
-	top: 5%;
-	right: 5%;
+	top: 4%;
+	right: -moz-calc(4% / 1.7777);
 	width: 3.5%;
 	height: -moz-calc(3.5% * 1.7777);
-	height: -webkit-calc(3.5% * 1.7777);
-	background: #666666;
+	background: #4A4A49;
 }
 
 #main_panel{
@@ -196,7 +185,6 @@ a:hover {
 	overflow: hidden;
 	z-index: -1;
 	-moz-transition: -moz-transform 0.5s ease;
-	-webkit-transition: -webkit-transform 0.5s ease;
 }
 
 #main_right{
@@ -205,7 +193,6 @@ a:hover {
 	right: 0px;
 	width: 2.5%;
 	height: -moz-calc(2.5% * 1.7777);
-	height: -webkit-calc(2.5% * 1.7777);
 	background: #FFFF00;
 }
 
@@ -215,7 +202,6 @@ a:hover {
 	left: 25%;
 	width: 2.5%;
 	height: -moz-calc(2.5% * 1.7777);
-	height: -webkit-calc(2.5% * 1.7777);
 	background: #FFFF00;
 }
 
@@ -225,7 +211,7 @@ a:hover {
 	height: 85%;
 	margin-top: 3.5%;
 	margin-left: 2%;
-	background: #AAAAAA;
+	background: #F7F7F3;
 }
 
 
