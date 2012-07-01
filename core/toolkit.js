@@ -161,14 +161,23 @@ Point2D.prototype.setScalar=function(x,y){
    SCROLL_BOTH. [OPTIONAL]By default SCROLL_VERIICAL is used.</li>
    </ul>
    TODO: Add scrollbar events and containers
+
+   Added: The value passed to options.div can either be a 
+   string (id of the desired element) or the DOM element itself.
 */
 function Slider(options){
-  this.div = document.getElementById(options.div);
+  if (typeof(options.div)!=='string'){
+    this.div = options.div;
+  }
+  else {
+    this.div = document.getElementById(options.div);
+  }
+
   if (options.slider == undefined){
-    this.slider = document.createElement("div")
+      this.slider = document.createElement("div")
       this.div.appendChild(this.slider);
   }else{
-    this.slider = document.getElementById(options.slider);
+      this.slider = document.getElementById(options.slider);
   }
   this.slider.style.minWidth="100%";
   this.slider.style.minHeight="100%";
