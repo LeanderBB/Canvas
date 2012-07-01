@@ -140,10 +140,11 @@ Gallery.MenuView = function(gallery){
     this.menu= new Slider({div:"menu",mode:Slider.SCROLL_VERTICAL});
     this.list = document.createElement("ul");
     this.list.classList.add("g_menu");
-    this.default_location = new String(window.location);
     this.element_count=0;
     this.icon_top = document.getElementById("menu_top");
     this.icon_bottom = document.getElementById("menu_bottom");
+    this.current_element = null;
+    this.elements = [];
 }
 
 Gallery.MenuView.prototype.handleScroll = function(scroll){
@@ -187,15 +188,22 @@ Gallery.MenuView.prototype.addElement = function(element){
         this.list.appendChild(elem_view);
     var that = this;
     var count = this.element_count;
+    this.elements.push(elem_view);
     elem_view.addEventListener("mouseup",function(){
             that.openGallery(count);
             },false);
     this.element_count++;
 }
-
+Gallery.MenuView.prototype.selectElement = function (index) {
+    if (this.current_element != null){
+        this.current_element.classList.remove("g_menu_active");
+    }
+    this.current_element = this.elements[index];
+    this.current_element.classList.add("g_menu_active");
+}
 Gallery.MenuView.prototype.openGallery = function(gallery_index){
     this.controller.openGallery(gallery_index);
-    window.location = this.default_location + "#"+gallery_index;
+    this.selectElement(gallery_index);
 }
 
 // ### Gallery Content View #######################################

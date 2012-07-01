@@ -15,7 +15,7 @@
   -moz-transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.g_menu li:target {
+.g_menu_active {
   background-color: RGB(190,22,34);
   color: black;
 }
