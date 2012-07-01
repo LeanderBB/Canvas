@@ -1,26 +1,21 @@
 
 window.onload = function(){
-  g = new Gallery();
-  g.init();
+    g = new Gallery();
+    g.init();
 }
 
 function Gallery(){
-  this.menu_view = new Gallery.MenuView(this);
-  this.model = new Gallery.Model();
-  this.content_view = new Gallery.ContentView(this);
-  var that = this;
+    this.menu_view = new Gallery.MenuView(this);
+    this.model = new Gallery.Model();
+    this.content_view = new Gallery.ContentView(this);
+    var that = this;
 
-  
+
 }
 
 Gallery.prototype.init = function(){
     this.model.init();
-    var galleries = this.model.getGalleries();
-    var i;
-    for ( i in galleries ){
-        this.menu_view.addElement(galleries[i]);
-    }
-
+    this.menu_view.load(this.model); 
     this.menu_view.openGallery(0); 
 }
 
@@ -55,7 +50,7 @@ Gallery.Model.prototype.init = function() {
     for ( i in CONFIG.gallery){
         item = CONFIG.gallery[i];
         if ( Gallery.DataModels[item.type] === "undefined" || 
-				typeof Gallery.DataModels[item.type] !== "function"){
+                typeof Gallery.DataModels[item.type] !== "function"){
             alert("data-model-not-found: "+item.type);
         }else{
             model = new Gallery.DataModels[item.type]();
@@ -145,24 +140,56 @@ Gallery.MenuView = function(gallery){
     this.menu= new Slider({div:"menu",mode:Slider.SCROLL_VERTICAL});
     this.list = document.createElement("ul");
     this.list.classList.add("g_menu");
-    this.menu.getView().appendChild(this.list);
     this.default_location = new String(window.location);
     this.element_count=0;
+    this.icon_top = document.getElementById("menu_top");
+    this.icon_bottom = document.getElementById("menu_bottom");
+}
+
+Gallery.MenuView.prototype.handleScroll = function(scroll){
+    if( scroll.y > 50 ){
+        this.icon_top.style.visibility = "visible";
+    }else{
+        this.icon_top.style.visibility = "hidden";
+    }
+
+    if ( scroll.y >= (this.menu._getLimit().y * -1 - 50)){
+        this.icon_bottom.style.visibility = "hidden";
+    }else{
+        this.icon_bottom.style.visibility = "visible";
+    }
+}
+
+Gallery.MenuView.prototype.load = function(model){
+    var galleries = model.getGalleries();
+    this.menu.clear();
+    this.menu.getView().appendChild(this.list);
+    this.element_count = 0;
+    var i;
+    this.icon_top.style.visibility = "hidden";
+    this.icon_bottom.style.visibility = "hidden";
+    for ( i in galleries ){
+        this.addElement(galleries[i]);
+    }
+    if(this.menu.isSlidable()){
+        this.icon_bottom.style.visibility = "visible";
+        this.menu.EventScroll.addListener(this,this.handleScroll);
+    }
 }
 
 Gallery.MenuView.prototype.addElement = function(element){
-    
+
     var elem_view = document.createElement("li");
     elem_view.id=this.element_count;
     elem_view.innerHTML = '<div style="background-image: url(\''+
         element.getThumbUrl()+'\')"></div><h1>'+element.getName()+
         "</h1><h2>"+element.getItemCount()+" Items</h2>"
         this.list.appendChild(elem_view);
-   var that = this;
-   var count = this.element_count;
-   elem_view.addEventListener("mouseup",function(){
-        that.openGallery(count);
-   },false);
+    var that = this;
+    var count = this.element_count;
+    elem_view.addEventListener("mouseup",function(){
+            that.openGallery(count);
+            },false);
     this.element_count++;
 }
 
@@ -180,13 +207,13 @@ Gallery.ContentView = function(gallery){
     this.cur_element = 0;
     this.arrow_left = document.getElementById("main_arrow_left");
     this.arrow_right = document.getElementById("main_arrow_right");
-        var that = this;
+    var that = this;
     this.arrow_left.addEventListener("click",function(e){
             that.prevElement();
             },false);
 
     this.arrow_right.addEventListener("click",function(e){
-           that.nextElement(); 
+            that.nextElement(); 
             },false);
 }
 

@@ -28,5 +28,35 @@ var CONFIG = {"gallery":[
             "type": "standard",
             "thumb": "nobg.jpg",
             "data":[]
+        },
+        {
+            "name": "Test Gallery 112",
+            "type": "standard",
+            "thumb": "nobg.jpg",
+            "data":[]
+        },
+        {
+            "name": "Test Gallery 222",
+            "type": "standard",
+            "thumb": "nobg.jpg",
+            "data":[]
+        },
+        {
+            "name": "Test Gallery 32",
+            "type": "standard",
+            "thumb": "nobg.jpg",
+            "data":[]
+        },
+        {
+            "name": "Test Gallery 21",
+            "type": "standard",
+            "thumb": "nobg.jpg",
+            "data":[]
+        }
+        ,{
+            "name": "Test Gallery 23",
+            "type": "standard",
+            "thumb": "nobg.jpg",
+            "data":[]
         }
     ]}
