@@ -76,3 +76,46 @@ li:nth-child(even) {
 
 .vjs-fullscreen-control { visibility:hidden; }
 
+
+#loading_dialog {
+    position: absolute;
+    z-index: 1000;
+    width: 298px;
+    height: 72px;
+    text-align: center;
+    top: -moz-calc(50% - 36px);
+    left: -moz-calc(50% - 150px);
+    background-color: RGBA(0,0,0,0.7);
+    border: solid 2px RGB(190,22,34);
+}
+
+.g_square {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    background-color: RGB(190,22,34);
+    display: inline-block;
+    -moz-animation-name: g_loading;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+}
+
+.g_delay1 {
+    -moz-animation-delay:0.1;
+}
+
+.g_delay2 {
+    -moz-animation-delay: 0.2s;
+}
+
+.g_delay3 {
+    -moz-animation-delay: 0.3s;
+}
+
+
+@-moz-keyframes g_loading {
+
+    50%{
+        -moz-transform: scale(0.8);
+    }
+}

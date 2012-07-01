@@ -207,6 +207,7 @@ Gallery.ContentView = function(gallery){
     this.cur_element = 0;
     this.arrow_left = document.getElementById("main_arrow_left");
     this.arrow_right = document.getElementById("main_arrow_right");
+    this.load_view = document.getElementById("loading_dialog");
     var that = this;
     this.arrow_left.addEventListener("click",function(e){
             that.prevElement();
@@ -249,6 +250,10 @@ Gallery.ContentView.prototype._update = function(){
 Gallery.ContentView.prototype.displayGallery = function(model){
     this.cur_gallery = model;
     this.content.clear();
+    this.content.getView().style.visibility = "hidden";
+    this.loaded_elements = 0;
+    this.errored_elements = 0;
+    this.load_view.style.visibility = "visible";
     var view = this.content.getView();
     var i;
     var total = this.cur_gallery.getItemCount();
@@ -262,7 +267,7 @@ Gallery.ContentView.prototype.displayGallery = function(model){
             div.style.width="90em";
             div.style.height="100%";
             div.style.display = "inline-block";
-            Gallery.ContentHandlers[type](element,div);
+            Gallery.ContentHandlers[type](element,div,this);
             view.appendChild(div);
         }else{
             alert("NO HANDLER FOR "+type);
@@ -272,16 +277,38 @@ Gallery.ContentView.prototype.displayGallery = function(model){
     this._update();
 }
 
+Gallery.ContentView.prototype.elementLoaded = function(){
+    this.loaded_elements++;
+    console.log(this);
+    this._showContent();
+}
+
+Gallery.ContentView.prototype.elementError = function(){
+    this.errored_elements++;
+    this._showContent();
+}
+
+Gallery.ContentView.prototype._showContent = function(){
+    if (this.loaded_elements + this.errored_elements >= 
+        this.cur_gallery.getItemCount()){
+        this.content.getView().style.visibility = "visible";
+        this.load_view.style.visibility = "hidden";
+    }
+}
 
 // ### Content Handlers ############################################
-Gallery.ContentHandlers["img"] = function(element,parent_div){
+Gallery.ContentHandlers["img"] = function(element,parent_div,callbacks){
+    img = new Image();
+    img.addEventListener("load",function(){callbacks.elementLoaded();},false);
+    img.addEventListener("error",function(){callbacks.elementError();},false);
+    img.src = element.getUrl();
     parent_div.style.backgroundImage = 'url("'+element.getUrl()+'")';
     parent_div.style.backgroundSize = 'contain';
     parent_div.style.backgroundPosition = 'center';
     parent_div.style.backgroundRepeat = 'no-repeat';
 }
 
-Gallery.ContentHandlers["vid"] = function(element, parent_div){
+Gallery.ContentHandlers["vid"] = function(element, parent_div,callbacks){
     var video = document.createElement("video");
     video.id="vid:"+element.getUrl();
     video.src = element.getUrl();
