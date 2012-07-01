@@ -4,16 +4,22 @@ var CONFIG = {"gallery":[
             "type": "standard",
             "thumb": "nobg.jpg",
             "data": [
-            { "url":"1.jpg",
+           
+            /*{ "url":"trailer.ogv",
+                "type": "vid",
+                "thumb": "2.jpg"
+
+            },*/
+             { "url":"1.jpg",
                 "type":"img",
                 "thumb":"1.thumb.jpg"
             },
 
-            { "url":"trailer.ogv",
-                "type": "vid",
-                "thumb": "trailer.thumb.jpg"
+            { "url":"2.jpg",
+                "type":"img",
+                "thumb":"1.thumb.jpg"
+            }
 
-            } 
         ]
     },
 
