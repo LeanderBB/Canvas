@@ -268,7 +268,6 @@ Gallery.ContentView.prototype.displayGallery = function(model){
     var element;    
     for ( i = 0; i < total; ++i){
         element = this.cur_gallery.getItem(i);
-        console.log(element);
         var type = element.getItemType();
         if (Gallery.ContentHandlers[type] !== undefined){
             var div = document.createElement("div");
@@ -287,7 +286,6 @@ Gallery.ContentView.prototype.displayGallery = function(model){
 
 Gallery.ContentView.prototype.elementLoaded = function(){
     this.loaded_elements++;
-    console.log(this);
     this._showContent();
 }
 

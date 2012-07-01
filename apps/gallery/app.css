@@ -6,6 +6,9 @@
   margin-right: auto;
 }
 
+.g_logo {
+    background-image: url('icon.svg');
+}
 .g_menu li {
   margin: 20px 0 0 0;
   min-height: 20%;
@@ -15,10 +18,7 @@
   -moz-transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.g_menu_active {
-  background-color: RGB(190,22,34);
-  color: black;
-}
+
 /*
 li:nth-child(odd) {
   background-color: green;
@@ -31,7 +31,6 @@ li:nth-child(even) {
 .g_menu li div{
   padding:0;
   height: 7.5em;
-  background-image: url('resources/nobg.jpg');
   background-size: cover;
   background-position: center;
   margin-bottom: 4%;
@@ -48,7 +47,13 @@ li:nth-child(even) {
   color: RGB(190,22,34);
   font-family: "Arial";
 }
-
+.g_menu_active {
+  background-color: RGB(190,22,34);
+  color: white;
+}
+li.g_menu_active > h2 {
+    color:black;
+}
 .g_menu_arrow_down {
   background-image: url('resources/arrow_small_down.svg');
 }
