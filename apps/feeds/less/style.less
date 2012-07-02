@@ -1,16 +1,29 @@
 @import "normalize.less";
 @import "grid.less"; // Semantic Grid 
+@import "fonts/fonts.less";
 
 
 /* ===== Primary Styles ========================================================
    Author:
    ========================================================================== */
 
+.fontFaceContent(){
+	font-weight: normal;
+	font-family: 'Avenir45BookRegular', Arial, Verdana;
+}
+
+.fontFaceTitles(){
+	font-family: 'RBNo2LightAlternativeRegular', Georgia;
+	font-weight: normal;
+}
+
 body {
 	color: white;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
+
+	.fontFaceContent();
 }
 
 // main outer div
@@ -23,34 +36,93 @@ body {
 	background-color: #f3ece5; // replace this with the background texture
 }
 
-div.navigation {
-	margin: 0 !important;
+// -----------------------------
+
+#app-logo {
+	height: 80px;
+	border-bottom: yellow solid 2px;
 }
 
 #navigation-subscriptions {
 
-	.column(4);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 25%;
 	height: 100%;
 
 	background-color: black;
 }
 
+.feed-description-container {
+	padding-left: 30px;
+	border-bottom: white solid 2px;
+
+	&.active {
+		background-color: gray;
+	}
+}
+
+// -----------------------------
+
+
 #navigation-feed {
 
-	.column(4);
+	color: black;
+
+	position: absolute;
+	top: 0;
+	left: 25%;
+	width: 30%;
 	height: 100%;
+	padding: 30px;
 
 	background-color: white;
 }
 
+.feed-item-container {
+
+	position: relative;
+
+	div.thumbnail {
+			position: relative;
+			width: 100%;
+			height: 120px;
+			border: 2px solid black;
+	}
+
+}
+
+
+
+#feed {
+	position: relative;
+}
+// -----------------------------
+
+
 #navigation-item {
 
-	.column(4);
+	position: absolute;
+	top: 0;
+	left: 60%;
+	width: 40%;
 	height: 100%;
 
 	//background-color: red;
-
 }
+
+.feed-item-container {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* TYPOGRAPHY */
+
+h1, h2, h3, h4, h5, h6 {
+	.fontFaceTitles();
+}
+
 
 
 @import "media-queries.less";

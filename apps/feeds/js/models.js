@@ -1,6 +1,5 @@
 //define('namespace', 'backbone', 'jquery' , function($, Backbone){
 
-    google.load("feeds", "1"); // Load Google Feeds API
 
     /* Backbone Models ----- */
     AppNS.Models.Feed = Backbone.Model.extend({
@@ -22,24 +21,16 @@
                 function(result) {
                     console.log(result);
                     /* Feed has been loaded. Update the model with the feed's content */
-                    //that.model.set({'content': result.feed.entries[0].content});
-                    that.set({'content': 'The Feed has been loaded'});
+                    that.set({'content': result.feed.entries });
+                    //that.set({'content': 'The Feed has been loaded'});
                     //that.render();
             });
         },
 
         defaults: {
                 title: "Default Feed Title", feed: null, content: null
-        },
-
-        events: {
-            'click .feed-description-container' : 'cena'
-        },
-
-        cena : function(e){
-                console.log("clicked");
         }
-        
+
     });
 
     /* ---------- */

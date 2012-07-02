@@ -2,6 +2,31 @@
     /* ---------- */
     /* Backbone Views ----- */
 
+    AppNS.Views.Item = Backbone.View.extend({
+        el : $("#item"),
+        tagName: "div",
+        className: "item-container",
+        template: $("#itemTemplate").html(),
+        
+        initialize: function(){
+            // Listen for UI Events
+            this.itemSelectionListener = _.bind(this.itemSelectionListener, this);
+            AppNS.Events.bind("click_item_selection", this.itemSelectionListener);
+        },
+
+        render: function () {
+            var tmpl = _.template(this.template);
+            $(this.el).html(tmpl(this.model.toJSON()));
+            return this;
+        },
+
+        itemSelectionListener: function(){
+            console.log("item selected");
+            console.log(this);
+        }
+
+    });
+
     AppNS.Views.FeedItemDescription = Backbone.View.extend({
         tagName: "div",
         className: "feed-item-container",
@@ -16,23 +41,23 @@
 
     AppNS.Views.Feed = Backbone.View.extend({
         el : $("#feed"),
-     
+
+
         initialize: function () {
             // Listen for UI Events
-            var that = this;
-            this.handleFeedSelectionEvent = _.bind(this.handleFeedSelectionEvent, that);
-            AppNS.Events.bind("click_feed_selection", this.handleFeedSelectionEvent);
+            this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
+            AppNS.Events.bind("click_feed_selection", this.feedSelectionListener);
+
+            this.itemSelectionDispatcher = _.bind(this.itemSelectionDispatcher, this);
         },
      
         render: function(args) {
 
             $(this.el).html("");
 
-            for(var i=0; i<args.length; i++){
+            for(var i=0; i<args[0].length; i++){
 
-                console.log(args[i]);
-                var item = args[i][i];
-                //console.log(item);
+                var item = args[0][i];
                 var feedItemDescriptionView = new AppNS.Views.FeedItemDescription({
                     model: item
                 });
@@ -41,10 +66,20 @@
 
         },
 
-        handleFeedSelectionEvent: function(e){
-            console.log("detected click_feed_selection");
+        feedSelectionListener: function(e){
             this.render(arguments);
+        },
+
+        events: {
+            'click': 'itemSelectionDispatcher'
+        },
+
+        itemSelectionDispatcher: function(e){
+            //var args = this.model.attributes.content;
+            var args=arguments;
+            AppNS.Events.trigger("click_item_selection", e);
         }
+
     });
 
     AppNS.Views.FeedDescription = Backbone.View.extend({
@@ -68,13 +103,12 @@
         },
 
         events: {
-            //'click .feed-description-container' : 'cena'
-            'click' : 'handleFeedSelection'
-
+            'click' : 'feedSelectionDispatcher'
         },
 
-        handleFeedSelection : function(e){
-            console.log("clicked");
+        feedSelectionDispatcher : function(e){
+            $(".feed-description-container.active").removeClass("active");
+            $(e.currentTarget).addClass("active");
             var args = this.model.attributes.content;
             AppNS.Events.trigger("click_feed_selection", args);
         }
