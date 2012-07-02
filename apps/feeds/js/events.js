@@ -1,0 +1,1 @@
+AppNS.Events = Backbone.Events;
