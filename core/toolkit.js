@@ -148,10 +148,7 @@ Point2D.prototype.setScalar=function(x,y){
   this.x = x;
   this.y = y;
 }
-/** Return a copy of the current Point2D */
-Point2D.prototype.clone = function(){
-  return new Point2D(this.x, this.y);
-}
+
 /* == SLIDER CLASS ========================================================== */ 
 /**
   Add kinetic slide options to a div. 
@@ -164,14 +161,23 @@ Point2D.prototype.clone = function(){
    SCROLL_BOTH. [OPTIONAL]By default SCROLL_VERIICAL is used.</li>
    </ul>
    TODO: Add scrollbar events and containers
+
+   Added: The value passed to options.div can either be a 
+   string (id of the desired element) or the DOM element itself.
 */
 function Slider(options){
-  this.div = document.getElementById(options.div);
+  if (typeof(options.div)!=='string'){
+    this.div = options.div;
+  }
+  else {
+    this.div = document.getElementById(options.div);
+  }
+
   if (options.slider == undefined){
-    this.slider = document.createElement("div")
+      this.slider = document.createElement("div")
       this.div.appendChild(this.slider);
   }else{
-    this.slider = document.getElementById(options.slider);
+      this.slider = document.getElementById(options.slider);
   }
   this.slider.style.minWidth="100%";
   this.slider.style.minHeight="100%";
@@ -257,10 +263,7 @@ function Slider(options){
     }
 
   }
-
-  if( options.disable_events == undefined ){
-    this.div.addEventListener("mousedown",this.handleMouseDown,true);
-  }
+  this.div.addEventListener("mousedown",this.handleMouseDown,true);
 }
 /*[INTERNAL] update the position of the slider */
 Slider.prototype._update= function(){
@@ -285,36 +288,25 @@ Slider.prototype.clear = function(){
   this.current_offset.setScalar(0,0);
 }
 /** Scroll to the an offset defined defined by a point */
-Slider.prototype.setScrollPoint = function(point){
+Slider.prototype.scrollToPoint = function(point){
   point.multScalar(-1);
   this.current_offset.setPoint(point);
   this.current_offset.limitPoint(this._getLimit(),new Point2D(0,0));
   this._update();
 }
 /** Scroll to the an offset defined by scalars */
-Slider.prototype.setScrollScalar = function(x,y){
+Slider.prototype.scrollToScalar = function(x,y){
   this.current_offset.setScalar(x * -1,y * -1);
   this.current_offset.limitPoint(this._getLimit(),new Point2D(0,0));
   this._update();
 }
 /** Scroll to percentage */
-Slider.prototype.setScrollPercentage=function(x,y){
+Slider.prototype.scrollToPercentage=function(x,y){
   limit= this._getLimit();
   this.current_offset.setPoint(Point2D.multScalarXY(limit,x,y));
   this.current_offset.limitPoint(limit,new Point2D(0,0));
   this._update();
 }
-/** Return the current scroll offset with scalar values */
-Slider.prototype.getScrollScalar = function(){
-  var res = this.current_offset.clone();
-  res.multScalar(-1);
-  return res;
-}
-/** Return the curren scroll offset in percentage */
-Slider.prototype.getScrollPercentage = function(){
-  return Point2D.divPoint(this.current_offset, this._getLimit());
-}
-
 
 Slider.SCROLL_HORIZONTAL = 0x01
 Slider.SCROLL_VERTICAL = 0x02

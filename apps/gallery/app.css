@@ -6,6 +6,9 @@
   margin-right: auto;
 }
 
+.g_logo {
+    background-image: url('icon.svg');
+}
 .g_menu li {
   margin: 20px 0 0 0;
   min-height: 20%;
@@ -15,10 +18,7 @@
   -moz-transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-.g_menu li:target {
-  background-color: RGB(190,22,34);
-  color: black;
-}
+
 /*
 li:nth-child(odd) {
   background-color: green;
@@ -31,7 +31,6 @@ li:nth-child(even) {
 .g_menu li div{
   padding:0;
   height: 7.5em;
-  background-image: url('resources/nobg.jpg');
   background-size: cover;
   background-position: center;
   margin-bottom: 4%;
@@ -48,7 +47,13 @@ li:nth-child(even) {
   color: RGB(190,22,34);
   font-family: "Arial";
 }
-
+.g_menu_active {
+  background-color: RGB(190,22,34);
+  color: white;
+}
+li.g_menu_active > h2 {
+    color:black;
+}
 .g_menu_arrow_down {
   background-image: url('resources/arrow_small_down.svg');
 }
@@ -72,4 +77,50 @@ li:nth-child(even) {
     background-image: url('resources/arrow_big_right.svg');
     opacity: 0.6;
     z-index: 999;
+}
+
+.vjs-fullscreen-control { visibility:hidden; }
+
+
+#loading_dialog {
+    position: absolute;
+    z-index: 1000;
+    width: 298px;
+    height: 72px;
+    text-align: center;
+    top: -moz-calc(50% - 36px);
+    left: -moz-calc(50% - 150px);
+    background-color: RGBA(0,0,0,0.7);
+    border: solid 2px RGB(190,22,34);
+}
+
+.g_square {
+    width: 50px;
+    height: 50px;
+    margin: 10px;
+    background-color: RGB(190,22,34);
+    display: inline-block;
+    -moz-animation-name: g_loading;
+    -moz-animation-duration: 1s;
+    -moz-animation-iteration-count: infinite;
+}
+
+.g_delay1 {
+    -moz-animation-delay:0.1;
+}
+
+.g_delay2 {
+    -moz-animation-delay: 0.2s;
+}
+
+.g_delay3 {
+    -moz-animation-delay: 0.3s;
+}
+
+
+@-moz-keyframes g_loading {
+
+    50%{
+        -moz-transform: scale(0.8);
+    }
 }
