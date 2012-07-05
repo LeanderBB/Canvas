@@ -194,12 +194,12 @@ Event.prototype.trigger= function(args) {
     for(var i = 0; i < listeners.length; ++i) {
         // contain any errors so that they don't crash the
         // execution of the remaining triggers (if any)
-        try {
+        //try {
             listeners[i][1].call(listeners[i][0], args);
-        } catch(ex) {
-            console.log('[ERR] Event "' + object.toString() +
+        /*} catch(ex) {
+            console.log('[ERR] Event "' + listeners[i][1].toString() +
                     '" with message: "' + ex.message + '"');
-        }
+        }*/
     }
 }
 
