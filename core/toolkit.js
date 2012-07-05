@@ -216,16 +216,16 @@ Event.prototype.trigger = function (args) {
 
 /* == SLIDER CLASS ======================================================*/
 /**
-  Add kinetic slide options to a div.
-  @param options:
-  <ul>
-  <li><b>div:</b> Slider container div, either the id as string
-  or the Dom Element.[REQUIRED]</li>
-  <li><b>slider:</b> Container that will be moved inside the outer contaier.
-  [OPTIONAL] If no slider is specified, an empty div shall be created.</li>
-  <li><b>mode:</b> Slider mode, SCROLL_HORIZONTAL, SCROLL_VERTICAL or
-  SCROLL_BOTH. [OPTIONAL]By default SCROLL_VERIICAL is used.</li>
-  </ul>
+    Add kinetic slide options to a div.
+    @param options Associative array:
+        div: Slider container div, either the id as string or the Dom Element.
+        [REQUIRED]
+        slider: Container that will be moved inside the outer contaier.
+        [OPTIONAL] If no slider is specified, an empty div shall be created.
+        mode: Slider mode, SCROLL_HORIZONTAL, SCROLL_VERTICAL or SCROLL_BOTH.
+        [OPTIONAL]By default SCROLL_VERIICAL is used.
+
+    @event EvtScroll Event fired each time the scroll bar moves.
  */
 function Slider(options) {
     if (typeof(options.div) !== 'string') {
@@ -260,7 +260,7 @@ function Slider(options) {
     this.last_time = [];
     this.max_sampling = 5;
     //scroll event
-    this.EventScroll = new Event();
+    this.EvtScroll = new Event();
 
     var that = this;
     this.handleMouseDown = function (evt_down) {
@@ -323,12 +323,14 @@ function Slider(options) {
         }
 
     };
-    this.div.addEventListener("mousedown", this.handleMouseDown, true);
+    if (options.disable_events === undefined) {
+        this.div.addEventListener("mousedown", this.handleMouseDown, true);
+    }
 }
 
 /*[INTERNAL] update the position of the slider */
 Slider.prototype._update = function () {
-    this.EventScroll.trigger(Point2D.multScalar(this.current_offset, -1));
+    this.EvtScroll.trigger(Point2D.multScalar(this.current_offset, -1));
     this.slider.style.MozTransform = "translate(" + (this.current_offset.x *
                 this.mode.x) + "px," +
                 (this.current_offset.y * this.mode.y) + "px)";

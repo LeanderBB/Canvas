@@ -3,8 +3,13 @@
 /**
     Create a Video Player
     @params args Associative arary with options:
-        div: Container where to load the video player [REQUIRED]
-        
+        div: Container where to load the video player, string id or
+        dom element.[REQUIRED]
+       
+    @events:
+        EvtReady - Fired when the video is ready to play, no data.
+        EvtError - Fired when an error occurs.
+        EvtEndend - Fired when the video reached the end.
 */
 function VideoPlayer(options) {
     var that = this;
@@ -18,40 +23,26 @@ function VideoPlayer(options) {
     }, true);
     this.video.preload = "metadata";
     this.state = VideoPlayer.NO_SOURCE;
-    this.callbacks = {
-        "ready" : options.fn_ready || null,
-        "error" : options.fn_error || null,
-        "ended" : options.fn_ended || null,
-    };
-
-    //this.callbacks.ready=function (){alert("vid:ready");};
-    //this.callbacks.error=function (){alert("vid:error");};
-   // this.callbacks.ended=function (){alert("vid:ended");};
+    this.EvtReady = new Event();
+    this.EvtError = new Event();
+    this.EvtEnded = new Event();
     this.EvtStateChange = new Event();
     // register video events
     function onPause(e) {
         that.pause();
     }
     function onLoadedMetadata(e) {
-        //that.video.removeEventListener('loadedmetadata', onLoadedMetadata);
         that.state = VideoPlayer.READY | VideoPlayer.PAUSED;
         that.EvtStateChange.trigger(that.state);
         that.view.setProgress(0);
-        if (that.callbacks.ready !== null) {
-            that.callbacks.ready();
-        }
+        that.EvtReady.trigger();
     }
     function onVideoEnd(e) {
         that.state |= VideoPlayer.ENDED;
         that.pause();
-        if (that.callbacks.ended !== null) {
-            that.callbacks.ended();
-        }
+        that.EvtEnded.trigger();
         that.view.setProgress(0);
         that.video.currentTime = 0;
-        // that.atTheEnd = true;
-        // if(typeof(that.view.videoEnded) === 'function')
-        //   that.view.videoEnded();
     }
     function onTimeUpdate(e) {
         var progress = parseInt(that.video.currentTime /
@@ -69,11 +60,18 @@ function VideoPlayer(options) {
             that.EvtStateChange.trigger(that.state);
         }
     }
+
+    function onError(e) {
+        that.state = (that.state & ~VideoPlayer.READY) | VideoPlayer.ERROR;
+        that.EvtStateChange.trigget(that.state);
+        that.EvtError.trigger();
+    }
     this.video.addEventListener('loadedmetadata', onLoadedMetadata, false);
     this.video.addEventListener('ended', onVideoEnd, false);
     this.video.addEventListener('timeupdate', onTimeUpdate, false);
     this.video.addEventListener('progress', onBuffering, false);
     this.video.addEventListener('pause', onPause, false);
+    this.video.addEventListener('error', onError, false);
     this.view = new VideoPlayer.View(this, options);
 
 }
@@ -174,7 +172,11 @@ VideoPlayer.ENDED = 0x80;
 // ### VIEW ###################################
 VideoPlayer.View = function (controller, options) {
     this.controller = controller;
-    this.container = document.getElementById(options.div);
+    if (typeof(options.div) !== 'string') {
+        this.container = options.div;
+    } else {
+        this.container = document.getElementById(options.div);
+    }
     this.container.classList.add("c3_video_container");
     this.ui_elements = 0;
     this._setupInterface();

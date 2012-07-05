@@ -5,11 +5,11 @@ var CONFIG = {"gallery":[
             "thumb": "nobg.jpg",
             "data": [
            
-            /*{ "url":"trailer.ogv",
+            { "url":"trailer.ogv",
                 "type": "vid",
                 "thumb": "2.jpg"
 
-            },*/
+            },
              { "url":"1.jpg",
                 "type":"img",
                 "thumb":"1.thumb.jpg"
@@ -27,7 +27,13 @@ var CONFIG = {"gallery":[
             "name": "Test Gallery 2",
             "type": "standard",
             "thumb": "nobg.jpg",
-            "data":[]
+            "data":[
+                {   
+                    "url": "trailer.ogv",
+                    "thumb": "2.jpg",
+                    "type": "vid"
+                }
+            ]
         },
         {
             "name": "Test Gallery 112",

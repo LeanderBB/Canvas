@@ -171,7 +171,7 @@ Gallery.MenuView.prototype.load = function (model) {
     }
     if (this.menu.isSlidable()) {
         this.icon_bottom.style.visibility = "visible";
-        this.menu.EventScroll.addListener(this, this.handleScroll);
+        this.menu.EvtScroll.addListener(this, this.handleScroll);
     }
 };
 
@@ -317,5 +317,8 @@ Gallery.ContentHandlers["img"] = function (element, parent_div, callbacks) {
 };
 
 Gallery.ContentHandlers["vid"] = function (element, parent_div, callbacks) {
-
+    var vp = new VideoPlayer({"div": parent_div});
+    vp.EvtReady.addListener(this, function () {callbacks.elementLoaded(); });
+    vp.EvtError.addListener(this, function () {callbacks.elementError(); });
+    vp.setSource(element.getUrl(), element.getThumbUrl());
 };
