@@ -2,12 +2,18 @@
 <html>
 <head>
 <script src="../../core/toolkit.js"></script>
-<script src="video.js"></script>
+<script src="../../core/video.js"></script>
+<link rel="stylesheet" type="text/css" href="../../core/video.css"/>
 <style type="text/css">
 * {
     margin:0;
     padding: 0;
 }
+
+html{
+    font-size: 16px;
+}
+
 .vid_container {
     width: 800px;
     height: 600px;
@@ -20,103 +26,13 @@
 }
 
 
-.c3_video_main_icon {
-    position: relative;
-    top: -moz-calc(-50% - 100px);
-    left: -moz-calc(50% - 50px);
-    width: 100px;
-    height: 100px;
-}
-.c3_video_main_icon_play {
-    background-position: 0px 0px;
-}
-
-.c3_video_icon_main_load {
-     background-position: -100px 0px;
-    -moz-animation: c3_video_anim_rotate 1.2s linear infinite;
-}
-
-.c3_video_icon_bg {
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-image: url('video_icons.svg');
-    background-size: 200px 150px;
-}
-.c3_video_controls {
-    width:100%;
-    height: 50px;
-    background-color: RGB(20,20,20);
-}
-
-.c3_video_controls > div {
-    position:relative;
-    display:inline-block;
-}
-
-.c3_video_button {
-    width: 50px;
-    height: 50px;
-}
-
-.c3_video_play {
-    float: left;
-    background-position: 0px -100px;
-    border-right: solid 1px RGB(30,30,30);
-}
-
-.c3_video_pause {
-    float: left;
-    background-color: RGB(140,140,140);
-    background-position: -50px -100px;
-}
-
-
-.c3_video_sound {
-   float: right;
-   background-color: RGB(120,120,120);
-}
-.c3_video_progress {
-    margin: 10px;
-    width: -moz-calc(100% - 230px);
-    border-radius: 3px;
-    height: 30px;
-    background-image: -moz-linear-gradient(bottom, rgb(50,50,50) 0%, rgb(30,30,30) 100%);
-    overflow:hidden;
-}
-
-.c3_video_progress > div{
-    display: inline-block;
-    height: 100%;
-    background-image: -moz-linear-gradient(bottom, rgb(219,219,219) 0%, rgb(255,255,255) 100%);
- }
-
-.c3_video_duration {
-    float:right;
-    border-radius: 3px;
-    margin: 10px;
-    height: 30px;
-    font-family: "Arial";
-    font-weight: normal;
-    text-align: center;
-    width: 130px;
-    font-size: 20px;
-    line-height: 30px;
-    color:white;
-    background-image: -moz-linear-gradient(bottom, rgb(50,50,50) 0%, rgb(30,30,30) 100%);
-}
-
-@-moz-keyframes c3_video_anim_rotate {
-    from {
-        -moz-transform: rotate(0deg);
-    }
-    to {
-        -moz-transform: rotate(360deg);
-    }
-}
-
 </style>
 <script>
-
+window.onload = function () {
+    var vid = new VideoPlayer ( {div: "vdc"} );
+    vid.setSource("http://media.w3.org/2010/05/sintel/trailer.ogv",
+    "http://media.w3.org/2010/05/sintel/poster.png");
+}
 </script>
 </head>
 <body>

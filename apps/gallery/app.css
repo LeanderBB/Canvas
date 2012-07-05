@@ -106,7 +106,7 @@ li.g_menu_active > h2 {
 }
 
 .g_delay1 {
-    -moz-animation-delay:0.1;
+    -moz-animation-delay: 0.1s;
 }
 
 .g_delay2 {
