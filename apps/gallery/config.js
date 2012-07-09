@@ -39,7 +39,18 @@ var CONFIG = {"gallery":[
             "name": "Test Gallery 112",
             "type": "standard",
             "thumb": "nobg.jpg",
-            "data":[]
+            "data":[
+                {   
+                    "url": "abcd",
+                    "thumb": "2.jpg",
+                    "type": "img"
+                },
+                {   
+                    "url": "abcd",
+                    "thumb": "2.jpg",
+                    "type": "vid"
+                }
+            ]
         },
         {
             "name": "Test Gallery 222",

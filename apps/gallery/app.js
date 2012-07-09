@@ -25,6 +25,7 @@ Gallery.prototype.openGallery = function (index) {
 Gallery.DataModels = {};
 Gallery.ContentHandlers = {};
 Gallery.MediaDir = "../../media/";
+Gallery.ErrorImage = "resources/error.svg";
 // ### Gallery Model #############################################
 
 Gallery.Model = function () {
@@ -49,7 +50,7 @@ Gallery.Model.prototype.init = function () {
         item = CONFIG.gallery[i];
         if (Gallery.DataModels[item.type] === "undefined" ||
                 typeof Gallery.DataModels[item.type] !== "function") {
-            alert("data-model-not-found: " + item.type);
+            console.log("[Gallery] data-model-not-found: " + item.type);
         } else {
             model = new Gallery.DataModels[item.type]();
             model.init(item);
@@ -279,18 +280,23 @@ Gallery.ContentView = function (gallery) {
     this.arrow_right.addEventListener("click", function (e) {
             that.nextElement();
         }, false);
+    this.elements = [];
 };
 
 Gallery.ContentView.prototype.nextElement = function () {
     if (this.cur_element < this.cur_gallery.getItemCount()) {
+        this.elements[this.cur_element].onExit();
         this.cur_element++;
+        this.elements[this.cur_element].onEnter();
         this._update();
     }
 };
 
 Gallery.ContentView.prototype.prevElement = function () {
     if (this.cur_element !== 0) {
+        this.elements[this.cur_element].onExit();
         this.cur_element--;
+        this.elements[this.cur_element].onEnter();
         this._update();
     }
 };
@@ -314,13 +320,14 @@ Gallery.ContentView.prototype._update = function () {
 Gallery.ContentView.prototype.displayGallery = function (model) {
     this.cur_gallery = model;
     this.content.clear();
+    this.elements = [];
     this.content.getView().style.visibility = "hidden";
     this.loaded_elements = 0;
     this.errored_elements = 0;
     this.load_view.style.visibility = "visible";
     var view = this.content.getView(), i,
         total = this.cur_gallery.getItemCount(),
-        element, type, div;
+        element, type, div, elem;
     for (i = 0; i < total; ++i) {
         element = this.cur_gallery.getItem(i);
         type = element.getItemType();
@@ -329,10 +336,15 @@ Gallery.ContentView.prototype.displayGallery = function (model) {
             div.style.width = "90em";
             div.style.height = "100%";
             div.style.display = "inline-block";
-            Gallery.ContentHandlers[type](element, div, this);
+            elem = new Gallery.ContentHandlers[type](div, element);
+            elem.EvtReady.addListener(this, this.elementLoaded);
+            elem.EvtError.addListener(this, this.elementError);
+            elem.init();
             view.appendChild(div);
+            this.elements.push(elem);
         } else {
-            alert("NO HANDLER FOR " + type);
+            this.elementError();
+            console.log("[GALLERY] No media handler for" + type);
         }
     }
     this.cur_element = 0;
@@ -357,23 +369,72 @@ Gallery.ContentView.prototype._showContent = function () {
     }
 };
 
-// ### Content Handlers ############################################
-Gallery.ContentHandlers["img"] = function (element, parent_div, callbacks) {
-    var img = new Image();
-    img.addEventListener("load", function () {callbacks.elementLoaded(); },
-        false);
-    img.addEventListener("error", function () {callbacks.elementError(); },
-        false);
-    img.src = element.getUrl();
-    parent_div.style.backgroundImage = 'url("' + element.getUrl() + '")';
-    parent_div.style.backgroundSize = 'contain';
-    parent_div.style.backgroundPosition = 'center';
-    parent_div.style.backgroundRepeat = 'no-repeat';
+
+// ### Gallery ContentView Element #################################
+
+Gallery.ContentView.IElement = function (parent, element) {
+    this.src = element.getUrl();
+    this.parent = parent;
+    this.EvtReady = new Event();
+    this.EvtError = new Event();
 };
 
-Gallery.ContentHandlers["vid"] = function (element, parent_div, callbacks) {
-    var vp = new VideoPlayer({"div": parent_div});
-    vp.EvtReady.addListener(this, function () {callbacks.elementLoaded(); });
-    vp.EvtError.addListener(this, function () {callbacks.elementError(); });
-    vp.setSource(element.getUrl(), element.getThumbUrl());
+Gallery.ContentView.IElement.prototype.init = function () {
+    throw new Error("Abstract Method");
 };
+
+Gallery.ContentView.IElement.prototype.onEnter = function () {
+    // Do Nothing
+};
+
+Gallery.ContentView.IElement.prototype.onExit = function () {
+    // Do Nothing
+};
+
+// ### Content Handlers ############################################
+
+function IMGHandler(parent, element) {
+    IMGHandler.super.constructor.call(this, parent, element);
+}
+
+IMGHandler.prototype.init = function () {
+    var img = new Image(), that = this;
+    img.addEventListener("load", function () {that.EvtReady.trigger(); },
+        false);
+    img.addEventListener("error", function () {
+        that.parent.style.backgroundImage = 'url("' + Gallery.ErrorImage + '")';
+        that.parent.style.backgroundSize = "30%";
+        that.EvtError.trigger();
+    }, false);
+    img.src = this.src;
+    this.parent.style.backgroundImage = 'url("' + this.src + '")';
+    this.parent.style.backgroundSize = 'contain';
+    this.parent.style.backgroundPosition = 'center';
+    this.parent.style.backgroundRepeat = 'no-repeat';
+    
+};
+
+OOP.extend(IMGHandler, Gallery.ContentView.IElement);
+
+function VIDHandler(parent, element) {
+    VIDHandler.super.constructor.call(this, parent, element);
+    this.poster = element.getThumbUrl();
+    this.vp = new VideoPlayer({"div": parent});
+    this.EvtReady = this.vp.EvtReady;
+    this.EvtError = this.vp.EvtError;
+
+}
+
+VIDHandler.prototype.init = function () {
+    this.vp.setSource(this.src, this.poster);
+};
+
+VIDHandler.prototype.onExit = function () {
+    this.vp.pause();
+};
+
+OOP.extend(VIDHandler, Gallery.ContentView.IElement);
+
+// Register handlers
+Gallery.ContentHandlers["img"] = IMGHandler;
+Gallery.ContentHandlers["vid"] = VIDHandler;

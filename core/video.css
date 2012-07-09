@@ -19,6 +19,13 @@
     background-color: RGBA(0,0,0,0.4);
 }
 
+.c3_video_icon_main_error {
+    background-position: -12.5em 0;
+    border-radius: 0.5em;
+    background-color: RGBA(0,0,0,0.4);
+}
+
+
 .c3_video_icon_main_load {
      background-position: -6.25em 0;
     -moz-animation: c3_video_anim_rotate 1.2s linear infinite;
@@ -35,7 +42,7 @@
     background-repeat: no-repeat;
     background-size: contain;
     background-image: url('video_icons.svg');
-    background-size: 12.5em 9.375em;
+    background-size: 18.75em 9.375em;
 }
 
 .c3_video_controls {
