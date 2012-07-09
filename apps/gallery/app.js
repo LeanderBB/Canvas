@@ -61,20 +61,72 @@ Gallery.Model.prototype.init = function () {
 
 // ### Gallery Standard Data Model ###############################
 
-function StandardModel() {
+Gallery.IDataModel = function () {
     this.name = "";
-    this.type = "standard";
-    this.files = [];
+    this.type = "idatamodel";
     this.thumb_url = "";
-}
+};
 
-StandardModel.prototype.getName = function () {
+Gallery.IDataModel.prototype.getName = function () {
     return this.name;
 };
 
-StandardModel.prototype.getType = function () {
+Gallery.IDataModel.prototype.getType = function () {
     return this.type;
 };
+
+Gallery.IDataModel.prototype.getThumbUrl = function () {
+    return this.thumb_url;
+};
+
+Gallery.IDataModel.prototype.getItemCount = function () {
+    throw new Error("Abstract method");
+};
+    
+Gallery.IDataModel.prototype.getItem = function (index) {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.prototype.newElement = function () {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.prototype.init = function (data) {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.Element = function () {
+    this.url = "";
+    this.thumb_url = "";
+    this.item_type = "";
+    this.type = "idatamodel.element";
+};
+
+Gallery.IDataModel.Element.prototype.getUrl = function () {
+    return  this.url;
+};
+
+Gallery.IDataModel.Element.prototype.getThumbUrl = function () {
+    return  this.thumb_url;
+};
+
+Gallery.IDataModel.Element.getItemType = function () {
+    return this.item_type;
+};
+
+Gallery.IDataModel.Element.getType = function () {
+    return this.type;
+};
+
+Gallery.IDataModel.Element.init = function (data) {
+    throw new Error("Abstract method");
+};
+
+function StandardModel() {
+    StandardModel.super.constructor.call(this);
+    this.type = "standard";
+    this.files = [];
+}
 
 StandardModel.prototype.getThumbUrl = function () {
     return Gallery.MediaDir + this.thumb_url;
@@ -103,10 +155,11 @@ StandardModel.prototype.init = function (data) {
     }
 };
 
+OOP.extend(StandardModel, Gallery.IDataModel);
+
 StandardModel.Element = function () {
-    this.url = "";
-    this.thumb_url = "";
-    this.item_type = "";
+    StandardModel.Element.super.constructor.call(this);
+    this.type = "standard.element";
 };
 
 StandardModel.Element.prototype.getUrl = function () {
@@ -129,6 +182,8 @@ StandardModel.Element.prototype.init = function (data) {
     this.item_type = data.type;
     this.thumb_url = data.thumb;
 };
+
+OOP.extend(StandardModel.Element, Gallery.IDataModel.Element);
 
 Gallery.DataModels["standard"] = StandardModel;
 // ### Gallery Menu View #########################################
