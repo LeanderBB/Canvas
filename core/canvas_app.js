@@ -73,7 +73,7 @@ CanvasApp.prototype.getMediaPath = function () {
 };
 
 
-CanvasApp.loadResource = function (canvas_path, 
+CanvasApp.loadResource = function (canvas_path,
         core_resource, type) {
     switch (type) {
     case CanvasApp.RT_JS:

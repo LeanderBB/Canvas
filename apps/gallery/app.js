@@ -1,7 +1,7 @@
 'use strict';
 window.onload = function () {
-   window.g = new Gallery();
-   window.g.init();
+    window.g = new Gallery();
+    window.g.init();
 };
 
 function Gallery() {
