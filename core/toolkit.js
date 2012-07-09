@@ -1,3 +1,4 @@
+'use strict';
 /* Toolkit.js - Classes and methods useful to be used throughout our
  * applications should be added here and use the model as seen below.
  */

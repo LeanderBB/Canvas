@@ -1,4 +1,4 @@
-
+'use strict';
 window.onload = function () {
     g = new Gallery();
     g.init();
