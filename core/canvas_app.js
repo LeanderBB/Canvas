@@ -1,4 +1,5 @@
 "use strict";
+
 function CanvasApp(folder_name) {
     this.name = folder_name;
     this.path = Canvas.APP_PATH + name + "/";
@@ -20,26 +21,6 @@ function CanvasApp(folder_name) {
 }
 
 
-CanvasApp.RT_JS = 0x01;
-CanvasApp.RT_CSS = 0x02;
-
-
-CanvasApp.prototype.loadResource = function (core_resource, type) {
-    switch (type) {
-    case CanvasApp.RT_JS:
-        this._load_js(core_resource);
-        break;
-    case CanvasApp.RT_CSS:
-        this._load_css(core_resource);
-        break;
-    default:
-        Canvas.log("Unkown resource type requested to be \
-                loaded: '" + core_resource + "'", this.name);
-        break;
-    }
-};
-
-
 CanvasApp.prototype.loadConfig = function () {
     //TODO: Error check!!!
     //xhr request to config file
@@ -56,20 +37,6 @@ CanvasApp.prototype.getConfig = function () {
     return this.config;
 };
 
-CanvasApp.prototype._load_js = function (source) {
-    var script = document.createElement("script");
-    script.setAttribute("type", "text/javascript");
-    script.setAttribute("src", source);
-    document.getElementsByTagName("head")[0].appendChild(script);
-};
-
-CanvasApp.prototype._load_css = function (source) {
-    var css = document.createElement("link");
-    css.setAttribute("type", "text/css");
-    css.setAttribute("rel", "stylesheet");
-    css.setAttribute("href", source);
-    document.getElementsByTagName("head")[0].appendChild(css);
-};
 
 CanvasApp.prototype.ready = function () {
     var msg = new Canvas.Message(Canvas.MSG_READY,
@@ -104,4 +71,39 @@ CanvasApp.prototype.getApplicationConfigPath = function () {
 CanvasApp.prototype.getMediaPath = function () {
     return this.media_path;
 };
+
+
+CanvasApp.loadResource = function (canvas_path, 
+        core_resource, type) {
+    switch (type) {
+    case CanvasApp.RT_JS:
+        CanvasApp._load_js(canvas_path + core_resource);
+        break;
+    case CanvasApp.RT_CSS:
+        CanvasApp._load_css(canvas_path + core_resource);
+        break;
+    default:
+        Canvas.log("Unkown resource type requested to be \
+                loaded: '" + core_resource + "'", this.name);
+        break;
+    }
+};
+
+CanvasApp._load_js = function (source) {
+    var script = window.document.createElement("script");
+    script.setAttribute("type", "text/javascript");
+    script.setAttribute("src", source);
+    window.document.getElementsByTagName("head")[0].appendChild(script);
+};
+
+CanvasApp._load_css = function (source) {
+    var css = window.document.createElement("link");
+    css.setAttribute("type", "text/css");
+    css.setAttribute("rel", "stylesheet");
+    css.setAttribute("href", source);
+    window.doc.getElementsByTagName("head")[0].appendChild(css);
+};
+
+CanvasApp.RT_JS = 0x01;
+CanvasApp.RT_CSS = 0x02;
 

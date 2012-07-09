@@ -7,6 +7,7 @@ var CHROME_CONFIG_PATH = "chrome://canvas/content/configs/";
 var CHROME_APP_PATH = "chrome://canvas/content/apps/";
 var CHROME_CORE_PATH = "chrome://canvas/content/core/";
 var CHROME_MEDIA_PATH = "chrome://canvas/content/media/";
+var CHROME_EXT_PATH = "chrome://canvas/content/ext/"
 
 var Canvas = {};
 
@@ -31,11 +32,14 @@ Canvas.HOME_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
 Canvas.CONFIG_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
     CHROME_CONFIG_PATH : Canvas.HOME_PATH + "../configs/";
 Canvas.MEDIA_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
-    CHROME_MEDIA_PATH: Canvas.HomePath + "../media/";
+    CHROME_MEDIA_PATH: Canvas.HOME_PATH + "../media/";
 Canvas.APP_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
     CHROME_APP_PATH : "../apps/";
 Canvas.CORE_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
     CHROME_CORE_PATH : "../../core/";
+Canvas.EXT_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
+    CHROME_EXT_PATH : "../../ext/";
+
 /**
  * Log method. Automatically adjustes to the current mode. In release mode
  * prints to stdout and in development mode to the js console.

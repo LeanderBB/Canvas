@@ -8,7 +8,7 @@ function heightForWidth16By9(width) {
     return (9 /  16) * width;
 }
 /* == OOP METHODS =========================================================*/
-OOP = {};
+var OOP = {};
 OOP.extend = function (child, parent) {
     for (var method in parent.prototype) {
         if (child.prototype[method] === undefined) {
