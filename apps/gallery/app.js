@@ -3,6 +3,7 @@ window.onload = function () {
     window.app = new CanvasApp("gallery");
     window.g = new Gallery();
     window.g.init();
+    Gallery.MediaDir = window.app.getMediaPath();
     window.app.ready();
 };
 
@@ -48,7 +49,8 @@ Gallery.Model.prototype.getGalleryAtIndex = function (index) {
 
 Gallery.Model.prototype.init = function () {
     var item, i, model, config;
-    config = window.app.loadConfig();
+    window.app.loadConfig();
+    config = window.app.getConfig();
     for (i in config.gallery) {
         item = config.gallery[i];
         if (Gallery.DataModels[item.type] === "undefined" ||

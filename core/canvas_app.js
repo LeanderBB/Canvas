@@ -13,7 +13,11 @@ Canvas.log = function (message, origin) {
     }
 };
 
-
+/**
+    Canvas App Class
+    @param folder_name Folder name where the app resides. Necessary to
+    build the directory index.
+*/
 function CanvasApp(folder_name) {
     this.name = folder_name;
     this.path = Canvas.APP_PATH + this.name + "/";
@@ -35,7 +39,10 @@ function CanvasApp(folder_name) {
     }, false);
 }
 
-
+/**
+    Load the configuration file.
+    @return false if the config could not be loaded.
+*/
 CanvasApp.prototype.loadConfig = function () {
     function urlToPath(aPath) {
         if (!aPath || !/^file:/.test(aPath)) {
@@ -80,7 +87,7 @@ CanvasApp.prototype.loadConfig = function () {
     file.initWithPath(path);
     if (file.exists() === false) {
         this.criticalError("Could not load config file.", this.name);
-        return undefined;
+        return false;
     }
     fstream.init(file, 0x01, 0x00004, null);
     sstream.init(fstream);
@@ -88,28 +95,39 @@ CanvasApp.prototype.loadConfig = function () {
     sstream.close();
     fstream.close();
     this.config = JSON.parse(output);
-    return this.config;
+    return true;
 };
 
+/**
+    Get the configuration data.
+    @return JSON object.
+*/
 CanvasApp.prototype.getConfig = function () {
     return this.config;
 };
 
-
+/**
+    Will report the launcher that this application is ready to be used.
+*/
 CanvasApp.prototype.ready = function () {
     var msg = new Canvas.Message(Canvas.MSG_READY,
         this.name,
         {});
     window.parent.postMessage(msg, "*");
 };
-
+/**
+    Will report the laucnher that this application is about to exit.
+*/
 CanvasApp.prototype.exit = function () {
     var msg = new Canvas.Message(Canvas.MSG_EXIT,
         this.name,
         {});
     window.parent.postMessage(msg, "*");
 };
-
+/**
+    Will report the launcher that an error happend and the application needs
+    to be closed.
+*/
 CanvasApp.prototype.criticalError = function (msg) {
     var resp, message = "Fatal Error: " + msg;
     Canvas.log(message, this.name);
@@ -129,19 +147,28 @@ CanvasApp.prototype.criticalErrorEvt = function (msg, url, linenum) {
     window.parent.postMessage(msg, "*");
 };
 
+/**
+    Get the application's path.
+*/
 CanvasApp.prototype.getApplicationPath = function () {
     return this.path;
 };
-
+/**
+    Get the application's config path
+*/
 CanvasApp.prototype.getApplicationConfigPath = function () {
     return this.config_path;
 };
-
+/**
+    Get the media directory path.
+*/
 CanvasApp.prototype.getMediaPath = function () {
     return this.media_path;
 };
 
-
+/**
+    Dynamically load a JS or CSS file.
+*/
 CanvasApp.loadResource = function (canvas_path,
         core_resource, type) {
     switch (type) {
@@ -157,7 +184,7 @@ CanvasApp.loadResource = function (canvas_path,
         break;
     }
 };
-
+// [INTERNAL] load JS file
 CanvasApp._load_js = function (source) {
     var script = window.document.createElement("script");
     script.setAttribute("type", "text/javascript");
@@ -165,6 +192,7 @@ CanvasApp._load_js = function (source) {
     window.document.getElementsByTagName("head")[0].appendChild(script);
 };
 
+// [INTERNAL] load CSS file
 CanvasApp._load_css = function (source) {
     var css = window.document.createElement("link");
     css.setAttribute("type", "text/css");
