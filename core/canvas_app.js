@@ -1,18 +1,33 @@
 "use strict";
 
+/**
+ * Log method. Automatically adjustes to the current mode. In release mode
+ * prints to stdout and in development mode to the js console.
+ */
+Canvas.log = function (message, origin) {
+    var header = origin || "LOG";
+    if (Canvas.Mode === Canvas.MODE_RELEASE) {
+        dump("[" + header + "] " + message + "\n");
+    } else {
+        console.log("[" + header + "] " + message);
+    }
+};
+
+
 function CanvasApp(folder_name) {
     this.name = folder_name;
-    this.path = Canvas.APP_PATH + name + "/";
-    this.config_path = Canvas.CONFIG_PATH + name + "/config.js";
+    this.path = Canvas.APP_PATH + this.name + "/";
+    this.config_path = Canvas.CONFIG_PATH + this.name + "/config.js";
     this.media_path = Canvas.MEDIA_PATH;
     this.config = undefined;
     // register events and trigger events
     var that = this;
     // Handle any uncaught errors.
-    window.addEventListener("error", function (e) {
-            that.criticalError(e.message);
-        }, false);
-    window.addEventListener("mousedown", function (e) {
+    window.onerror = function (msg, url, linenum) {
+            that.criticalErrorEvt(msg, url, linenum);
+            return true;
+        };
+    window.addEventListener("mouseup", function (e) {
         window.parent.postMessage(new Canvas.Message(
             Canvas.MSG_INTERACTION,
             folder_name,
@@ -22,15 +37,58 @@ function CanvasApp(folder_name) {
 
 
 CanvasApp.prototype.loadConfig = function () {
-    //TODO: Error check!!!
-    //xhr request to config file
-    // JSON.Parse()
-    // invoke callback
-    Canvas.log(this._config_path, this.name);
-    var request = new XMLHttpRequest();
-    request.open('GET', this._config_path, false);
-    request.send();
-    this.config = JSON.parse(request.responseText);
+    function urlToPath(aPath) {
+        if (!aPath || !/^file:/.test(aPath)) {
+            return;
+        }
+        var rv, ph = Components.classes[
+            "@mozilla.org/network/protocol;1?name=file"]
+            .createInstance(Components.interfaces.nsIFileProtocolHandler);
+        rv = ph.getFileFromURLSpec(aPath).path;
+        return rv;
+    }
+
+    function chromeToPath(aPath) {
+        if (!aPath || !(/^chrome:/.test(aPath))) {
+            return; //not a chrome url
+        }
+        var rv, ios, uri, cr;
+   
+        ios = Components.classes['@mozilla.org/network/io-service;1']
+            .getService(Components.interfaces["nsIIOService"]);
+        uri = ios.newURI(aPath, "UTF-8", null);
+        cr = Components.classes['@mozilla.org/chrome/chrome-registry;1']
+            .getService(Components.interfaces["nsIChromeRegistry"]);
+        rv = cr.convertChromeURL(uri).spec;
+
+        if (/^file:/.test(rv)) {
+            rv = urlToPath(rv);
+        } else {
+            rv = urlToPath("file://" + rv);
+        }
+        return rv;
+    }
+    var file, output, fstream, sstream, path = chromeToPath(this.config_path);
+    file = Components.classes["@mozilla.org/file/local;1"]
+               .createInstance(Components.interfaces.nsILocalFile);
+    fstream = Components.classes[
+        "@mozilla.org/network/file-input-stream;1"]
+        .createInstance(Components.interfaces.nsIFileInputStream);
+    sstream = Components.classes[
+        "@mozilla.org/scriptableinputstream;1"]
+        .createInstance(Components.interfaces.nsIScriptableInputStream);
+    file.initWithPath(path);
+    if (file.exists() === false) {
+        this.criticalError("Could not load config file.", this.name);
+        return undefined;
+    }
+    fstream.init(file, 0x01, 0x00004, null);
+    sstream.init(fstream);
+    output = sstream.read(sstream.available());
+    sstream.close();
+    fstream.close();
+    this.config = JSON.parse(output);
+    return this.config;
 };
 
 CanvasApp.prototype.getConfig = function () {
@@ -52,9 +110,20 @@ CanvasApp.prototype.exit = function () {
     window.parent.postMessage(msg, "*");
 };
 
-CanvasApp.prototype.criticalError = function (message) {
-    Canvas.log("Fatal Error: " + message, this.name);
-    var msg = new Canvas.Message(Canvas.MSG_ERROR,
+CanvasApp.prototype.criticalError = function (msg) {
+    var resp, message = "Fatal Error: " + msg;
+    Canvas.log(message, this.name);
+    resp = new Canvas.Message(Canvas.MSG_ERROR,
+        this.name,
+        { "msg": message});
+    window.parent.postMessage(msg, "*");
+};
+
+CanvasApp.prototype.criticalErrorEvt = function (msg, url, linenum) {
+    var resp, message = "Fatal Error: " + msg + "\nUrl: " + url +
+        "\nLine: " + linenum;
+    Canvas.log(message, this.name);
+    resp = new Canvas.Message(Canvas.MSG_ERROR,
         this.name,
         { "msg": message});
     window.parent.postMessage(msg, "*");

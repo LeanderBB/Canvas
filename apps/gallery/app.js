@@ -1,7 +1,9 @@
 'use strict';
 window.onload = function () {
+    window.app = new CanvasApp("gallery");
     window.g = new Gallery();
     window.g.init();
+    window.app.ready();
 };
 
 function Gallery() {
@@ -45,9 +47,10 @@ Gallery.Model.prototype.getGalleryAtIndex = function (index) {
 };
 
 Gallery.Model.prototype.init = function () {
-    var item, i, model;
-    for (i in CONFIG.gallery) {
-        item = CONFIG.gallery[i];
+    var item, i, model, config;
+    config = window.app.loadConfig();
+    for (i in config.gallery) {
+        item = config.gallery[i];
         if (Gallery.DataModels[item.type] === "undefined" ||
                 typeof Gallery.DataModels[item.type] !== "function") {
             console.log("[Gallery] data-model-not-found: " + item.type);

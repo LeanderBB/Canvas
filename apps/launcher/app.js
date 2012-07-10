@@ -6,4 +6,8 @@ window.onload=function(){
     body.style.marginTop=margin+"px";
     body.style.height="-moz-calc(100% - "+(2 * margin)+"px)";
   }
-}
+
+  window.addEventListener("message",function(e){
+    console.log("M:", e.data);
+  },false);
+}   
