@@ -431,6 +431,15 @@ function VIDHandler(parent, element) {
 }
 
 VIDHandler.prototype.init = function () {
+    this.vp.EvtPlay.addListener(this, function () {
+        window.app.interruptTimeout();
+    });
+    this.vp.EvtPause.addListener(this, function () {
+        window.app.resumeTimeout();
+    });
+    this.vp.EvtEnded.addListener(this, function () {
+        window.app.resumeTimeout();
+    });
     this.vp.setSource(this.src, this.poster);
 };
 

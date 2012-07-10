@@ -23,13 +23,19 @@ function VideoPlayer(options) {
     }, true);
     this.video.preload = "metadata";
     this.state = VideoPlayer.NO_SOURCE;
+    this.EvtPlay = new Event();
+    this.EvtPause = new Event();
     this.EvtReady = new Event();
     this.EvtError = new Event();
     this.EvtEnded = new Event();
     this.EvtStateChange = new Event();
     // register video events
+    function onPlay() {
+        that.EvtPlay.trigger();
+    }
     function onPause(e) {
         that.pause();
+        that.EvtPause.trigger();
     }
     function onLoadedMetadata(e) {
         that.state = VideoPlayer.READY | VideoPlayer.PAUSED;
@@ -66,6 +72,7 @@ function VideoPlayer(options) {
         that.EvtStateChange.trigger(that.state);
         that.EvtError.trigger();
     }
+    this.video.addEventListener('play', onPlay, false);
     this.video.addEventListener('loadedmetadata', onLoadedMetadata, false);
     this.video.addEventListener('ended', onVideoEnd, false);
     this.video.addEventListener('timeupdate', onTimeUpdate, false);

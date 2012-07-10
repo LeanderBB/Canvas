@@ -17,26 +17,33 @@ Canvas.log = function (message, origin) {
     Canvas App Class
     @param folder_name Folder name where the app resides. Necessary to
     build the directory index.
+    @param messages_enabled [optional] wether or not to enable
+    certain messages to the parent frame.
 */
-function CanvasApp(folder_name) {
+function CanvasApp(folder_name, messages_enabled) {
     this.name = folder_name;
     this.path = Canvas.APP_PATH + this.name + "/";
     this.config_path = Canvas.CONFIG_PATH + this.name + "/config.js";
     this.media_path = Canvas.MEDIA_PATH;
     this.config = undefined;
+    this.report_action = true;
     // register events and trigger events
     var that = this;
     // Handle any uncaught errors.
-    window.onerror = function (msg, url, linenum) {
-            that.criticalErrorEvt(msg, url, linenum);
-            return true;
-        };
-    window.addEventListener("mouseup", function (e) {
-        window.parent.postMessage(new Canvas.Message(
-            Canvas.MSG_INTERACTION,
-            folder_name,
-            {}), "*");
-    }, false);
+    if (messages_enabled) {
+        window.onerror = function (msg, url, linenum) {
+                that.criticalErrorEvt(msg, url, linenum);
+                return true;
+            };
+        window.addEventListener("mouseup", function (e) {
+            if (that.report_action) {
+                window.parent.postMessage(new Canvas.Message(
+                    Canvas.MSG_INTERACTION,
+                    folder_name,
+                    {"status": "up"}), "*");
+            }
+        }, false);
+    }
 }
 
 /**
@@ -144,6 +151,28 @@ CanvasApp.prototype.criticalErrorEvt = function (msg, url, linenum) {
     resp = new Canvas.Message(Canvas.MSG_ERROR,
         this.name,
         { "msg": message});
+    window.parent.postMessage(msg, "*");
+};
+
+/**
+    Disable the timeout function from the launcher. Usefull for videos
+    with lengths greater than the timeout.
+*/
+CanvasApp.prototype.interruptTimeout = function () {
+    this.report_action = false;
+    var msg = new Canvas.Message(Canvas.MSG_INTERACTION,
+        this.name,
+        {"status": "stop"});
+    window.parent.postMessage(msg, "*");
+};
+/**
+    Restart the timeout function from the launcher.
+*/
+CanvasApp.prototype.resumeTimeout = function () {
+    this.report_action = true;
+    var msg = new Canvas.Message(Canvas.MSG_INTERACTION,
+        this.name,
+        {"status": "start"});
     window.parent.postMessage(msg, "*");
 };
 
