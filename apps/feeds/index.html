@@ -28,9 +28,11 @@
 </header>
 <div id="main">
 	<div id="navigation-subscriptions" class="navigation">
-		<div id="app-logo">
+		<div id="logo-container">
+			<div id="app-logo">
+			</div>
 		</div>
-		<div id="subscriptions">
+		<ul id="subscriptions">
 			<!-- Subscriptions Template -->
 			<script id="subscriptionsTemplate" type="text/template">
 				<h1><%= title %></h1>
@@ -42,10 +44,15 @@
 		<div id="feed">
 			<!-- Feed Template -->
 			<script id="feedTemplate" type="text/template">
-				<div class="thumbnail"></div>
-				<h1><%= title %></h1>
-				<p><%= publishedDate %></p>
-				<p><%= contentSnippet %></p>
+			<ul>
+				<li>
+					<div class="wrapper">
+						<div class="thumbnail" style="background-image: url(<%= thumbnail_src %>)">
+						</div>
+						<div class="title"><h1><%= title %></h1></div>
+					</div>
+				</li>
+			<ul>
 			</script>
 		</div>
 		<!-- ***** -->
@@ -81,6 +88,7 @@
 	<script type="text/javascript" src="js/views.js"></script>
 	<script type="text/javascript" src="js/controllers.js"></script>
 	<script type="text/javascript" src="js/events.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
 	<script type="text/javascript" src="js/app.js"></script>
 </body>
 

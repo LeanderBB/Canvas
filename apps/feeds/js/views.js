@@ -8,21 +8,20 @@
         className: "item-container",
         template: $("#itemTemplate").html(),
         
-        initialize: function(){
+        initialize: function() {
             // Listen for UI Events
             this.itemSelectionListener = _.bind(this.itemSelectionListener, this);
             AppNS.Events.bind("click_item_selection", this.itemSelectionListener);
         },
 
-        render: function () {
-            var tmpl = _.template(this.template);
-            $(this.el).html(tmpl(this.model.toJSON()));
+        render: function (content) {
+            c = $(content).sanitizeHTML();
+            $(this.el).html(c);
             return this;
         },
 
-        itemSelectionListener: function(){
-            console.log("item selected");
-            console.log(this);
+        itemSelectionListener: function(content){
+            this.render(content);
         }
 
     });
@@ -34,21 +33,35 @@
 
         render: function(){
             var tmpl = _.template(this.template);
+            console.log(this);
+            ct = $(this.model.content).find("img").get(0);
+            console.log(ct);
+            var thumbnail_src = "";
+            if (ct !== undefined){
+                thumbnail_src = $(ct).attr("src"); }
+            this.model["thumbnail_src"] = thumbnail_src;
             $(this.el).html(tmpl(this.model));
             return this;
+        },
+
+        events : {
+            'click' : 'itemSelectionDispatcher'
+        },
+
+        itemSelectionDispatcher: function(e){
+            AppNS.Events.trigger("click_item_selection", this.model.content);
         }
     });
 
     AppNS.Views.Feed = Backbone.View.extend({
         el : $("#feed"),
 
-
         initialize: function () {
             // Listen for UI Events
             this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
             AppNS.Events.bind("click_feed_selection", this.feedSelectionListener);
 
-            this.itemSelectionDispatcher = _.bind(this.itemSelectionDispatcher, this);
+            this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
         },
      
         render: function(args) {
@@ -68,22 +81,11 @@
 
         feedSelectionListener: function(e){
             this.render(arguments);
-        },
-
-        events: {
-            'click': 'itemSelectionDispatcher'
-        },
-
-        itemSelectionDispatcher: function(e){
-            //var args = this.model.attributes.content;
-            var args=arguments;
-            AppNS.Events.trigger("click_item_selection", e);
         }
-
     });
 
     AppNS.Views.FeedDescription = Backbone.View.extend({
-        tagName: "div",
+        tagName: "li",
         className: "feed-description-container",
         template: $("#subscriptionsTemplate").html(),
 
