@@ -1,0 +1,8 @@
+= CANVAS DEVELOPMENT ENVIRONEMENT EXTENSION =
+
+This extension enables us to access the XPCOM API's and revokes all traditional
+restrictions imposed on standard HTML browsers (e.g.: cross domain xhtml 
+requests).
+
+To prepare the extension run the package.sh script
+

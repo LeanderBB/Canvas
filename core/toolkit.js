@@ -1,3 +1,4 @@
+'use strict';
 /* Toolkit.js - Classes and methods useful to be used throughout our
  * applications should be added here and use the model as seen below.
  */
@@ -7,7 +8,7 @@ function heightForWidth16By9(width) {
     return (9 /  16) * width;
 }
 /* == OOP METHODS =========================================================*/
-OOP = {};
+var OOP = {};
 OOP.extend = function (child, parent) {
     for (var method in parent.prototype) {
         if (child.prototype[method] === undefined) {

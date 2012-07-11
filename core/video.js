@@ -23,13 +23,19 @@ function VideoPlayer(options) {
     }, true);
     this.video.preload = "metadata";
     this.state = VideoPlayer.NO_SOURCE;
+    this.EvtPlay = new Event();
+    this.EvtPause = new Event();
     this.EvtReady = new Event();
     this.EvtError = new Event();
     this.EvtEnded = new Event();
     this.EvtStateChange = new Event();
     // register video events
+    function onPlay() {
+        that.EvtPlay.trigger();
+    }
     function onPause(e) {
         that.pause();
+        that.EvtPause.trigger();
     }
     function onLoadedMetadata(e) {
         that.state = VideoPlayer.READY | VideoPlayer.PAUSED;
@@ -63,9 +69,10 @@ function VideoPlayer(options) {
 
     function onError(e) {
         that.state = (that.state & ~VideoPlayer.READY) | VideoPlayer.ERROR;
-        that.EvtStateChange.trigget(that.state);
+        that.EvtStateChange.trigger(that.state);
         that.EvtError.trigger();
     }
+    this.video.addEventListener('play', onPlay, false);
     this.video.addEventListener('loadedmetadata', onLoadedMetadata, false);
     this.video.addEventListener('ended', onVideoEnd, false);
     this.video.addEventListener('timeupdate', onTimeUpdate, false);
@@ -126,7 +133,7 @@ VideoPlayer.prototype.getDuration = function () {
     Pause the video.
 */
 VideoPlayer.prototype.pause = function () {
-    if (this.state & (VideoPlayer.PLAYING | VideoPlayer.READY)) {
+    if (this.state & VideoPlayer.PLAYING && this.state & VideoPlayer.READY) {
         this.video.pause();
         this.state = (this.state & ~VideoPlayer.PLAYING) | VideoPlayer.PAUSED;
         this.EvtStateChange.trigger(this.state);
@@ -137,7 +144,7 @@ VideoPlayer.prototype.pause = function () {
     Play the video.
 */
 VideoPlayer.prototype.play = function () {
-    if (this.state & (VideoPlayer.PAUSED | VideoPlayer.READY)) {
+    if (this.state & VideoPlayer.PAUSED && this.state & VideoPlayer.READY) {
         this.video.play();
         this.state = (this.state &
             ~(VideoPlayer.PAUSED | VideoPlayer.BUFFERING | VideoPlayer.ENDED))
@@ -224,21 +231,26 @@ VideoPlayer.View.prototype._setupInterface = function () {
 };
 
 VideoPlayer.View.prototype._handleStateChange = function (state) {
-    if (state & VideoPlayer.LOADING) {
-        this.bt_progress.setProgress(0);
-        this.bt_main.setLoadState();
-        this.bt_play.setDisabled(true);
+    if (state & VideoPlayer.ERROR) {
+        this.bt_main.setStateError();
         this.bt_main.show();
         return;
     }
 
-    if (state & VideoPlayer.READY) {
-        this.bt_play.setDisabled(false);
-        this.bt_main.setPlayState();
-    } else if (state & VideoPlayer.ERROR) {
+    
+    if (state & VideoPlayer.LOADING) {
+        this.bt_progress.setProgress(0);
+        this.bt_main.setStateLoad();
         this.bt_play.setDisabled(true);
         this.bt_main.show();
-        //TODO: show error diag
+    }
+
+    if (state & VideoPlayer.READY) {
+        this.bt_play.setDisabled(false);
+        this.bt_main.setStatePlay();
+    } else if (state & VideoPlayer.ERROR) {
+        this.bt_main.show();
+        this.bt_main.setStateError();
     }
 
     if (state & VideoPlayer.PLAYING) {
@@ -246,15 +258,16 @@ VideoPlayer.View.prototype._handleStateChange = function (state) {
     }
     if (state & VideoPlayer.PAUSED && this.controller.getElapsedTime() !== 0) {
         if (state & VideoPlayer.BUFFERING) {
-            this.bt_main.setLoadState();
+            this.bt_main.setStateLoad();
         } else {
-            this.bt_main.setPlayState();
+            this.bt_main.setStatePlay();
         }
         this.bt_main.show();
     }
 
+    
     if (state & VideoPlayer.ENDED) {
-        this.bt_main.setPlayState();
+        this.bt_main.setStatePlay();
         this.bt_main.show();
     }
 };
@@ -345,7 +358,7 @@ VideoPlayer.View.Progress = function (args) {
     this.div.appendChild(this.inner);
     var that = this;
     this.div.onmouseup = function (e) {
-        var delta = e.clientX - that.div.offsetLeft,
+        var delta = e.clientX - that.div.getBoundingClientRect().left,
         progress = (delta / this.offsetWidth);
         if (args.mouseup !== undefined) {
             args.mouseup(progress);
@@ -365,15 +378,24 @@ VideoPlayer.View.MainButton = function (args) {
     this.div.classList.add("c3_video_icon_main_play");
 };
 
-VideoPlayer.View.MainButton.prototype.setPlayState = function () {
+VideoPlayer.View.MainButton.prototype.setStatePlay = function () {
     this.div.classList.remove("c3_video_icon_main_load");
+    this.div.classList.remove("c3_video_icon_main_error");
     this.div.classList.add("c3_video_icon_main_play");
     this.setDisabled(false);
 };
 
-VideoPlayer.View.MainButton.prototype.setLoadState = function () {
+VideoPlayer.View.MainButton.prototype.setStateLoad = function () {
     this.div.classList.add("c3_video_icon_main_load");
+    this.div.classList.remove("c3_video_icon_main_error");
     this.div.classList.remove("c3_video_icon_main_play");
+    this.setDisabled(true);
+};
+
+VideoPlayer.View.MainButton.prototype.setStateError = function () {
+    this.div.classList.remove("c3_video_icon_main_load");
+    this.div.classList.remove("c3_video_icon_main_play");
+    this.div.classList.add("c3_video_icon_main_error");
     this.setDisabled(true);
 };
 

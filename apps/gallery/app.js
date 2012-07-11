@@ -1,7 +1,10 @@
-
+'use strict';
 window.onload = function () {
-    g = new Gallery();
-    g.init();
+    window.app = new CanvasApp("gallery");
+    window.g = new Gallery();
+    window.g.init();
+    Gallery.MediaDir = window.app.getMediaPath();
+    window.app.ready();
 };
 
 function Gallery() {
@@ -25,6 +28,7 @@ Gallery.prototype.openGallery = function (index) {
 Gallery.DataModels = {};
 Gallery.ContentHandlers = {};
 Gallery.MediaDir = "../../media/";
+Gallery.ErrorImage = "resources/error.svg";
 // ### Gallery Model #############################################
 
 Gallery.Model = function () {
@@ -44,12 +48,14 @@ Gallery.Model.prototype.getGalleryAtIndex = function (index) {
 };
 
 Gallery.Model.prototype.init = function () {
-    var item, i, model;
-    for (i in CONFIG.gallery) {
-        item = CONFIG.gallery[i];
+    var item, i, model, config;
+    window.app.loadConfig();
+    config = window.app.getConfig();
+    for (i in config.gallery) {
+        item = config.gallery[i];
         if (Gallery.DataModels[item.type] === "undefined" ||
                 typeof Gallery.DataModels[item.type] !== "function") {
-            alert("data-model-not-found: " + item.type);
+            console.log("[Gallery] data-model-not-found: " + item.type);
         } else {
             model = new Gallery.DataModels[item.type]();
             model.init(item);
@@ -61,20 +67,72 @@ Gallery.Model.prototype.init = function () {
 
 // ### Gallery Standard Data Model ###############################
 
-function StandardModel() {
+Gallery.IDataModel = function () {
     this.name = "";
-    this.type = "standard";
-    this.files = [];
+    this.type = "idatamodel";
     this.thumb_url = "";
-}
+};
 
-StandardModel.prototype.getName = function () {
+Gallery.IDataModel.prototype.getName = function () {
     return this.name;
 };
 
-StandardModel.prototype.getType = function () {
+Gallery.IDataModel.prototype.getType = function () {
     return this.type;
 };
+
+Gallery.IDataModel.prototype.getThumbUrl = function () {
+    return this.thumb_url;
+};
+
+Gallery.IDataModel.prototype.getItemCount = function () {
+    throw new Error("Abstract method");
+};
+    
+Gallery.IDataModel.prototype.getItem = function (index) {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.prototype.newElement = function () {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.prototype.init = function (data) {
+    throw new Error("Abstract method");
+};
+
+Gallery.IDataModel.Element = function () {
+    this.url = "";
+    this.thumb_url = "";
+    this.item_type = "";
+    this.type = "idatamodel.element";
+};
+
+Gallery.IDataModel.Element.prototype.getUrl = function () {
+    return  this.url;
+};
+
+Gallery.IDataModel.Element.prototype.getThumbUrl = function () {
+    return  this.thumb_url;
+};
+
+Gallery.IDataModel.Element.getItemType = function () {
+    return this.item_type;
+};
+
+Gallery.IDataModel.Element.getType = function () {
+    return this.type;
+};
+
+Gallery.IDataModel.Element.init = function (data) {
+    throw new Error("Abstract method");
+};
+
+function StandardModel() {
+    StandardModel.super.constructor.call(this);
+    this.type = "standard";
+    this.files = [];
+}
 
 StandardModel.prototype.getThumbUrl = function () {
     return Gallery.MediaDir + this.thumb_url;
@@ -103,10 +161,11 @@ StandardModel.prototype.init = function (data) {
     }
 };
 
+OOP.extend(StandardModel, Gallery.IDataModel);
+
 StandardModel.Element = function () {
-    this.url = "";
-    this.thumb_url = "";
-    this.item_type = "";
+    StandardModel.Element.super.constructor.call(this);
+    this.type = "standard.element";
 };
 
 StandardModel.Element.prototype.getUrl = function () {
@@ -129,6 +188,8 @@ StandardModel.Element.prototype.init = function (data) {
     this.item_type = data.type;
     this.thumb_url = data.thumb;
 };
+
+OOP.extend(StandardModel.Element, Gallery.IDataModel.Element);
 
 Gallery.DataModels["standard"] = StandardModel;
 // ### Gallery Menu View #########################################
@@ -224,18 +285,23 @@ Gallery.ContentView = function (gallery) {
     this.arrow_right.addEventListener("click", function (e) {
             that.nextElement();
         }, false);
+    this.elements = [];
 };
 
 Gallery.ContentView.prototype.nextElement = function () {
     if (this.cur_element < this.cur_gallery.getItemCount()) {
+        this.elements[this.cur_element].onExit();
         this.cur_element++;
+        this.elements[this.cur_element].onEnter();
         this._update();
     }
 };
 
 Gallery.ContentView.prototype.prevElement = function () {
     if (this.cur_element !== 0) {
+        this.elements[this.cur_element].onExit();
         this.cur_element--;
+        this.elements[this.cur_element].onEnter();
         this._update();
     }
 };
@@ -259,13 +325,14 @@ Gallery.ContentView.prototype._update = function () {
 Gallery.ContentView.prototype.displayGallery = function (model) {
     this.cur_gallery = model;
     this.content.clear();
+    this.elements = [];
     this.content.getView().style.visibility = "hidden";
     this.loaded_elements = 0;
     this.errored_elements = 0;
     this.load_view.style.visibility = "visible";
     var view = this.content.getView(), i,
         total = this.cur_gallery.getItemCount(),
-        element, type, div;
+        element, type, div, elem;
     for (i = 0; i < total; ++i) {
         element = this.cur_gallery.getItem(i);
         type = element.getItemType();
@@ -274,10 +341,15 @@ Gallery.ContentView.prototype.displayGallery = function (model) {
             div.style.width = "90em";
             div.style.height = "100%";
             div.style.display = "inline-block";
-            Gallery.ContentHandlers[type](element, div, this);
+            elem = new Gallery.ContentHandlers[type](div, element);
+            elem.EvtReady.addListener(this, this.elementLoaded);
+            elem.EvtError.addListener(this, this.elementError);
+            elem.init();
             view.appendChild(div);
+            this.elements.push(elem);
         } else {
-            alert("NO HANDLER FOR " + type);
+            this.elementError();
+            console.log("[GALLERY] No media handler for" + type);
         }
     }
     this.cur_element = 0;
@@ -302,23 +374,81 @@ Gallery.ContentView.prototype._showContent = function () {
     }
 };
 
-// ### Content Handlers ############################################
-Gallery.ContentHandlers["img"] = function (element, parent_div, callbacks) {
-    var img = new Image();
-    img.addEventListener("load", function () {callbacks.elementLoaded(); },
-        false);
-    img.addEventListener("error", function () {callbacks.elementError(); },
-        false);
-    img.src = element.getUrl();
-    parent_div.style.backgroundImage = 'url("' + element.getUrl() + '")';
-    parent_div.style.backgroundSize = 'contain';
-    parent_div.style.backgroundPosition = 'center';
-    parent_div.style.backgroundRepeat = 'no-repeat';
+
+// ### Gallery ContentView Element #################################
+
+Gallery.ContentView.IElement = function (parent, element) {
+    this.src = element.getUrl();
+    this.parent = parent;
+    this.EvtReady = new Event();
+    this.EvtError = new Event();
 };
 
-Gallery.ContentHandlers["vid"] = function (element, parent_div, callbacks) {
-    var vp = new VideoPlayer({"div": parent_div});
-    vp.EvtReady.addListener(this, function () {callbacks.elementLoaded(); });
-    vp.EvtError.addListener(this, function () {callbacks.elementError(); });
-    vp.setSource(element.getUrl(), element.getThumbUrl());
+Gallery.ContentView.IElement.prototype.init = function () {
+    throw new Error("Abstract Method");
 };
+
+Gallery.ContentView.IElement.prototype.onEnter = function () {
+    // Do Nothing
+};
+
+Gallery.ContentView.IElement.prototype.onExit = function () {
+    // Do Nothing
+};
+
+// ### Content Handlers ############################################
+
+function IMGHandler(parent, element) {
+    IMGHandler.super.constructor.call(this, parent, element);
+}
+
+IMGHandler.prototype.init = function () {
+    var img = new Image(), that = this;
+    img.addEventListener("load", function () {that.EvtReady.trigger(); },
+        false);
+    img.addEventListener("error", function () {
+        that.parent.style.backgroundImage = 'url("' + Gallery.ErrorImage + '")';
+        that.parent.style.backgroundSize = "30%";
+        that.EvtError.trigger();
+    }, false);
+    img.src = this.src;
+    this.parent.style.backgroundImage = 'url("' + this.src + '")';
+    this.parent.style.backgroundSize = 'contain';
+    this.parent.style.backgroundPosition = 'center';
+    this.parent.style.backgroundRepeat = 'no-repeat';
+    
+};
+
+OOP.extend(IMGHandler, Gallery.ContentView.IElement);
+
+function VIDHandler(parent, element) {
+    VIDHandler.super.constructor.call(this, parent, element);
+    this.poster = element.getThumbUrl();
+    this.vp = new VideoPlayer({"div": parent});
+    this.EvtReady = this.vp.EvtReady;
+    this.EvtError = this.vp.EvtError;
+
+}
+
+VIDHandler.prototype.init = function () {
+    this.vp.EvtPlay.addListener(this, function () {
+        window.app.interruptTimeout();
+    });
+    this.vp.EvtPause.addListener(this, function () {
+        window.app.resumeTimeout();
+    });
+    this.vp.EvtEnded.addListener(this, function () {
+        window.app.resumeTimeout();
+    });
+    this.vp.setSource(this.src, this.poster);
+};
+
+VIDHandler.prototype.onExit = function () {
+    this.vp.pause();
+};
+
+OOP.extend(VIDHandler, Gallery.ContentView.IElement);
+
+// Register handlers
+Gallery.ContentHandlers["img"] = IMGHandler;
+Gallery.ContentHandlers["vid"] = VIDHandler;
