@@ -1,0 +1,14 @@
+#!/bin/bash
+
+HAS_NODE=$(which node | wc -l)
+HAS_JSHINST=$(which jshint | wc -l)
+if [ $HAS_NODE -eq 0 ]; then
+    echo "Could not locate node.js, please intall it."
+    exit 1
+fi
+if [ $HAS_JSHINST -eq 0 ]; then
+    echo "jshint not found installing"
+    sudo npm install -g jshint
+fi
+
+jshint  --config="$0.config" $1

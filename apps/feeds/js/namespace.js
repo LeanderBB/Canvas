@@ -6,4 +6,6 @@ AppNS.Views = AppNS.Views || {};
 AppNS.Collections = AppNS.Collections || {};
 AppNS.Controllers = AppNS.Controllers || {};
 AppNS.Events = AppNS.Events || {};
+AppNS.Utils = AppNS.Utils || {};
+
 

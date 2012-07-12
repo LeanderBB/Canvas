@@ -1,0 +1,49 @@
+<!DOCTYPE>
+<html>
+<head>
+<script src="../../core/toolkit.js"></script>
+<script src="../../core/video.js"></script>
+<link rel="stylesheet" type="text/css" href="../../core/video.css"/>
+<style type="text/css">
+* {
+    margin:0;
+    padding: 0;
+}
+
+html{
+    overflow-x: hidden;
+    font-size: 16px;
+}
+
+.vid_container {
+    width: 1440px;
+    height: 1079px;
+}
+
+</style>
+<script>
+window.onload = function () {
+    window.vid = new VideoPlayer ( {div: "vdc"} );
+    window.vid.setSource("http://media.w3.org/2010/05/sintel/trailer.ogv",
+    "http://media.w3.org/2010/05/sintel/poster.png");
+}
+</script>
+</head>
+<body>
+    <div id="vdc" class="vid_container">
+        <!--video id="video_tag" class="" preload="metadata" src="trailer.ogv"></video>
+        <div class="controls">
+            <div class="bt_play"></div>
+            <div class="progress">
+                <div class="progress_bar"></div>
+            </div>
+            <div class="c3_video_duration">
+                hh:mm:ss
+            </div>
+        </div>
+        <div class="notification">
+        </div-->
+    </div>
+</div>
+</body>
+</html>
