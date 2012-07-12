@@ -1,17 +1,17 @@
 /** Calendar  ****************************************************************/
 var calendar_list = [
 	"5ttsisforihpn2o3blhe3s4tlo@group.calendar.google.com",
-//	"uinm3kojaoe3llod88ma22o78s@group.calendar.google.com",
-//	"o1n262ugsh3tg96jn6t75f8fnc@group.calendar.google.com",
-//	"l1suartp8gksjb6k0fosk7uo60@group.calendar.google.com"
+	"uinm3kojaoe3llod88ma22o78s@group.calendar.google.com",
+	"o1n262ugsh3tg96jn6t75f8fnc@group.calendar.google.com",
+	"l1suartp8gksjb6k0fosk7uo60@group.calendar.google.com"
 ]
 
 /** Constants *****************************************************************/
 var months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO",
               "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
 
-var day = ["SEGUNDA FEIRA", "TERÇA FEIRA", "QUARTA FEIRA", "QUINTA FEIRA", 
-           "SEXTA FEIRA"];
+var days   = ["DOMINGO", "SEGUNDA FEIRA", "TERÇA FEIRA", "QUARTA FEIRA", "QUINTA FEIRA", 
+              "SEXTA FEIRA", "SÁBADO"];
 
 /** Initial Set Up ************************************************************/
 var menuController;
@@ -22,19 +22,25 @@ $(document).ready(function(){
 });
 
 
+
+
+
+
 /** Menu Controller ************************************************************
 ********************************************************************************
 *******************************************************************************/
 function MenuController(){
 	this.menuview  = new MenuView();
 	this.menumodel = new MenuModel(this);
+	var w  = $(window).width();
+	var h  = $(window).height();
+   this.set_window_dimensions(w,h);
 
 	$(window).resize( $.proxy( function(){
 		var w  = $(window).width();
 		var h  = $(window).height();
 		this.set_window_dimensions(w,h);
 	}, this ));
-
 }
 
 /* actualize the necessary stuff when a resize occurs */
@@ -42,13 +48,17 @@ MenuController.prototype.set_window_dimensions = function(width,height) {
 	this.menuview.set_window_dimensions(width,height);
 }
 
-/* */
+/* actualize data (calendars are all loaded) */
 MenuController.prototype.actualize_data = function(){
 	if(this.menumodel.get_loaded_calendars() == calendar_list.length){
 		var data = this.menumodel.get_calendar_data();
 		this.menuview.set_calendar_data(data);
+      this.menuview.actualize_interface();
 	}
 }
+
+
+
 
 
 
@@ -69,6 +79,7 @@ function MenuModel(parent){
 	}
 }
 
+/* get calendars */
 MenuModel.prototype.get_loaded_calendars = function(){
 	return this.loaded_calendars;
 }
@@ -77,7 +88,7 @@ MenuModel.prototype.get_loaded_calendars = function(){
  */ 
 MenuModel.prototype.load_calendar_by_address = function(calendar_address){
   var calendar_url = 'https://www.google.com/calendar/feeds/' + calendar_address + 
-				        '/public/full';
+				         '/public/full';
   this.load_calendar(calendar_url);
 }
 
@@ -88,17 +99,16 @@ MenuModel.prototype.load_calendar = function(calendar_url) {
 
 	var query = new google.gdata.calendar.CalendarEventQuery(calendar_url);
 	query.setOrderBy('starttime');
-	query.setSortOrder('descending');
-	query.setMaxResults(30);
-	//query.setFutureEvents(true); //TODO: uncomment this if commented
+	query.setSortOrder('ascending');
+	//query.setMaxResults(30);
 
+	query.setFutureEvents(true);
 	service.getEventsFeed(query, $.proxy(this.handle_events, this), 
           							  $.proxy(this.handle_error,  this) );
 }
 
 /** @param {Error} e is an instance of an Error *******************************/
 MenuModel.prototype.handle_error = function(error) {
-  //TODO try again in moments and log the problem
   if (error instanceof Error) {
 	 console.log('Error at line ' + error.lineNumber + ' in ' + error.fileName + '\n' + 
 				    'Message: ' + error.message);
@@ -145,7 +155,6 @@ MenuModel.prototype.handle_events = function(feed_root) {
   }
 
   this.loaded_calendars += 1;
-  //TODO check concurrency model in js
   if(this.loaded_calendars == calendar_list.length){
     this.controller.actualize_data();
   }  
@@ -159,42 +168,122 @@ MenuModel.prototype.get_calendar_data = function(){
 
 
 
+
+
+
+
+
+
+
+
+
 /** Menu View ******************************************************************
 ********************************************************************************
 *******************************************************************************/
 function MenuView(){
-	this.width            = $(window).width();
-	this.height           = $(window).height();
-   this.sidebar_selected = "";
-   this.calendar_data    = {};
-   this.calendar_index   = [];
+	this.width                 = $(window).width();
+	this.height                = $(window).height();
+   this.sidebar_selected      = "";
+   this.sidebar_selected_ac   = "";
 
-	this.menu_list = new Slider({div:"sidebar_table_container", slider: "sidebar_table", mode:Slider.SCROLL_VERTICAL});
+	this.sidebar_position      = 0;
+	this.sidebar_increment     = 300;
+	this.sidebar_max           = 0;
+
+   this.calendar_data         = {};
+   this.calendar_index        = [];
+
+   this.entries_count         = 0;
+   this.main_translate_offset = 0;
+
+
+	//TODO: uncomment this
+	//this.menu_list = new Slider({div:"sidebar_table_container", slider: "sidebar_table", mode:Slider.SCROLL_VERTICAL});
 	//this.content   = new Slider({div:"main_container", slider: "main_panel", mode:Slider.SCROLL_HORIZONTAL});
+	//this.content   = new Slider({div:"main_container", slider: "main_panel", mode:Slider.SCROLL_VERTICAL});
 
 	this.menu_bind_animations();
 }
 
+MenuView.prototype.actualize_interface = function(){
+	if(this.entries_count > 0){
+		this.sidebar_selected = "r0";
+		$("#r0").css("background-color", "#FFFF00");
+		$("#r0> h1").css("color", "#000000");
+		$("#r0> h2").css("color", "#000000");
+	}
+
+   this.sidebar_increment = this.height * 0.55;
+   this.sidebar_max       = this.entries_count * this.height * 0.09;
+	console.log("sidebar max: "+this.sidebar_max);
+}
+
 MenuView.prototype.set_calendar_data = function(data){
 	this.calendar_data = data;
-	console.log(this.calendar_data);
-
-	var cnt = 1;
+	var i = 0;
 
 	for( var year in this.calendar_data ){
 		for( var week in this.calendar_data[year] ){
-				this.add_sidebar_item("r"+cnt, 
+				this.add_sidebar_item("r"+this.entries_count, 
 											 this._get_first_month(this.calendar_data[year][week]),
 											 this._get_last_month(this.calendar_data[year][week]),
 											 this._get_first_day(this.calendar_data[year][week]),
 											 this._get_last_day(this.calendar_data[year][week]));
-				cnt++;
 
-				this.calendar_index[cnt] = this.calendar_data[year][week];
-				console.log("    cnt" + cnt);
+				this.calendar_index[this.entries_count] = this.calendar_data[year][week];
+				this.entries_count++;
+
+				for ( i = 1 ; i <= 5; i++){
+					var d_text   = days[i];
+
+					if( this.calendar_data[year][week][i] != undefined ){
+
+						var d_number = this._get_day(this.calendar_data[year][week][i]);
+		            var m_text   = months[this._get_month(this.calendar_data[year][week][i])];
+						var ln1      = this._get_meal('A' , 'info1', this.calendar_data[year][week][i]);
+						var ln2      = this._get_meal('A' , 'info2', this.calendar_data[year][week][i]);
+						var lv1      = this._get_meal('AV', 'info1', this.calendar_data[year][week][i]);
+						var lv2      = this._get_meal('AV', 'info2', this.calendar_data[year][week][i]);
+						var dn1      = this._get_meal('J' , 'info1', this.calendar_data[year][week][i]);
+						var dn2      = this._get_meal('J' , 'info2', this.calendar_data[year][week][i]);
+						var dv1      = this._get_meal('JV', 'info1', this.calendar_data[year][week][i]);
+						var dv2      = this._get_meal('JV', 'info2', this.calendar_data[year][week][i]);
+						var is_today = this._is_today(this.calendar_data[year][week][i]);
+						this.create_box_item(is_today, d_text, d_number, m_text, ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2);
+					}
+				}
+				this.create_clear_box_item();
 		}
 	}
 }
+
+MenuView.prototype._get_meal = function(type, line, day){
+   if(day[type] != undefined)
+	{
+		return day[type][line];
+	}else{
+		return "N/A";
+	}
+}
+
+MenuView.prototype._is_today = function(day){
+	for( var type in day ){
+		return day[type].date.toDateString() == (new Date()).toDateString();
+	}
+}
+
+MenuView.prototype._get_day = function(day){
+	for( var type in day ){
+		return day[type].date.getDate();
+	}
+}
+
+MenuView.prototype._get_month = function(day){
+	for( var type in day ){
+		return day[type].date.getMonth();
+	}
+}
+
 
 MenuView.prototype._get_first_month = function(week){
 	var month = 11;
@@ -224,45 +313,46 @@ MenuView.prototype._get_last_month = function(week){
 	return months[month];
 }
 
+/* get first day number of week */
 MenuView.prototype._get_first_day = function(week){
-	var _day   = 31;
-   var _month = 11;
+   var day = 1;
+   while(week[day] == undefined && day < 6){
+		day++;
+	}
 
-	for( var day in week ){
+	if(week[day] != undefined){
 		for( var type in week[day] ){
-			var d = week[day][type].date.getDate();
-			var m = week[day][type].date.getMonth();
-
-			if(_month > m && _day > d){
-				_month = m;
-				_day = d;
-			}
+			var day_number = week[day][type].date.getDate();
+			return day_number;
 		}
 	}
-	return _day;
+	return "";
 }
 
+/* get last day number of week */
 MenuView.prototype._get_last_day = function(week){
-	var _day = 0;
-
-	for( var day in week ){
+   var day = 5;
+   while(week[day] == undefined && day > 0){
+		day--;
+	}
+	if(week[day] != undefined){
 		for( var type in week[day] ){
-			var d = week[day][type].date.getDate();
-			_day = d;
+			var day_number = week[day][type].date.getDate();
+			return day_number;
 		}
 	}
-	return _day;
+	return "";
 }
 
-
+/* add sidebar item */
 MenuView.prototype.add_sidebar_item = function(id, first_month, last_month, begin_day, end_day){
 	var ul = document.getElementById("sidebar_table");
    var li = this.create_sidebar_item(id, first_month, last_month, begin_day, end_day);
 	ul.appendChild(li);
-
 	this.menu_register_sidebar_click("#"+id);
 }
 
+/* create sidebar item */
 MenuView.prototype.create_sidebar_item = function(id, first_month, last_month, begin_day, end_day){
 	var li = document.createElement("li");
 	li.id = id;
@@ -271,6 +361,67 @@ MenuView.prototype.create_sidebar_item = function(id, first_month, last_month, b
 }
 
 
+/* add box item */
+MenuView.prototype.create_box_item = function(is_today, day_text, day_number, month, ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2){
+
+	var div = document.getElementById("main_panel");
+   var header = this.create_box_header(day_text, day_number, month);
+   var lunch  = this.create_box_meal("Almoço", ln1, ln2, lv1, lv2);
+   var sep    = this.create_box_separator();
+   var dinner = this.create_box_meal("Jantar", dn1, dn2, dv1, dv2);
+	var box    = document.createElement("div");
+
+	var class_name = "";
+	if( is_today ){
+		class_name = "main_box main_box_today";
+	}else{
+		class_name = "main_box";
+	}
+
+	box.className = class_name;
+	box.appendChild(header);
+	box.appendChild(lunch);
+	box.appendChild(sep);
+	box.appendChild(dinner);
+	div.appendChild(box);
+}
+
+/* add clear both div */
+MenuView.prototype.create_clear_box_item = function(){
+	var div   = document.getElementById("main_panel");
+	var clear = document.createElement("div");
+
+	clear.style.clear = "both";
+	div.appendChild(clear);
+}
+
+
+/* create box header */
+MenuView.prototype.create_box_header = function(day_text, day_number, month){
+	var div = document.createElement("div");
+	div.className = "main_box_header";
+   div.innerHTML = "<h1>" + day_text + "</h1> <h2>"+day_number+" "+month+"</h2>";
+   return div;
+}
+
+/* create box header */
+MenuView.prototype.create_box_separator = function(){
+	var div = document.createElement("div");
+	div.className = "main_box_separator";
+   div.innerHTML = "<h2>~</h2>";
+   return div;
+}
+
+/* create box meal */
+MenuView.prototype.create_box_meal = function(header, en1, en2, ev1, ev2){
+	var div = document.createElement("div");
+	div.className = "main_box_meal";
+   div.innerHTML = "<h1>" + header + "</h1>" +
+                   "<h2>" + en1    + "</h2>    <h2>"+en2+"</h2>"+
+                   "<div class=\"main_box_meal_separator\"></div>"+
+                   "<h2>" + ev1    + "</h2>    <h2>"+ev2+"</h2>";
+   return div;
+}
 
 /* actualize window dimensions */
 MenuView.prototype.set_window_dimensions = function(width,height){
@@ -292,32 +443,77 @@ MenuView.prototype.menu_main_close = function(){
 
 /* menu right animation */
 MenuView.prototype.menu_main_right = function(){
-	var translate = this.width / 3.5;
-	$("#main_panel").css("-moz-transform", "translateX(-"+translate+"px");
+	var translate = this.width / 2.5;
+	$("#main_panel").css("-moz-transform", "translate(-"+translate+",-"+this.main_translate_offset+"px)");
+	$("#main_right").css("opacity","0.2");
+	$("#main_left").css("opacity","1");
 }
 
 
 /* menu left animation */
 MenuView.prototype.menu_main_left = function(){
-	$("#main_panel").css("-moz-transform", "translateX(0px");
+	$("#main_panel").css("-moz-transform", "translate(0px,-"+this.main_translate_offset+"px)");
+	$("#main_right").css("opacity","1");
+	$("#main_left").css("opacity","0.2");
+}
+
+/* sidebar up animation */
+MenuView.prototype.sidebar_up = function(){
+	if(this.sidebar_position <= this.sidebar_increment * -1){
+		this.sidebar_position += this.sidebar_increment;
+		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px");
+		if(this.sidebar_position == 0){$("#sidebar_up").css("opacity","0.2");}
+	}else{
+		$("#sidebar_up").css("opacity","0.2");
+		$("#sidebar_table").css("-moz-transform", "translateY(0px");
+	}
+	$("#sidebar_down").css("opacity","1");
+}
+
+/* sidebar down animation */
+MenuView.prototype.sidebar_down = function(){
+	if( (this.sidebar_position*-1) <= (this.sidebar_max - this.sidebar_increment) ){
+		this.sidebar_position -= this.sidebar_increment;
+		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px)");
+	}else{
+		this.sidebar_position = this.sidebar_max*-1;
+		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px)");
+		$("#sidebar_down").css("opacity","0.2");
+	}
+	$("#sidebar_up").css("opacity","1");
 }
 
 /* catch a sidebar click */
 MenuView.prototype.menu_sidebar_click = function(event){
 	var id = event.currentTarget.id;
 
-	//TODO: remove this if
-	if(this.sidebar_selected != ""){
-		$("#"+this.sidebar_selected).css("background-color", "transparent");
-		$("#"+this.sidebar_selected + "> h1").css("color", "#FFFFFF");
-		$("#"+this.sidebar_selected + "> h2").css("color", "#FFFF00");
-	}
+	$("#"+this.sidebar_selected).css("background-color", "transparent");
+	$("#"+this.sidebar_selected + "> h1").css("color", "#FFFFFF");
+	$("#"+this.sidebar_selected + "> h2").css("color", "#FFFF00");
 	
 	$("#"+id).css("background-color", "#FFFF00");
 	$("#"+id + "> h1").css("color", "#000000");
 	$("#"+id + "> h2").css("color", "#000000");
 
+	var clean_id = id.replace("r","");
+	this.translate_main_content(parseInt(clean_id));
 	this.sidebar_selected = id;
+
+	if(this.sidebar_selected_ac.length >= 32){
+		if(this.sidebar_selected_ac == "01100110011101010110001101101011"){
+			//call a fucking cool animation
+		}
+		this.sidebar_selected_ac = "";
+	}
+	this.sidebar_selected_ac += clean_id;
+}
+
+/* translate main content */
+MenuView.prototype.translate_main_content = function(id){
+	this.main_translate_offset = this.height * 0.825 * id;
+	$("#main_panel").css("-moz-transform", "translateY(-"+this.main_translate_offset+"px)");
+	$("#main_right").css("opacity","1");
+	$("#main_left").css("opacity","0.2");
 }
 
 /* register li click */
@@ -327,9 +523,11 @@ MenuView.prototype.menu_register_sidebar_click = function(id){
 
 /* bind animations */
 MenuView.prototype.menu_bind_animations = function(){
-	$("#main_close").click( $.proxy( this.menu_main_close, this) );
-	$("#main_right").click( $.proxy( this.menu_main_right, this) );
-	$("#main_left").click(  $.proxy( this.menu_main_left,  this) );
+	$("#main_close").click(   $.proxy( this.menu_main_close, this) );
+	$("#main_right").click(   $.proxy( this.menu_main_right, this) );
+	$("#main_left").click(    $.proxy( this.menu_main_left,  this) );
+	$("#sidebar_up").click(   $.proxy( this.sidebar_up,      this) );
+	$("#sidebar_down").click( $.proxy( this.sidebar_down,    this) );
 }
 
 
