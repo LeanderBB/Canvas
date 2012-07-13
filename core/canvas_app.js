@@ -30,7 +30,8 @@ function CanvasApp(folder_name, messages_enabled) {
     // register events and trigger events
     var that = this;
     // Handle any uncaught errors.
-    if (messages_enabled) {
+    if (!messages_enabled ||
+        (messages_enabled !== undefined && messages_enabled === true)) {
         window.onerror = function (msg, url, linenum) {
                 that.criticalErrorEvt(msg, url, linenum);
                 return true;
@@ -101,7 +102,12 @@ CanvasApp.prototype.loadConfig = function () {
     output = sstream.read(sstream.available());
     sstream.close();
     fstream.close();
-    this.config = JSON.parse(output);
+    try {
+        this.config = JSON.parse(output);
+    } catch (err) {
+        this.criticalError(err.message);
+        return false;
+    }
     return true;
 };
 
@@ -141,7 +147,7 @@ CanvasApp.prototype.criticalError = function (msg) {
     resp = new Canvas.Message(Canvas.MSG_ERROR,
         this.name,
         { "msg": message});
-    window.parent.postMessage(msg, "*");
+    window.parent.postMessage(resp, "*");
 };
 
 CanvasApp.prototype.criticalErrorEvt = function (msg, url, linenum) {
@@ -151,7 +157,7 @@ CanvasApp.prototype.criticalErrorEvt = function (msg, url, linenum) {
     resp = new Canvas.Message(Canvas.MSG_ERROR,
         this.name,
         { "msg": message});
-    window.parent.postMessage(msg, "*");
+    window.parent.postMessage(resp, "*");
 };
 
 /**
