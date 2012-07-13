@@ -1,6 +1,5 @@
 //define('namespace', 'backbone', 'jquery' , function($, Backbone){
 
-
     /* Backbone Models ----- */
     AppNS.Models.Feed = Backbone.Model.extend({
 
@@ -22,8 +21,6 @@
                     console.log(result);
                     /* Feed has been loaded. Update the model with the feed's content */
                     that.set({'content': result.feed.entries });
-                    //that.set({'content': 'The Feed has been loaded'});
-                    //that.render();
             });
         },
 
@@ -32,7 +29,6 @@
         }
 
     });
-
     /* ---------- */
     /* Backbone Collections ----- */
     AppNS.Collections.Subscriptions = Backbone.Collection.extend({
