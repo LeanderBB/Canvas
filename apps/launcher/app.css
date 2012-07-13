@@ -56,7 +56,6 @@ body {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    background-image: url('../gallery/icon.svg');
 }
 .l_load_indicator {
     border-radius: 0.5em;

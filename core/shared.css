@@ -116,6 +116,11 @@ body,html {
     background-position: center;
 
 }
+
+.app_exit {
+    width: 4.625em;
+    height: 4.625em;
+}
 .debug {
     background-color: blue;
 }
