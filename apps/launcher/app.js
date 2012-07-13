@@ -134,7 +134,7 @@ Launcher.Application.prototype.getName = function () {
 };
 
 Launcher.Application.prototype.getPath = function () {
-    return this.path;
+    return Canvas.APP_PATH + this.path + "/app.html";
 };
 
 Launcher.Application.prototype.getColor = function () {
@@ -142,7 +142,7 @@ Launcher.Application.prototype.getColor = function () {
 };
 
 Launcher.Application.prototype.getIconPath = function () {
-    return this.icon_path;
+    return Canvas.APP_PATH + this.path + "/" + this.icon_path;
 };
 
 // ### Loading Screen #########################################
@@ -179,7 +179,7 @@ Launcher.AppFrame = function () {
 };
 
 Launcher.AppFrame.prototype.setApplication = function (application) {
-    this.frame.src = Canvas.APP_PATH + application.getPath() + "/app.html";
+    this.frame.src = application.getPath();
 };
 
 Launcher.AppFrame.prototype.reset = function () {
