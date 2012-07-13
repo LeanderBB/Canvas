@@ -1,26 +1,33 @@
+"use strict";
+
 /** Calendar  ****************************************************************/
 var calendar_list = [
 	"5ttsisforihpn2o3blhe3s4tlo@group.calendar.google.com",
 	"uinm3kojaoe3llod88ma22o78s@group.calendar.google.com",
 	"o1n262ugsh3tg96jn6t75f8fnc@group.calendar.google.com",
 	"l1suartp8gksjb6k0fosk7uo60@group.calendar.google.com"
-]
+];
 
 /** Constants *****************************************************************/
-var months = ["JANEIRO", "FEVEREIRO", "MARÇO", "ABRIL", "MAIO", "JUNHO", "JULHO",
-              "AGOSTO", "SETEMBRO", "OUTUBRO", "NOVEMBRO", "DEZEMBRO"];
+var months = [
+	"JANEIRO",  "FEVEREIRO", "MARÇO",    "ABRIL",
+	"MAIO",     "JUNHO",     "JULHO",    "AGOSTO",
+	"SETEMBRO", "OUTUBRO",   "NOVEMBRO", "DEZEMBRO"
+];
 
-var days   = ["DOMINGO", "SEGUNDA FEIRA", "TERÇA FEIRA", "QUARTA FEIRA", "QUINTA FEIRA", 
-              "SEXTA FEIRA", "SÁBADO"];
+var days = [
+	"DOMINGO",      "SEGUNDA FEIRA", "TERÇA FEIRA", "QUARTA FEIRA",
+	"QUINTA FEIRA", "SEXTA FEIRA",   "SÁBADO"
+];
 
 /** Initial Set Up ************************************************************/
 var menuController;
 
 google.load("gdata", "2.x");
-$(document).ready(function(){
+
+$(document).ready(function () {
 	menuController = new MenuController();
 });
-
 
 
 
@@ -29,37 +36,27 @@ $(document).ready(function(){
 /** Menu Controller ************************************************************
 ********************************************************************************
 *******************************************************************************/
-function MenuController(){
+function MenuController() {
 	this.menuview  = new MenuView();
 	this.menumodel = new MenuModel(this);
-	var w  = $(window).width();
-	var h  = $(window).height();
-   this.set_window_dimensions(w,h);
+	this.set_window_dimensions($(window).width(), $(window).height());
 
-	$(window).resize( $.proxy( function(){
-		var w  = $(window).width();
-		var h  = $(window).height();
-		this.set_window_dimensions(w,h);
-	}, this ));
+	$(window).resize($.proxy(function () {
+		this.set_window_dimensions($(window).width(), $(window).height());
+	}, this));
 }
 
 /* actualize the necessary stuff when a resize occurs */
-MenuController.prototype.set_window_dimensions = function(width,height) {
-	this.menuview.set_window_dimensions(width,height);
-}
+MenuController.prototype.set_window_dimensions = function (width, height) {
+	this.menuview.set_window_dimensions(width, height);
+};
 
 /* actualize data (calendars are all loaded) */
-MenuController.prototype.actualize_data = function(){
-	if(this.menumodel.get_loaded_calendars() == calendar_list.length){
-		var data = this.menumodel.get_calendar_data();
-		this.menuview.set_calendar_data(data);
-      this.menuview.actualize_interface();
-	}
-}
-
-
-
-
+MenuController.prototype.actualize_data = function () {
+	var data = this.menumodel.get_calendar_data();
+	this.menuview.set_calendar_data(data);
+	this.menuview.actualize_interface();
+};
 
 
 
@@ -68,110 +65,119 @@ MenuController.prototype.actualize_data = function(){
 /** Menu Model *****************************************************************
 ********************************************************************************
 *******************************************************************************/
-function MenuModel(parent){
+function MenuModel(parent) {
 	this.calendar_data     = {};
 	this.controller        = parent;
-   this.loaded_calendars  = 0;
-
-	for( var c in calendar_list ){
+	this.loaded_calendars  = 0;
+	for (var c in calendar_list) {
 		console.log(calendar_list[c]);
 		this.load_calendar_by_address(calendar_list[c]);
 	}
 }
 
 /* get calendars */
-MenuModel.prototype.get_loaded_calendars = function(){
+MenuModel.prototype.get_loaded_calendars = function () {
 	return this.loaded_calendars;
-}
+};
 
-/** @param {string} calendar_address is the email-style address for the calendar 
- */ 
-MenuModel.prototype.load_calendar_by_address = function(calendar_address){
-  var calendar_url = 'https://www.google.com/calendar/feeds/' + calendar_address + 
-				         '/public/full';
-  this.load_calendar(calendar_url);
-}
+/* calendar_address is the email-style address for the calendar */
+MenuModel.prototype.load_calendar_by_address = function (calendar_address) {
+	var calendar_url = 'https://www.google.com/calendar/feeds/' +
+							calendar_address +
+							'/public/full';
+	this.load_calendar(calendar_url);
+};
 
-/** @param {string} calendarUrl is the URL for a public calendar feed *********/  
-MenuModel.prototype.load_calendar = function(calendar_url) {
-	var service = new 
+/* calendarUrl is the URL for a public calendar feed */
+MenuModel.prototype.load_calendar = function (calendar_url) {
+	var query, service, date;
+
+	date    = new google.gdata.DateTime(new Date(), true);
+	service = new
 		google.gdata.calendar.CalendarService('gdata-js-client-samples-simple');
 
-	var query = new google.gdata.calendar.CalendarEventQuery(calendar_url);
+	query = new google.gdata.calendar.CalendarEventQuery(calendar_url);
 	query.setOrderBy('starttime');
 	query.setSortOrder('ascending');
-	//query.setMaxResults(30);
+	query.setMinimumStartTime(date);
 
-	query.setFutureEvents(true);
-	service.getEventsFeed(query, $.proxy(this.handle_events, this), 
-          							  $.proxy(this.handle_error,  this) );
-}
+	service.getEventsFeed(query, $.proxy(this.handle_events, this),
+											$.proxy(this.handle_error,  this));
+};
 
-/** @param {Error} e is an instance of an Error *******************************/
-MenuModel.prototype.handle_error = function(error) {
-  if (error instanceof Error) {
-	 console.log('Error at line ' + error.lineNumber + ' in ' + error.fileName + '\n' + 
-				    'Message: ' + error.message);
-    console.log(error);
-  }
-}
+/** e is an instance of an Error */
+MenuModel.prototype.handle_error = function (error) {
+	if (error instanceof Error) {
+		console.log('Error at line ' + error.lineNumber + ' in ' +
+						error.fileName + '\n' + 'Message: ' + error.message);
+		console.log(error);
+	}
+};
 
-/** @param {json} feedRoot is the root of the feed, containing all entries ****/ 
-MenuModel.prototype.handle_events = function(feed_root) {
-  var type    = feed_root.feed.title.getText();
-  var entries = feed_root.feed.entry;
-  var len     = entries.length;
+/* feedRoot is the root of the feed, containing all entries */
+MenuModel.prototype.handle_events = function (feed_root) {
+	var type, entries, len, entry, title, times, startDateTime, startJSDate,
+		year, week, day, info, i;
 
-  for (var i = 0; i < len; i++) {
-	 var entry = entries[i];
-	 var title = entry.getTitle().getText();
-	 var times = entry.getTimes();
-	 var startDateTime = null;
-	 var startJSDate = null;
+	type    = feed_root.feed.title.getText();
+	entries = feed_root.feed.entry;
+	len     = entries.length;
 
-	 if (times.length > 0) {
-		startDateTime = times[0].getStartTime();
-		startJSDate = startDateTime.getDate();
-	 }
+	for (i = 0; i < len; i++) {
+		entry = entries[i];
+		title = entry.getTitle().getText();
+		times = entry.getTimes();
+		startDateTime = null;
+		startJSDate = null;
 
-    var year  = startJSDate.getFullYear();
-    var week  = startJSDate.getWeek();
-    var day   = startJSDate.getDay();
-    var info  = title.split(";");
+		if (times.length > 0) {
+			startDateTime = times[0].getStartTime();
+			startJSDate = startDateTime.getDate();
+		}
 
-    if(info.length >= 2){
-		info[0] = info[0].replace("S.","Sopa de ");
-		info[0] = info[0].replace("C.","Creme de ");
-	 }else{
-		info[0] = "N/A";
-		info[1] = "N/A";
-	 }
+		year  = startJSDate.getFullYear();
+		week  = startJSDate.getWeek();
+		day   = startJSDate.getDay();
+		info  = title.split(";");
 
-    if(this.calendar_data[year] == undefined){ this.calendar_data[year] = {}; }
-    if(this.calendar_data[year][week] == undefined){ this.calendar_data[year][week] = {}; }
-    if(this.calendar_data[year][week][day] == undefined){ this.calendar_data[year][week][day] = {}; }
+		if (info.length >= 2) {
+			info[0] = info[0].replace("S.", "Sopa de ");
+			info[0] = info[0].replace("C.", "Creme de ");
+		} else {
+			info[0] = "N/A";
+			info[1] = "N/A";
+		}
 
-    this.calendar_data[year][week][day][type] = {"info1": info[0], "info2": info[1], "date": startJSDate};
-  }
+		if (this.calendar_data[year] === undefined) {
+			this.calendar_data[year] = {};
+		}
 
-  this.loaded_calendars += 1;
-  if(this.loaded_calendars == calendar_list.length){
-    this.controller.actualize_data();
-  }  
-}
+		if (this.calendar_data[year][week] === undefined) {
+			this.calendar_data[year][week] = {};
+		}
+
+		if (this.calendar_data[year][week][day] === undefined) {
+			this.calendar_data[year][week][day] = {};
+		}
+
+		this.calendar_data[year][week][day][type] = {
+			"info1": info[0],
+			"info2": info[1],
+			"date": startJSDate
+		};
+	}
+
+	this.loaded_calendars += 1;
+
+	if (this.loaded_calendars === calendar_list.length) {
+		this.controller.actualize_data();
+	}
+};
 
 /* get calendar data */
-MenuModel.prototype.get_calendar_data = function(){
+MenuModel.prototype.get_calendar_data = function () {
 	return this.calendar_data;
-}
-
-
-
-
-
-
-
-
+};
 
 
 
@@ -180,177 +186,204 @@ MenuModel.prototype.get_calendar_data = function(){
 /** Menu View ******************************************************************
 ********************************************************************************
 *******************************************************************************/
-function MenuView(){
+function MenuView() {
 	this.width                 = $(window).width();
 	this.height                = $(window).height();
-   this.sidebar_selected      = "";
-   this.sidebar_selected_ac   = "";
+	this.sidebar_selected      = "";
+	this.sidebar_selected_ac   = "";
 
 	this.sidebar_position      = 0;
 	this.sidebar_increment     = 300;
 	this.sidebar_max           = 0;
 
-   this.calendar_data         = {};
-   this.calendar_index        = [];
+	this.calendar_data         = {};
+	this.calendar_index        = [];
 
-   this.entries_count         = 0;
-   this.main_translate_offset = 0;
+	this.entries_count         = 0;
+	this.main_translate_offset = 0;
 
+	/*TODO: uncomment this
+	this.menu_list = new Slider({div: "sidebar_table_container",
+			slider: "sidebar_table",
+			mode: Slider.SCROLL_VERTICAL}
+		);
 
-	//TODO: uncomment this
-	//this.menu_list = new Slider({div:"sidebar_table_container", slider: "sidebar_table", mode:Slider.SCROLL_VERTICAL});
-	//this.content   = new Slider({div:"main_container", slider: "main_panel", mode:Slider.SCROLL_HORIZONTAL});
-	//this.content   = new Slider({div:"main_container", slider: "main_panel", mode:Slider.SCROLL_VERTICAL});
+	this.content   = new Slider({div: "main_container",
+			slider: "main_panel",
+			mode: Slider.SCROLL_HORIZONTAL}
+		);
 
+	this.content   = new Slider({div: "main_container",
+			slider: "main_panel",
+			mode: Slider.SCROLL_VERTICAL}
+		);
+	*/
 	this.menu_bind_animations();
 }
 
-MenuView.prototype.actualize_interface = function(){
-	if(this.entries_count > 0){
+/* actualize interface */
+MenuView.prototype.actualize_interface = function () {
+	if (this.entries_count > 0) {
 		this.sidebar_selected = "r0";
 		$("#r0").css("background-color", "#FFFF00");
 		$("#r0> h1").css("color", "#000000");
 		$("#r0> h2").css("color", "#000000");
 	}
+	this.sidebar_increment = this.height * 0.55;
+	this.sidebar_max       = this.entries_count * this.height * 0.09;
+};
 
-   this.sidebar_increment = this.height * 0.55;
-   this.sidebar_max       = this.entries_count * this.height * 0.09;
-	console.log("sidebar max: "+this.sidebar_max);
-}
-
-MenuView.prototype.set_calendar_data = function(data){
+MenuView.prototype.set_calendar_data = function (data) {
 	this.calendar_data = data;
-	var i = 0;
+	var i = 0, year, week, d_text, d_number, m_text, ln1, ln2, lv1, lv2, dn1,
+		dn2, dv1, dv2, is_today;
 
-	for( var year in this.calendar_data ){
-		for( var week in this.calendar_data[year] ){
-				this.add_sidebar_item("r"+this.entries_count, 
-											 this._get_first_month(this.calendar_data[year][week]),
-											 this._get_last_month(this.calendar_data[year][week]),
-											 this._get_first_day(this.calendar_data[year][week]),
-											 this._get_last_day(this.calendar_data[year][week]));
+	for (year in this.calendar_data) {
+		for (week in this.calendar_data[year]) {
+			this.add_sidebar_item("r" + this.entries_count,
+				this._get_first_month(this.calendar_data[year][week]),
+				this._get_last_month(this.calendar_data[year][week]),
+				this._get_first_day(this.calendar_data[year][week]),
+				this._get_last_day(this.calendar_data[year][week]));
 
-				this.calendar_index[this.entries_count] = this.calendar_data[year][week];
-				this.entries_count++;
+			this.calendar_index[this.entries_count] =
+				this.calendar_data[year][week];
+			this.entries_count++;
 
-				for ( i = 1 ; i <= 5; i++){
-					var d_text   = days[i];
+			for (i = 1; i <= 5; i++) {
+				d_text   = days[i];
+				if (this.calendar_data[year][week][i] !== undefined) {
+					d_number = this._get_day(this.calendar_data[year][week][i]);
+					m_text   = months[this._get_month(
+						this.calendar_data[year][week][i])];
+					ln1      = this._get_meal('A', 'info1',
+						this.calendar_data[year][week][i]);
+					ln2      = this._get_meal('A', 'info2',
+						this.calendar_data[year][week][i]);
+					lv1      = this._get_meal('AV', 'info1',
+						this.calendar_data[year][week][i]);
+					lv2      = this._get_meal('AV', 'info2',
+						this.calendar_data[year][week][i]);
+					dn1      = this._get_meal('J', 'info1',
+						this.calendar_data[year][week][i]);
+					dn2      = this._get_meal('J', 'info2',
+						this.calendar_data[year][week][i]);
+					dv1      = this._get_meal('JV', 'info1',
+						this.calendar_data[year][week][i]);
+					dv2      = this._get_meal('JV', 'info2',
+						this.calendar_data[year][week][i]);
+					is_today = this._is_today(
+						this.calendar_data[year][week][i]);
 
-					if( this.calendar_data[year][week][i] != undefined ){
-
-						var d_number = this._get_day(this.calendar_data[year][week][i]);
-		            var m_text   = months[this._get_month(this.calendar_data[year][week][i])];
-						var ln1      = this._get_meal('A' , 'info1', this.calendar_data[year][week][i]);
-						var ln2      = this._get_meal('A' , 'info2', this.calendar_data[year][week][i]);
-						var lv1      = this._get_meal('AV', 'info1', this.calendar_data[year][week][i]);
-						var lv2      = this._get_meal('AV', 'info2', this.calendar_data[year][week][i]);
-						var dn1      = this._get_meal('J' , 'info1', this.calendar_data[year][week][i]);
-						var dn2      = this._get_meal('J' , 'info2', this.calendar_data[year][week][i]);
-						var dv1      = this._get_meal('JV', 'info1', this.calendar_data[year][week][i]);
-						var dv2      = this._get_meal('JV', 'info2', this.calendar_data[year][week][i]);
-						var is_today = this._is_today(this.calendar_data[year][week][i]);
-						this.create_box_item(is_today, d_text, d_number, m_text, ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2);
-					}
+					this.create_box_item(is_today, d_text, d_number, m_text,
+						ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2);
 				}
-				this.create_clear_box_item();
+			}
+			this.create_clear_box_item();
 		}
 	}
-}
+};
 
-MenuView.prototype._get_meal = function(type, line, day){
-   if(day[type] != undefined)
-	{
+/* if meal is not defined return meal */
+MenuView.prototype._get_meal = function (type, line, day) {
+	if (day[type] !== undefined) {
 		return day[type][line];
-	}else{
+	} else {
 		return "N/A";
 	}
-}
+};
 
-MenuView.prototype._is_today = function(day){
-	for( var type in day ){
-		return day[type].date.toDateString() == (new Date()).toDateString();
+/* check if today is the day */
+MenuView.prototype._is_today = function (day) {
+	for (var type in day) {
+		return day[type].date.toDateString() === (new Date()).toDateString();
 	}
-}
+};
 
-MenuView.prototype._get_day = function(day){
-	for( var type in day ){
+/* get day of month */
+MenuView.prototype._get_day = function (day) {
+	for (var type in day) {
 		return day[type].date.getDate();
 	}
-}
+};
 
-MenuView.prototype._get_month = function(day){
-	for( var type in day ){
+/* get month */
+MenuView.prototype._get_month = function (day) {
+	for (var type in day) {
 		return day[type].date.getMonth();
 	}
-}
+};
 
-
-MenuView.prototype._get_first_month = function(week){
-	var month = 11;
-
-	for( var day in week ){
-		for( var type in week[day] ){
-			var m = week[day][type].date.getMonth();
-			if(month > m){
+/* get first month of the week */
+MenuView.prototype._get_first_month = function (week) {
+	var month = 11, day, type, m;
+	for (day in week) {
+		for (type in week[day]) {
+			m = week[day][type].date.getMonth();
+			if (month > m) {
 				month = m;
 			}
 		}
 	}
 	return months[month];
-}
+};
 
-MenuView.prototype._get_last_month = function(week){
-	var month = 0;
-
-	for( var day in week ){
-		for( var type in week[day] ){
-			var m = week[day][type].date.getMonth();
-			if(month < m){
+/* get last month of the week */
+MenuView.prototype._get_last_month = function (week) {
+	var month = 0, day, type, m;
+	for (day in week) {
+		for (type in week[day]) {
+			m = week[day][type].date.getMonth();
+			if (month < m) {
 				month = m;
 			}
 		}
 	}
 	return months[month];
-}
+};
 
 /* get first day number of week */
-MenuView.prototype._get_first_day = function(week){
-   var day = 1;
-   while(week[day] == undefined && day < 6){
+MenuView.prototype._get_first_day = function (week) {
+	var day = 1, type, day_number;
+	while (week[day] === undefined && day < 6) {
 		day++;
 	}
 
-	if(week[day] != undefined){
-		for( var type in week[day] ){
-			var day_number = week[day][type].date.getDate();
+	if (week[day] !== undefined) {
+		for (type in week[day]) {
+			day_number = week[day][type].date.getDate();
 			return day_number;
 		}
 	}
 	return "";
-}
+};
 
 /* get last day number of week */
-MenuView.prototype._get_last_day = function(week){
-   var day = 5;
-   while(week[day] == undefined && day > 0){
+MenuView.prototype._get_last_day = function (week) {
+	var day = 5, type, day_number;
+	while (week[day] === undefined && day > 0) {
 		day--;
 	}
-	if(week[day] != undefined){
-		for( var type in week[day] ){
-			var day_number = week[day][type].date.getDate();
+
+	if (week[day] !== undefined) {
+		for (type in week[day]) {
+			day_number = week[day][type].date.getDate();
 			return day_number;
 		}
 	}
 	return "";
-}
+};
 
 /* add sidebar item */
-MenuView.prototype.add_sidebar_item = function(id, first_month, last_month, begin_day, end_day){
-	var ul = document.getElementById("sidebar_table");
-   var li = this.create_sidebar_item(id, first_month, last_month, begin_day, end_day);
+MenuView.prototype.add_sidebar_item = function (id, first_month, last_month,
+	begin_day, end_day) {
+	var ul, li;
+	ul = document.getElementById("sidebar_table");
+	li = this.create_sidebar_item(id, first_month, last_month,
+		begin_day, end_day);
 	ul.appendChild(li);
-	this.menu_register_sidebar_click("#"+id);
-}
+	this.menu_register_sidebar_click("#" + id);
+};
 
 /* create sidebar item */
 MenuView.prototype.create_sidebar_item = function(id, first_month, last_month, begin_day, end_day){
