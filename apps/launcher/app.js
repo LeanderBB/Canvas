@@ -16,6 +16,7 @@ window.onload = function () {
 
 
 function Launcher() {
+    
     this.app_frame = new Launcher.AppFrame();
     this.load_screen = new Launcher.LoadScreen();
     this.apps = {};
@@ -28,6 +29,7 @@ function Launcher() {
     }, false);
     this.app_frame.hide();
     this.load_screen.hide();
+    this.view = new Launcher.View(this);
 }
 
 Launcher.prototype.launchApp = function (app) {
@@ -109,17 +111,23 @@ Launcher.prototype.init = function () {
         if (config.timeout !== undefined) {
             this.timeout_min = config.timeout;
         }
+        this.view.init();
     } else {
         // handle error
     }
 };
 
+
+Launcher.prototype.getApplications = function () {
+    return this.apps;
+};
 // ### Application Object #####################################
 Launcher.Application = function () {
     this.name = "";
     this.path = "";
     this.color = "";
     this.icon_path = "";
+    this.hidden = true;
 };
 
 Launcher.Application.prototype.init = function (json) {
@@ -127,6 +135,9 @@ Launcher.Application.prototype.init = function (json) {
     this.path = json.path;
     this.color = json.color;
     this.icon_path = json.icon;
+    if (json.hidden !== undefined) {
+        this.hidden = json.hidden;
+    }
 };
 
 Launcher.Application.prototype.getName = function () {
@@ -143,6 +154,10 @@ Launcher.Application.prototype.getColor = function () {
 
 Launcher.Application.prototype.getIconPath = function () {
     return Canvas.APP_PATH + this.path + "/" + this.icon_path;
+};
+
+Launcher.Application.prototype.isHidden = function () {
+    return this.hidden;
 };
 
 // ### Loading Screen #########################################
@@ -200,4 +215,37 @@ Launcher.AppFrame.prototype.hide = function () {
     this.frame.style.visibility = "hidden";
 };
 
+// ### Application View ######################################
+Launcher.View = function (controller) {
+    this.controller = controller;
+    this.list = document.getElementById("app_list");
+};
 
+Launcher.View.prototype.init = function () {
+    var cur_app, app, applications = this.controller.getApplications();
+    for (app in applications) {
+        cur_app = applications[app];
+        if (!cur_app.isHidden()) {
+            this.list.appendChild(this._newElement(app, cur_app));
+        }
+    }
+};
+
+Launcher.View.prototype._newElement = function (key, app) {
+    var div = document.createElement("div"),
+    li = document.createElement("li"),
+    that = this;
+    div.style.backgroundImage = "url('" + app.getIconPath() + "')";
+    li.appendChild(div);
+    li.innerHTML += app.getName();
+
+    li.addEventListener("mousedown", function () {
+        this.style.color = app.getColor();
+    }, false);
+
+    li.addEventListener("mouseup", function () {
+        this.style.color = "inherit";
+        that.controller.launchApp(key);
+    }, false);
+    return li;
+};

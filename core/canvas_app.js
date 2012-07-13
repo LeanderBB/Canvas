@@ -30,7 +30,7 @@ function CanvasApp(folder_name, messages_enabled) {
     // register events and trigger events
     var that = this;
     // Handle any uncaught errors.
-    if (!messages_enabled ||
+    if ( messages_enabled === undefined ||
         (messages_enabled !== undefined && messages_enabled === true)) {
         window.onerror = function (msg, url, linenum) {
                 that.criticalErrorEvt(msg, url, linenum);

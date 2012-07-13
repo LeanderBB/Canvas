@@ -8,6 +8,10 @@ window.onload = function () {
 };
 
 function Gallery() {
+    this.close = document.getElementById("app_close");
+    this.close.addEventListener("mouseup", function () {
+        window.app.exit();
+    }, false);
     this.menu_view = new Gallery.MenuView(this);
     this.model = new Gallery.Model();
     this.content_view = new Gallery.ContentView(this);

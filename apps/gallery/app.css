@@ -1,4 +1,10 @@
 
+.g_close {
+    background-image: url('resources/close.svg');
+    z-index: 9999999;
+    background-color: white;
+    opacity: 0.5;
+}
 .g_menu {
   list-style-type: none;
   width: 80%;
