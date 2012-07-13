@@ -6,102 +6,30 @@ http://fontzone.net/font-details/Avenir-Book/
 
 <header>
 	<link rel="stylesheet" type="text/css" href="menu.css" />
+	<meta charset="UTF-8"/>
 </header>
-
 
 <body>
 	<div id="sidebar">
 		<div id="sidebar_icon"></div>
 		<div id="sidebar_table_container">
-			<ul id="sidebar_table">
-
-
-				<!--
-				<li id="r1" onclick="sidebar_select(1)"> <h1>EMENTA FEVEREIRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r2" onclick="sidebar_select(2)"> <h1>EMENTA NOVEMBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r3"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r4"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r5"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r6"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r7"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r8"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				<li id="r9"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li>
-				-->
-
-				<!--
-				<a href="#r1"> <li id="r1" class="list"> <h1>EMENTA FEVEREIRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r2"> <li id="r2" class="list"> <h1>EMENTA NOVEMBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r3"> <li id="r3" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r4"> <li id="r4" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r5"> <li id="r5" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r6"> <li id="r6" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r7"> <li id="r7" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r8"> <li id="r8" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				<a href="#r9"> <li id="r9" class="list"> <h1>EMENTA OUTUBRO</h1> <h2>De 9 a 13 Julho</h2> </li></a>
-				-->
-			</ul>
+			<ul id="sidebar_table"></ul>
 		</div>
-
 		<div id="sidebar_up"></div>
 		<div id="sidebar_down"></div>
 	</div>
 
 	<div id="main">
-			<div id="main_header">
-				<h1>Ementa Junho</h1>
-
-				<div id="main_menu">
-				</div>	
-
-				<div id="main_close">
-				</div>
-			</div>
-
-			<div id="main_container"><!--  -->
-				<div id="main_panel">
-					<div class="main_box">
-
-						<div class="main_box_header">
-							<h1>lunch is here</h1>
-						</div>
-
-						<div class="main_box_meal">
-							<h1>lunch is here</h1>
-						</div>
-
-						<div class="main_box_separator">
-							<h2>~</h2>
-						</div>
-
-						<div class="main_box_meal">
-							<h1>dinner is here</h1>
-						</div>
-
-						<div class="main_box_dinner">
-						</div>
-
-					</div>
-
-					<div class="main_box">
-					</div>
-
-					<div class="main_box">
-					</div>
-
-					<div class="main_box">
-					</div>
-
-					<div class="main_box">
-					</div>
-				</div>
-
-				<div id="main_left">
-				</div>
-				<div id="main_right">
-				</div>
-
-			</div>
-
+		<div id="main_header">
+			<h1>Ementa Cantina</h1>
+			<div id="main_menu"></div>	
+			<div id="main_close"></div>
+		</div>
+		<div id="main_container">
+			<div id="main_panel"></div>
+			<div id="main_left"></div>
+			<div id="main_right"></div>
+		</div>
 	</div>
 </body>
 
@@ -109,77 +37,5 @@ http://fontzone.net/font-details/Avenir-Book/
 <script src="../../ext/jquery-1.7.2.min.js"></script>
 <script src="../../core/toolkit.js"></script>
 <script src="js/menu.js"></script>
-
-
-<script type="text/javascript">
-var row_selected = 0;
-
-function sidebar_select(i){
-	var old_row = "#r"+row_selected;
-	var new_row = "#r"+i;
-	$(old_row).css("background-color", "transparent");
-	$(new_row).css("background-color", "#FFFF00");
-	$(old_row + "> h1").css("color", "#FFFFFF");
-	$(new_row + "> h1").css("color", "#000000");
-	$(old_row + "> h2").css("color", "#FFFF00");
-	$(new_row + "> h2").css("color", "#000000");
-	row_selected = i;
-}
-
-var sidebar_position = 0;
-var sidebar_max_position = -600;
-
-
-$("#sidebar_down").click(function(){
-	sidebar_position -= 300;
-	$("#sidebar_table").css("-moz-transform", "translateY("+sidebar_position+"px");
-/*
-	sidebar_position -= 300;
-	if(sidebar_position <= sidebar_max_position){
-		sidebar_position = sidebar_max_position;
-		$("#sidebar_down").css("opacity","0.2");
-	}
-	$("#sidebar_table").css("-moz-transform", "translateY("+sidebar_position+"px");
-	$("#sidebar_table").css("-webkit-transform", "translateY("+sidebar_position+"px");
-	if(sidebar_position < 0){
-		$("#sidebar_up").css("opacity","1");
-	}
-
-*/
-});
-
-$("#sidebar_up").click(function(){
-	sidebar_position += 300;
-	if(sidebar_position >= 0){
-		sidebar_position = 0;
-		$("#sidebar_up").css("opacity","0.2");
-	}
-	$("#sidebar_table").css("-moz-transform", "translateY("+sidebar_position+"px");
-	$("#sidebar_table").css("-webkit-transform", "translateY("+sidebar_position+"px");
-
-	if(sidebar_position >= sidebar_max_position){
-		$("#sidebar_down").css("opacity","1");
-	}
-});
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*
-$(document).ready(function(){
-	set_up_font_size();
-	//loadCalendarByAddress('5ttsisforihpn2o3blhe3s4tlo@group.calendar.google.com');
-});
-
-$(window).resize(function(){
-	set_up_font_size();
-});
-
-function set_up_font_size(){
-	$("body").css("font-size", (($(window).width() * 100) / 1980)+"%" );
-}
-*/
-</script>
-
-	<!-- <script src="js/calendar.js" type="text/javascript"></script> -->
 
 </html>
