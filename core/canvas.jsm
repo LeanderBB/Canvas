@@ -33,8 +33,9 @@ Canvas.HOME_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
 Canvas.CONFIG_PATH = CHROME_CONFIG_PATH;
 Canvas.MEDIA_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
     CHROME_MEDIA_PATH: Canvas.HOME_PATH + "../media/";
-Canvas.APP_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
-    CHROME_APP_PATH : "../apps/";
+//Canvas.APP_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
+//    CHROME_APP_PATH : "../apps/";
+Canvas.APP_PATH = CHROME_APP_PATH;
 Canvas.CORE_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
     CHROME_CORE_PATH : "../../core/";
 Canvas.EXT_PATH = (Canvas.Mode === Canvas.MODE_RELEASE) ?
@@ -53,7 +54,7 @@ Canvas.restart = function () {
 
 
 // Canvas status messages
-Canvas.MSG_ERROR = 0x0000;
+Canvas.MSG_ERROR = 0x0008;
 Canvas.MSG_READY = 0x0001;
 Canvas.MSG_EXIT = 0x0002;
 Canvas.MSG_INTERACTION = 0x0004;

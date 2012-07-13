@@ -5,7 +5,7 @@
             "name": "Gallery",
             "path": "gallery",
             "icon": "icon.svg",
-            "color": "RGB()"
+            "color": "RGB(190,22,34)"
         }
     },
 
