@@ -205,22 +205,8 @@ function MenuView() {
 	this.entries_count         = 0;
 	this.main_translate_offset = 0;
 
-	/*TODO: uncomment this
 	this.menu_list = new Slider({div: "sidebar_table_container",
-			slider: "sidebar_table",
-			mode: Slider.SCROLL_VERTICAL}
-		);
-
-	this.content   = new Slider({div: "main_container",
-			slider: "main_panel",
-			mode: Slider.SCROLL_HORIZONTAL}
-		);
-
-	this.content   = new Slider({div: "main_container",
-			slider: "main_panel",
-			mode: Slider.SCROLL_VERTICAL}
-		);
-	*/
+		slider: "sidebar_table", mode: Slider.SCROLL_VERTICAL});
 	this.menu_bind_animations();
 }
 
