@@ -11,9 +11,28 @@ Components.utils.import("resource://canvas_module/canvas.jsm");
 <script src="app.js"></script>
 </head>
 <body>
-<div id="content" class="main">
-<iframe id="app_frame" class="frame" src="about:blank">
+<div id="content" class="l_main">
+<div class="l_lauch_area">
+    <div class="l_app_list">
+        <ul id="app_list" class="l_apps">
+            <!--li> <div></div> Gallery </li>
+            <li> <div></div> Menu </li>
+            <li> <div></div> Reader </li--!>
+        </ul>
+    </div>
+    <div class="l_logo">
+    </div>
+</div>
+<iframe id="app_frame" class="l_frame" src="about:blank" >
 </iframe>
+<div id="load_screen" class="l_loading">
+    
+    <div id="app_image" class="l_app_image">
+        <div class="l_load_indicator">
+            <div id="loader_bar"> 
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </hmtl>

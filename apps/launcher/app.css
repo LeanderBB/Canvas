@@ -1,34 +1,137 @@
 * {
 	margin: 0;
 	padding: 0;
-  font-family: "RBNo2 Light";
-  font-weight: normal;
+    font-family: "RBNo2 Light";
+    font-weight: normal;
 	cursor: default;
 	-moz-user-select: none;
-	-webkit-user-select: none;
 }
 
 html {
-  background-color: blue;
+    background-color: blue;
 }
+
 body,html {
-  font-size:100%;
-  width: 100%;
-  height: 100%;
-  overflow:hidden;
+    font-size: 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
 }
 
 body {
-  background-color: black;
+    background-color: black;
 }
 
-.main {
-  width:100%;
-  height:100%;
+.l_main {
+    width: 100%;
+    height: 100%;
 }
 
-.frame {
-  height: 100%;
-  width:100%;
-  border:none;
+.l_frame {
+    position: relative;
+    top:-100%;
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.l_loading {
+    position: relative;
+    top:-200%;
+    width: 100%;
+    height: 100%;
+    background: -moz-radial-gradient(center, circle cover, rgba(32,32,32,1) 0%, rgba(0,0,0,1) 100%); 
+}
+.l_app_image {
+    left: 35%;
+    position: relative;
+    top: 15%;
+    width: 40%;
+    height: 71%;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.l_load_indicator {
+    border-radius: 0.5em;
+    overflow: hidden;
+    position: relative;
+    top: -moz-calc(100% + 0.5em);
+    width: -moz-calc(100% - 4px);
+    height: 2.125em;
+    left: -5%;
+    border: solid 2px RGB(8,8,8);
+    background-color: RGB(10,10,10);
+   }
+
+.l_load_indicator > div {
+    border-radius: inherit;
+    width: 25%;
+    height: 100%;
+    background-color: RGB(255,255,255);
+    -moz-animation: l_loading_animation 0.7s linear alternate infinite;
+}
+
+
+.l_lauch_area {
+    width:100%;
+    height: 100%;
+}
+
+.l_lauch_area > div {
+    display: inline-block;
+    float: left;
+}
+.l_app_list {
+    width: 50%;
+    height: 100%;
+}
+
+.l_logo {
+    width: 50%;
+    height: 100%;
+}
+
+
+.l_apps {
+    position: relative;
+    top: 10%;
+    list-style-type: none;
+    width: 80%;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+}
+
+.l_apps li {
+    line-height: 200px;
+    font-size: 200px;
+    height: 200px;
+    padding-top: 44px;
+    padding-bottom: 44px;
+    border-bottom: dotted 1px white;
+}
+.l_apps li:last-child{
+    border-bottom: none;
+}
+
+.l_apps li > div {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background-image: url('../gallery/icon_launcher.svg');
+    background-size: contain;
+    background-position: center;
+}
+
+@-moz-keyframes l_loading_animation {
+    from {
+        -moz-transform: translateX(0);
+    }
+
+    to {
+        -moz-transform: translateX(300%);
+    }
+
 }

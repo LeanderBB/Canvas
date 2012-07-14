@@ -114,7 +114,16 @@ body,html {
     left: -moz-calc(100% - 3.375em);
     background-size: contain;
     background-position: center;
+}
 
+.app_exit {
+    position: fixed;
+    left: 110.9375em;
+    top: 3em;
+    width: 4.625em;
+    height: 4.625em;
+    background-size: contain;
+    background-position: center;
 }
 .debug {
     background-color: blue;

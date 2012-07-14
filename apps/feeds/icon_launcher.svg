@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="400"
+   height="400"
+   viewBox="0 0 399.99999 399.99998"
+   id="Layer_1"
+   xml:space="preserve"><metadata
+   id="metadata71"><rdf:RDF><cc:Work
+       rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata><defs
+   id="defs69" />
+
+
+<g
+   transform="matrix(4.2928373,0,0,4.2928373,-697.8868,-1036.6085)"
+   id="g23">
+	<g
+   id="g25">
+		<path
+   d="m 233.805,320.563 c 0,6.627 -5.373,12 -12,12 h -39.213 c -6.627,0 -12,-5.373 -12,-12 V 263.79 c 0,-6.627 5.373,-12 12,-12 h 39.213 c 6.627,0 12,5.373 12,12 v 56.773 z"
+   id="path27"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-miterlimit:10" />
+		
+			<line
+   stroke-miterlimit="10"
+   x1="179.996"
+   y1="283.26901"
+   x2="224.39999"
+   y2="283.26901"
+   id="line29"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-linecap:round;stroke-miterlimit:10" />
+		
+			<line
+   stroke-miterlimit="10"
+   x1="179.996"
+   y1="274.21301"
+   x2="201.02901"
+   y2="274.21301"
+   id="line31"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-linecap:round;stroke-miterlimit:10" />
+		
+			<line
+   stroke-miterlimit="10"
+   x1="179.996"
+   y1="292.32599"
+   x2="224.39999"
+   y2="292.32599"
+   id="line33"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-linecap:round;stroke-miterlimit:10" />
+		
+			<line
+   stroke-miterlimit="10"
+   x1="179.996"
+   y1="301.38199"
+   x2="224.39999"
+   y2="301.38199"
+   id="line35"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-linecap:round;stroke-miterlimit:10" />
+		
+			<line
+   stroke-miterlimit="10"
+   x1="179.996"
+   y1="310.43701"
+   x2="224.39999"
+   y2="310.43701"
+   id="line37"
+   style="fill:none;stroke:#ffffff;stroke-width:0.69883847;stroke-linecap:round;stroke-miterlimit:10" />
+	</g>
+	<g
+   id="g39">
+		<g
+   id="g41">
+			<circle
+   cx="234.881"
+   cy="256.409"
+   r="13.195"
+   id="circle43"
+   style="fill:#f49819" />
+		</g>
+		<g
+   id="g45">
+			<path
+   d="m 232,254.379 4.266,-0.195 v 8.152 c 0,0.219 0.07,0.388 0.21,0.508 0.14,0.119 0.354,0.18 0.641,0.18 h 0.646 v 0.953 H 232 v -0.953 h 0.636 c 0.342,0 0.583,-0.079 0.723,-0.236 0.14,-0.157 0.21,-0.431 0.21,-0.82 v -5.558 c 0,-0.349 -0.101,-0.618 -0.302,-0.81 -0.202,-0.191 -0.48,-0.287 -0.836,-0.287 H 232 v -0.934 z m 2.635,-5.537 c 0.458,0 0.851,0.162 1.179,0.487 0.328,0.324 0.492,0.72 0.492,1.185 0,0.465 -0.164,0.859 -0.492,1.184 -0.328,0.325 -0.721,0.487 -1.179,0.487 -0.465,0 -0.861,-0.164 -1.189,-0.492 -0.328,-0.328 -0.492,-0.721 -0.492,-1.179 0,-0.465 0.164,-0.86 0.492,-1.185 0.328,-0.325 0.724,-0.487 1.189,-0.487 z"
+   id="path47"
+   style="fill:#ffffff" />
+		</g>
+	</g>
+</g>
+
+</svg>
