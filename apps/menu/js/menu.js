@@ -57,7 +57,7 @@ MenuController.prototype.actualize_data = function () {
 	this.menuview.set_calendar_data(data);
 	this.menuview.actualize_interface();
 
-   //TODO: AT THIS POINT THE APP IS READY
+   //TODO: AT THIS POINT THE APP IS READY YOU CAN SHOW IT
 
 };
 
@@ -459,11 +459,17 @@ MenuView.prototype.set_window_dimensions = function (width, height) {
 
 /* button close animation */
 MenuView.prototype.menu_main_close = function () {
+
+	//TODO HERE YOU CAN CLOSE THE APPLICATION 
+	
+	/*
 	if ($("#main_menu").css("opacity") === 0) {
 		$("#main_menu").css("opacity", "1");
 	} else {
 		$("#main_menu").css("opacity", "0");
 	}
+	*/
+
 };
 
 
