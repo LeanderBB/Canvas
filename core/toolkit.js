@@ -269,7 +269,7 @@ function Slider(options) {
         that.slider.style.MozTransition = undefined;
         that.last_points = [new Point2D(evt_down.clientX, evt_down.clientY)];
         that.last_time = [new Date().getTime()];
-        evt_down.stopPropagation();
+        //evt_down.stopPropagation();
         evt_down.preventDefault();
         that.div.addEventListener("mousemove", handleMouseMove, true);
         that.div.addEventListener("mouseup", handleMouseUp, true);

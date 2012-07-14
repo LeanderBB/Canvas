@@ -36,7 +36,7 @@ function CanvasApp(folder_name, messages_enabled) {
                 that.criticalErrorEvt(msg, url, linenum);
                 return true;
             };
-        window.addEventListener("mouseup", function (e) {
+        window.addEventListener("mousedown", function (e) {
             if (that.report_action) {
                 window.parent.postMessage(new Canvas.Message(
                     Canvas.MSG_INTERACTION,
