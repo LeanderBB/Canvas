@@ -56,6 +56,9 @@ MenuController.prototype.actualize_data = function () {
 	var data = this.menumodel.get_calendar_data();
 	this.menuview.set_calendar_data(data);
 	this.menuview.actualize_interface();
+
+   //TODO: AT THIS POINT THE APP IS READY
+
 };
 
 
@@ -386,28 +389,32 @@ MenuView.prototype.add_sidebar_item = function (id, first_month, last_month,
 };
 
 /* create sidebar item */
-MenuView.prototype.create_sidebar_item = function(id, first_month, last_month, begin_day, end_day){
+MenuView.prototype.create_sidebar_item = function (id, first_month,
+	last_month, begin_day, end_day) {
 	var li = document.createElement("li");
 	li.id = id;
-   li.innerHTML = "<h1> EMENTA " + first_month + "</h1> <h2>De " + begin_day + " a " + end_day + " de " + last_month + "</h2>";
-   return li;
-}
+	li.innerHTML = "<h1> EMENTA " + first_month + "</h1> <h2>De " +
+	begin_day + " a " + end_day + " de " + last_month + "</h2>";
+	return li;
+};
 
 
 /* add box item */
-MenuView.prototype.create_box_item = function(is_today, day_text, day_number, month, ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2){
+MenuView.prototype.create_box_item = function (is_today, day_text,
+	day_number, month, ln1, ln2, lv1, lv2, dn1, dn2, dv1, dv2) {
+	var div, header, lunch, sep, dinner, box, class_name;
 
-	var div = document.getElementById("main_panel");
-   var header = this.create_box_header(day_text, day_number, month);
-   var lunch  = this.create_box_meal("Almoço", ln1, ln2, lv1, lv2);
-   var sep    = this.create_box_separator();
-   var dinner = this.create_box_meal("Jantar", dn1, dn2, dv1, dv2);
-	var box    = document.createElement("div");
+	div = document.getElementById("main_panel");
+	header = this.create_box_header(day_text, day_number, month);
+	lunch  = this.create_box_meal("Almoço", ln1, ln2, lv1, lv2);
+	sep    = this.create_box_separator();
+	dinner = this.create_box_meal("Jantar", dn1, dn2, dv1, dv2);
+	box    = document.createElement("div");
 
-	var class_name = "";
-	if( is_today ){
+	class_name = "";
+	if (is_today) {
 		class_name = "main_box main_box_today";
-	}else{
+	} else {
 		class_name = "main_box";
 	}
 
@@ -417,158 +424,170 @@ MenuView.prototype.create_box_item = function(is_today, day_text, day_number, mo
 	box.appendChild(sep);
 	box.appendChild(dinner);
 	div.appendChild(box);
-}
+};
 
 /* add clear both div */
-MenuView.prototype.create_clear_box_item = function(){
-	var div   = document.getElementById("main_panel");
-	var clear = document.createElement("div");
-
+MenuView.prototype.create_clear_box_item = function () {
+	var div, clear;
+	div   = document.getElementById("main_panel");
+	clear = document.createElement("div");
 	clear.style.clear = "both";
 	div.appendChild(clear);
-}
+};
 
 
 /* create box header */
-MenuView.prototype.create_box_header = function(day_text, day_number, month){
+MenuView.prototype.create_box_header = function (day_text, day_number, month) {
 	var div = document.createElement("div");
 	div.className = "main_box_header";
-   div.innerHTML = "<h1>" + day_text + "</h1> <h2>"+day_number+" "+month+"</h2>";
-   return div;
-}
+	div.innerHTML = "<h1>" + day_text + "</h1> <h2>" + day_number + " " +
+		month + "</h2>";
+	return div;
+};
 
 /* create box header */
-MenuView.prototype.create_box_separator = function(){
+MenuView.prototype.create_box_separator = function () {
 	var div = document.createElement("div");
 	div.className = "main_box_separator";
-   div.innerHTML = "<h2>~</h2>";
-   return div;
-}
+	div.innerHTML = "<h2>~</h2>";
+	return div;
+};
 
 /* create box meal */
-MenuView.prototype.create_box_meal = function(header, en1, en2, ev1, ev2){
+MenuView.prototype.create_box_meal = function (header, en1, en2, ev1, ev2) {
 	var div = document.createElement("div");
 	div.className = "main_box_meal";
-   div.innerHTML = "<h1>" + header + "</h1>" +
-                   "<h2>" + en1    + "</h2>    <h2>"+en2+"</h2>"+
-                   "<div class=\"main_box_meal_separator\"></div>"+
-                   "<h2>" + ev1    + "</h2>    <h2>"+ev2+"</h2>";
-   return div;
-}
+	div.innerHTML = "<h1>" + header + "</h1>" +
+						"<h2>" + en1 + "</h2>    <h2>" + en2 + "</h2>" +
+						"<div class=\"main_box_meal_separator\"></div>" +
+						"<h2>" + ev1 + "</h2><h2>" + ev2 + "</h2>";
+	return div;
+};
 
 /* actualize window dimensions */
-MenuView.prototype.set_window_dimensions = function(width,height){
+MenuView.prototype.set_window_dimensions = function (width, height) {
 	this.width = width;
 	this.height = height;
-	$("body").css("font-size", ((this.width * 100) / 1980)+"%" );
-}
-
+	$("body").css("font-size", ((this.width * 100) / 1980) + "%");
+};
 
 /* button close animation */
-MenuView.prototype.menu_main_close = function(){
-	if($("#main_menu").css("opacity") == 0){
-		$("#main_menu").css("opacity","1");
-	}else{
-		$("#main_menu").css("opacity","0");
+MenuView.prototype.menu_main_close = function () {
+	if ($("#main_menu").css("opacity") === 0) {
+		$("#main_menu").css("opacity", "1");
+	} else {
+		$("#main_menu").css("opacity", "0");
 	}
-}
+};
 
 
 /* menu right animation */
-MenuView.prototype.menu_main_right = function(){
+MenuView.prototype.menu_main_right = function () {
 	var translate = this.width / 2.5;
-	$("#main_panel").css("-moz-transform", "translate(-"+translate+",-"+this.main_translate_offset+"px)");
-	$("#main_right").css("opacity","0.2");
-	$("#main_left").css("opacity","1");
-}
-
+	$("#main_panel").css("-moz-transform",
+		"translate(-" + translate + ",-" + this.main_translate_offset + "px)");
+	$("#main_right").css("opacity", "0.2");
+	$("#main_left").css("opacity", "1");
+};
 
 /* menu left animation */
-MenuView.prototype.menu_main_left = function(){
-	$("#main_panel").css("-moz-transform", "translate(0px,-"+this.main_translate_offset+"px)");
-	$("#main_right").css("opacity","1");
-	$("#main_left").css("opacity","0.2");
-}
+MenuView.prototype.menu_main_left = function () {
+	$("#main_panel").css("-moz-transform",
+		"translate(0px,-" + this.main_translate_offset + "px)");
+	$("#main_right").css("opacity", "1");
+	$("#main_left").css("opacity", "0.2");
+};
 
 /* sidebar up animation */
-MenuView.prototype.sidebar_up = function(){
-	if(this.sidebar_position <= this.sidebar_increment * -1){
+MenuView.prototype.sidebar_up = function () {
+	if (this.sidebar_position <= this.sidebar_increment * -1) {
 		this.sidebar_position += this.sidebar_increment;
-		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px");
-		if(this.sidebar_position == 0){$("#sidebar_up").css("opacity","0.2");}
-	}else{
-		$("#sidebar_up").css("opacity","0.2");
+		$("#sidebar_table").css("-moz-transform",
+			"translateY(" + this.sidebar_position + "px");
+		if (this.sidebar_position === 0) {
+			$("#sidebar_up").css("opacity", "0.2");
+		}
+	} else {
+		$("#sidebar_up").css("opacity", "0.2");
 		$("#sidebar_table").css("-moz-transform", "translateY(0px");
 	}
-	$("#sidebar_down").css("opacity","1");
-}
+	$("#sidebar_down").css("opacity", "1");
+};
 
 /* sidebar down animation */
-MenuView.prototype.sidebar_down = function(){
-	if( (this.sidebar_position*-1) <= (this.sidebar_max - this.sidebar_increment) ){
+MenuView.prototype.sidebar_down = function () {
+	if ((this.sidebar_position * -1) <=
+		(this.sidebar_max - this.sidebar_increment)) {
+
 		this.sidebar_position -= this.sidebar_increment;
-		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px)");
-	}else{
-		this.sidebar_position = this.sidebar_max*-1;
-		$("#sidebar_table").css("-moz-transform", "translateY("+this.sidebar_position+"px)");
-		$("#sidebar_down").css("opacity","0.2");
+		$("#sidebar_table").css("-moz-transform",
+			"translateY(" + this.sidebar_position + "px)");
+
+	} else {
+
+		this.sidebar_position = this.sidebar_max * -1;
+		$("#sidebar_table").css("-moz-transform",
+			"translateY(" + this.sidebar_position + "px)");
+		$("#sidebar_down").css("opacity", "0.2");
+
 	}
-	$("#sidebar_up").css("opacity","1");
-}
+	$("#sidebar_up").css("opacity", "1");
+};
 
 /* catch a sidebar click */
-MenuView.prototype.menu_sidebar_click = function(event){
-	var id = event.currentTarget.id;
+MenuView.prototype.menu_sidebar_click = function (event) {
+	var id, clean_id;
+	id = event.currentTarget.id;
 
-	$("#"+this.sidebar_selected).css("background-color", "transparent");
-	$("#"+this.sidebar_selected + "> h1").css("color", "#FFFFFF");
-	$("#"+this.sidebar_selected + "> h2").css("color", "#FFFF00");
+	$("#" + this.sidebar_selected).css("background-color", "transparent");
+	$("#" + this.sidebar_selected + "> h1").css("color", "#FFFFFF");
+	$("#" + this.sidebar_selected + "> h2").css("color", "#FFFF00");
 	
-	$("#"+id).css("background-color", "#FFFF00");
-	$("#"+id + "> h1").css("color", "#000000");
-	$("#"+id + "> h2").css("color", "#000000");
+	$("#" + id).css("background-color", "#FFFF00");
+	$("#" + id + "> h1").css("color", "#000000");
+	$("#" + id + "> h2").css("color", "#000000");
 
-	var clean_id = id.replace("r","");
-	this.translate_main_content(parseInt(clean_id));
+	clean_id = id.replace("r", "");
+	this.translate_main_content(parseInt(clean_id, 10));
 	this.sidebar_selected = id;
 
-	if(this.sidebar_selected_ac.length >= 32){
-		if(this.sidebar_selected_ac == "01100110011101010110001101101011"){
+	if (this.sidebar_selected_ac.length >= 32) {
+		if (this.sidebar_selected_ac === "01100110011101010110001101101011") {
 			//call a fucking cool animation
 		}
 		this.sidebar_selected_ac = "";
 	}
 	this.sidebar_selected_ac += clean_id;
-}
+};
 
 /* translate main content */
-MenuView.prototype.translate_main_content = function(id){
+MenuView.prototype.translate_main_content = function (id) {
 	this.main_translate_offset = this.height * 0.825 * id;
-	$("#main_panel").css("-moz-transform", "translateY(-"+this.main_translate_offset+"px)");
-	$("#main_right").css("opacity","1");
-	$("#main_left").css("opacity","0.2");
-}
+	$("#main_panel").css("-moz-transform", "translateY(-" +
+		this.main_translate_offset + "px)");
+	$("#main_right").css("opacity", "1");
+	$("#main_left").css("opacity", "0.2");
+};
 
 /* register li click */
-MenuView.prototype.menu_register_sidebar_click = function(id){
-	$(id).click( $.proxy( this.menu_sidebar_click, this) );	
-}
+MenuView.prototype.menu_register_sidebar_click = function (id) {
+	$(id).mouseup($.proxy(this.menu_sidebar_click, this));
+};
 
 /* bind animations */
-MenuView.prototype.menu_bind_animations = function(){
-	$("#main_close").click(   $.proxy( this.menu_main_close, this) );
-	$("#main_right").click(   $.proxy( this.menu_main_right, this) );
-	$("#main_left").click(    $.proxy( this.menu_main_left,  this) );
-	$("#sidebar_up").click(   $.proxy( this.sidebar_up,      this) );
-	$("#sidebar_down").click( $.proxy( this.sidebar_down,    this) );
-}
+MenuView.prototype.menu_bind_animations = function () {
+	$("#main_close").click($.proxy(this.menu_main_close, this));
+	$("#main_right").mouseup($.proxy(this.menu_main_right, this));
+	$("#main_left").mouseup($.proxy(this.menu_main_left, this));
+	$("#sidebar_up").mouseup($.proxy(this.sidebar_up, this));
+	$("#sidebar_down").mouseup($.proxy(this.sidebar_down, this));
+};
 
+Date.prototype.getWeek = function () {
+	var onejan = new Date(this.getFullYear(), 0, 1);
+	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+};
 
 /** EOF ************************************************************************
 *******************************************************************************/
-
-Date.prototype.getWeek = function() {
-	var onejan = new Date(this.getFullYear(),0,1);
-	return Math.ceil((((this - onejan) / 86400000) + onejan.getDay()+1)/7);
-}
 

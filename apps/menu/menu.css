@@ -121,6 +121,9 @@
 	height: 6.22%;
 	height: -moz-calc(3.5% * 1.7777);
 	background: #4A4A49;
+	background-image: url('images/close.svg');
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
 }
 
 
