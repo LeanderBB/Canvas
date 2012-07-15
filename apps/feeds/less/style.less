@@ -1,10 +1,11 @@
 @import "normalize.less";
 @import "grid.less"; // Semantic Grid 
 @import "fonts/fonts.less";
-
+@import "mixins.less";
+@import "../../core/shared.css";
 
 /* ===== Primary Styles ========================================================
-   Author:
+   Author: José Durães @ 3Code
    ========================================================================== */
 
 .fontFaceContent(){
@@ -17,12 +18,11 @@
 	font-weight: normal;
 }
 
-
 //------------------------------------------------------
 /* Color Definitions */
 
-@border_color: yellow;
-
+@border_color: #ff9900;
+@border_color_gradient_end: #c07300;
 
 //------------------------------------------------------
 body {
@@ -51,18 +51,17 @@ ul, ol {
 //------------------------------------------------------
 // SUBSCRIPTION NAVIGATION -----------------------------
 
-
 #logo-container {
-	position: relative;
+	margin-top: 0;
 	width: 100%;
-	height: 70px;
+	height: 90px;
 	border-bottom: @border_color solid 2px;
 	z-index: 100;
 	background-color: black;
 }
 
 #app-logo {
-	margin: 20px auto;
+	margin: 30px auto;
 	height: 60px;
 	width: 60px;
 	background: url(../resources/logo_feeds.svg) no-repeat;
@@ -71,13 +70,19 @@ ul, ol {
 
 #navigation-subscriptions {
 
+	/*
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 25%;
 	height: 100%;
+	*/
 
 	background-color: black;
+}
+
+#subscriptions {
+
 }
 
 .element-up-arrow {
@@ -89,10 +94,12 @@ ul, ol {
 
 .feed-description-container {
 	padding-left: 30px;
-	border-bottom: white solid 2px;
+	border-bottom: @border_color solid 2px;
 
 	&.active {
-		background-color: gray;
+		background-color: @border_color;
+		color: black;
+		.transition(background-color ease-in 0.3s);
 	}
 }
 
@@ -106,20 +113,25 @@ li.feed-description-container {
 #navigation-feed {
 
 	color: black;
-
+	/*
 	position: absolute;
 	top: 0;
 	left: 25%;
 	width: 20%;
 	height: 100%;
-	padding: 30px;
-
+	*/
+	left: 25%;
 	background-color: white;
 }
 
+#feed {
+	position: relative;
+	margin-top: 15px;
+	margin-bottom: 0px;
+	padding-bottom: 20px;
+}
+
 #subscriptions {
-	margin: 0;
-	padding: 0;
 }
 
 .feed-item-container {
@@ -127,19 +139,22 @@ li.feed-description-container {
 	.wrapper {
 		display: block;
 		position: relative;
-		margin-bottom: 10px;
+		margin: 10px;
 	}
 
 	div.thumbnail {
+			.box-sizing(border-box);
 			width: 100%;
 			position: relative;
 			height: 150px;
 			background-color: grey;
-			background-size: contain;
+			background-size: cover;
+			background-repeat: no-repeat;
 	}
 
 	div.title {
 
+		.box-sizing(border-box);
 		position: relative;
 		display: inline-block;
 		width: 100%;
@@ -161,24 +176,20 @@ li.feed-description-container {
 	margin-bottom: 5px;
 }
 
-#feed {
-	position: relative;
-}
 //-------------------------------------------------------
 // (SINGLE) ITEM NAVIGATION -----------------------------
 
 #navigation-item {
-
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 40%;
+	position: relative;
 	height: 100%;
+	width: -moz-calc(45% - 2px);
+	left: 50%;
 }
 
 #item{
-	color: black;
+	margin-top: 15px;
 	padding: 10px;
+	color: black;
 }
 
 .feed-item-container {
@@ -191,6 +202,43 @@ li {
 	margin: 0;
 	padding: 0;
 }
+
+//-------------------------------------------------------
+/* GFX */
+
+.gfx-arrow {
+	position: absolute;
+	background-size: cover;
+	z-index: 1000;
+	visibility: hidden;
+
+	&.up {
+		top: 0;
+		right: 0;
+	}
+
+	&.gfx-arrow_small_up {
+		background-image: url(../resources/arrow_small_up.svg);
+		width: 22px;
+		height: 22px;		
+	}
+
+	&.down {
+		bottom: 0;
+		right: 0;
+	}
+
+	&.gfx-arrow_small_down {
+		background-image: url(../resources/arrow_small_down.svg);
+		width: 22px;
+		height: 22px;
+	}
+
+	&.active {
+		visibility: visible;
+	}
+}
+
 //-------------------------------------------------------
 /* TYPOGRAPHY */
 
@@ -198,7 +246,7 @@ h1, h2, h3, h4, h5, h6 {
 	.fontFaceTitles();
 }
 
-
+//-------------------------------------------------------
 
 @import "media-queries.less";
 @import "helpers.less";

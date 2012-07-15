@@ -1,3 +1,4 @@
+@import "../../core/shared.css";
 /* =============================================================================
    HTML5 Boilerplate CSS: h5bp.com/css
    ========================================================================== */
@@ -255,11 +256,20 @@ body {
   width: 100%;
   *zoom: 1;
   *zoom: 1;
+  *zoom: 1;
 }
 body:before,
 body:after {
   content: "";
   display: table;
+}
+body:after {
+  clear: both;
+}
+body:before,
+body:after {
+  display: table;
+  content: "";
 }
 body:after {
   clear: both;
@@ -286,8 +296,37 @@ body:after {
   font-weight: normal;
   font-style: normal;
 }
+.clearfix {
+  *zoom: 1;
+}
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+.clearfix:after {
+  clear: both;
+}
+.hide-text {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+}
+.input-block-level {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  /* Make inputs at least the height of their button counterpart */
+
+  /* Makes inputs behave like true block-level elements */
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
 /* ===== Primary Styles ========================================================
-   Author:
+   Author: José Durães @ 3Code
    ========================================================================== */
 /* Color Definitions */
 body {
@@ -312,42 +351,51 @@ ol {
   background-color: #f3ece5;
 }
 #logo-container {
-  position: relative;
+  margin-top: 0;
   width: 100%;
-  height: 70px;
-  border-bottom: #ffff00 solid 2px;
+  height: 90px;
+  border-bottom: #ff9900 solid 2px;
   z-index: 100;
   background-color: black;
 }
 #app-logo {
-  margin: 20px auto;
+  margin: 30px auto;
   height: 60px;
   width: 60px;
   background: url(../resources/logo_feeds.svg) no-repeat;
   background-size: contain;
 }
 #navigation-subscriptions {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 25%;
-  height: 100%;
+  /*
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 25%;
+	height: 100%;
+	*/
+
   background-color: black;
 }
 .element-up-arrow {
   font-size: 0px;
   line-height: 0%;
   width: 0px;
-  border-bottom: 20px solid #ffff00;
-  border-left: 30px solid #ffff00;
-  border-right: 30px solid #ffff00;
+  border-bottom: 20px solid #ff9900;
+  border-left: 30px solid #ff9900;
+  border-right: 30px solid #ff9900;
 }
 .feed-description-container {
   padding-left: 30px;
-  border-bottom: white solid 2px;
+  border-bottom: #ff9900 solid 2px;
 }
 .feed-description-container.active {
-  background-color: gray;
+  background-color: #ff9900;
+  color: black;
+  -webkit-transition: background-color ease-in 0.3s;
+  -moz-transition: background-color ease-in 0.3s;
+  -ms-transition: background-color ease-in 0.3s;
+  -o-transition: background-color ease-in 0.3s;
+  transition: background-color ease-in 0.3s;
 }
 li.feed-description-container {
   display: inline-block;
@@ -355,17 +403,22 @@ li.feed-description-container {
 }
 #navigation-feed {
   color: black;
-  position: absolute;
-  top: 0;
+  /*
+	position: absolute;
+	top: 0;
+	left: 25%;
+	width: 20%;
+	height: 100%;
+	*/
+
   left: 25%;
-  width: 20%;
-  height: 100%;
-  padding: 30px;
   background-color: white;
 }
-#subscriptions {
-  margin: 0;
-  padding: 0;
+#feed {
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 0px;
+  padding-bottom: 20px;
 }
 .feed-item-container {
   margin-bottom: 5px;
@@ -373,16 +426,25 @@ li.feed-description-container {
 .feed-item-container .wrapper {
   display: block;
   position: relative;
-  margin-bottom: 10px;
+  margin: 10px;
 }
 .feed-item-container div.thumbnail {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   width: 100%;
   position: relative;
   height: 150px;
   background-color: grey;
-  background-size: contain;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .feed-item-container div.title {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
   display: inline-block;
   width: 100%;
@@ -399,19 +461,16 @@ li.feed-description-container {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-#feed {
-  position: relative;
-}
 #navigation-item {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 40%;
+  position: relative;
   height: 100%;
+  width: -moz-calc(43%);
+  left: 50%;
 }
 #item {
-  color: black;
+  margin-top: 15px;
   padding: 10px;
+  color: black;
 }
 .feed-item-container {
   overflow: hidden;
@@ -421,6 +480,34 @@ li {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+/* GFX */
+.gfx-arrow {
+  position: absolute;
+  background-size: cover;
+  z-index: 1000;
+  visibility: hidden;
+}
+.gfx-arrow.up {
+  top: 0;
+  right: 0;
+}
+.gfx-arrow.gfx-arrow_small_up {
+  background-image: url(../resources/arrow_small_up.svg);
+  width: 22px;
+  height: 22px;
+}
+.gfx-arrow.down {
+  bottom: 0;
+  right: 0;
+}
+.gfx-arrow.gfx-arrow_small_down {
+  background-image: url(../resources/arrow_small_down.svg);
+  width: 22px;
+  height: 22px;
+}
+.gfx-arrow.active {
+  visibility: visible;
 }
 /* TYPOGRAPHY */
 h1,
