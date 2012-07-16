@@ -13,3 +13,14 @@ $.fn.sanitizeHTML = function() {
 AppNS.Utils.matrixToArray = function(matrix) {
     return matrix.substr(7, matrix.length - 8).split(', ');
 };
+
+// Listening for the transition-end event
+// Adapted from the Modernizer source code
+var transEndEventNames = {
+  'WebkitTransition' : 'webkitTransitionEnd',
+  'MozTransition'    : 'transitionend',
+  //'OTransition'      : 'oTransitionEnd',
+  //'msTransition'     : 'msTransitionEnd', // maybe?
+  'transition'       : 'transitionEnd'
+};
+CSS3_TRANSITION_END = transEndEventNames[ Modernizr.prefixed('transition') ];

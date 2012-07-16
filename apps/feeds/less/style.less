@@ -69,15 +69,7 @@ ul, ol {
 }
 
 #navigation-subscriptions {
-
-	/*
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 25%;
-	height: 100%;
-	*/
-
+	z-index: 10;
 	background-color: black;
 }
 
@@ -93,6 +85,7 @@ ul, ol {
 }
 
 .feed-description-container {
+	.box-sizing(border-box);
 	padding-left: 30px;
 	border-bottom: @border_color solid 2px;
 
@@ -111,17 +104,24 @@ li.feed-description-container {
 // FEED NAVIGATION --------------------------------------
 
 #navigation-feed {
-
+	z-index: 0;
 	color: black;
-	/*
-	position: absolute;
-	top: 0;
-	left: 25%;
-	width: 20%;
-	height: 100%;
-	*/
 	left: 25%;
 	background-color: white;
+	.opacity(100);
+	//ANIMATION
+	transition: left 0.40s ease-in-out, opacity 0.40s ease-in;
+	-moz-transition: left 0.40s ease-in-out, opacity 0.40s ease-in;
+
+	&.animate{
+		left: 0;
+		opacity: 0;
+	}
+	// ---
+	&.my_hidden{
+		left: 0;
+		visibility: hidden;
+	}
 }
 
 #feed {
@@ -139,7 +139,7 @@ li.feed-description-container {
 	.wrapper {
 		display: block;
 		position: relative;
-		margin: 10px;
+		margin: 15px 25px 15px 25px;
 	}
 
 	div.thumbnail {
@@ -182,8 +182,17 @@ li.feed-description-container {
 #navigation-item {
 	position: relative;
 	height: 100%;
-	width: -moz-calc(45% - 2px);
+	width: 45%;
 	left: 50%;
+	.opacity(100);
+	.transition(opacity 0.25s ease-in);
+	//ANIMATION
+	&.animate{	
+		.opacity(0);
+		visibility: hidden;
+	}
+	// ---
+
 }
 
 #item{

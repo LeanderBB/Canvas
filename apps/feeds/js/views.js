@@ -1,4 +1,4 @@
-'use strict';
+//'use strict';
 /* Backbone Views ----- */
 
 AppNS.Views.Item = Backbone.View.extend({
@@ -14,6 +14,7 @@ AppNS.Views.Item = Backbone.View.extend({
     },
 
     render: function (content) {
+        $("#navigation-item").addClass("animate");
         var c = $(content).sanitizeHTML();
         $(this.el).html(c);
         return this;
@@ -58,10 +59,12 @@ AppNS.Views.Feed = Backbone.View.extend({
         AppNS.Events.bind("click_feed_selection", this.feedSelectionListener);
 
         this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
+
     },
  
     render: function(args) {
 
+        $("#navigation-feed").removeClass("my_hidden").addClass("animate");
         $(this.el).html("");
 
         for(var i=0; i<args[0].length; i++){
@@ -72,6 +75,7 @@ AppNS.Views.Feed = Backbone.View.extend({
             });
             $(this.el).append(feedItemDescriptionView.render().el);
         }
+
     },
 
     feedSelectionListener: function(e){

@@ -366,14 +366,7 @@ ol {
   background-size: contain;
 }
 #navigation-subscriptions {
-  /*
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 25%;
-	height: 100%;
-	*/
-
+  z-index: 10;
   background-color: black;
 }
 .element-up-arrow {
@@ -385,6 +378,10 @@ ol {
   border-right: 30px solid #ff9900;
 }
 .feed-description-container {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
   padding-left: 30px;
   border-bottom: #ff9900 solid 2px;
 }
@@ -402,17 +399,22 @@ li.feed-description-container {
   width: 100%;
 }
 #navigation-feed {
+  z-index: 0;
   color: black;
-  /*
-	position: absolute;
-	top: 0;
-	left: 25%;
-	width: 20%;
-	height: 100%;
-	*/
-
   left: 25%;
   background-color: white;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  transition: left 0.4s ease-in-out, opacity 0.4s ease-in;
+  -moz-transition: left 0.4s ease-in-out, opacity 0.4s ease-in;
+}
+#navigation-feed.animate {
+  left: 0;
+  opacity: 0;
+}
+#navigation-feed.my_hidden {
+  left: 0;
+  visibility: hidden;
 }
 #feed {
   position: relative;
@@ -426,7 +428,7 @@ li.feed-description-container {
 .feed-item-container .wrapper {
   display: block;
   position: relative;
-  margin: 10px;
+  margin: 15px 25px 15px 25px;
 }
 .feed-item-container div.thumbnail {
   -webkit-box-sizing: border-box;
@@ -464,8 +466,20 @@ li.feed-description-container {
 #navigation-item {
   position: relative;
   height: 100%;
-  width: -moz-calc(43%);
+  width: 45%;
   left: 50%;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -webkit-transition: opacity 0.25s ease-in;
+  -moz-transition: opacity 0.25s ease-in;
+  -ms-transition: opacity 0.25s ease-in;
+  -o-transition: opacity 0.25s ease-in;
+  transition: opacity 0.25s ease-in;
+}
+#navigation-item.animate {
+  opacity: 0;
+  filter: alpha(opacity=0);
+  visibility: hidden;
 }
 #item {
   margin-top: 15px;
