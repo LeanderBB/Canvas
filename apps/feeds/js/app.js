@@ -1,3 +1,4 @@
+'use script';
 AppNS.App.initialize = function(){
     $("#navigation-subscriptions, #navigation-feed, #navigation-item").each(function(){
         $(this).KineticSlider();

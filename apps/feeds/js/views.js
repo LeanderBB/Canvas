@@ -1,4 +1,4 @@
-//'use strict';
+'use strict';
 /* Backbone Views ----- */
 
 AppNS.Views.Item = Backbone.View.extend({

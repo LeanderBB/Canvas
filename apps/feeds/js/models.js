@@ -1,3 +1,4 @@
+'use script';
 /* Backbone Models ----- */
 AppNS.Models.Feed = Backbone.Model.extend({
 

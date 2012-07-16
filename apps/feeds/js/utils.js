@@ -1,3 +1,4 @@
+'use script';
 $.fn.sanitizeHTML = function() {
   var $children = $(this).children();
   $children.each(function() {
