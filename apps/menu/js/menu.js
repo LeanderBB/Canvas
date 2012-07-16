@@ -26,6 +26,7 @@ var menuController;
 google.load("gdata", "2.x");
 
 $(document).ready(function () {
+    window.app = new CanvasApp("menu");
 	menuController = new MenuController();
 });
 
@@ -57,8 +58,7 @@ MenuController.prototype.actualize_data = function () {
 	this.menuview.set_calendar_data(data);
 	this.menuview.actualize_interface();
 
-   //TODO: AT THIS POINT THE APP IS READY YOU CAN SHOW IT
-
+    window.app.ready();
 };
 
 
@@ -460,8 +460,7 @@ MenuView.prototype.set_window_dimensions = function (width, height) {
 /* button close animation */
 MenuView.prototype.menu_main_close = function () {
 
-	//TODO HERE YOU CAN CLOSE THE APPLICATION 
-	
+    window.app.exit();	
 	/*
 	if ($("#main_menu").css("opacity") === 0) {
 		$("#main_menu").css("opacity", "1");
