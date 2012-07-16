@@ -75,7 +75,6 @@ AppNS.Views.Feed = Backbone.View.extend({
             });
             $(this.el).append(feedItemDescriptionView.render().el);
         }
-
     },
 
     feedSelectionListener: function(e){
@@ -128,6 +127,7 @@ AppNS.Views.Subscriptions = Backbone.View.extend({
         _.each(this.collection.models, function (item) {
             that.renderFeed(item);
         }, this);
+        $("#subscriptions").addClass("animate");
     },
  
     renderFeed: function (item) {

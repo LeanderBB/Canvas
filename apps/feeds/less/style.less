@@ -74,7 +74,19 @@ ul, ol {
 }
 
 #subscriptions {
+	//ANIMATION
+	transition: opacity 2s ease-in;	
+	-moz-transition: opacity 2s ease-in;	
+	.opacity(100);
 
+	&.new{
+		//.opacity(0);
+	}
+
+	&.animate{
+		//.opacity(0);
+	}
+	// ---
 }
 
 .element-up-arrow {
@@ -182,7 +194,7 @@ li.feed-description-container {
 #navigation-item {
 	position: relative;
 	height: 100%;
-	width: 45%;
+	width: 50%;
 	left: 50%;
 	.opacity(100);
 	.transition(opacity 0.25s ease-in);
@@ -196,8 +208,8 @@ li.feed-description-container {
 }
 
 #item{
-	margin-top: 15px;
-	padding: 10px;
+	margin: 0;
+	padding: 15px 10px 10px 10px;
 	color: black;
 }
 

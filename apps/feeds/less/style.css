@@ -369,6 +369,12 @@ ol {
   z-index: 10;
   background-color: black;
 }
+#subscriptions {
+  transition: opacity 2s ease-in;
+  -moz-transition: opacity 2s ease-in;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
 .element-up-arrow {
   font-size: 0px;
   line-height: 0%;
@@ -466,7 +472,7 @@ li.feed-description-container {
 #navigation-item {
   position: relative;
   height: 100%;
-  width: 45%;
+  width: 50%;
   left: 50%;
   opacity: 1;
   filter: alpha(opacity=100);
@@ -482,8 +488,8 @@ li.feed-description-container {
   visibility: hidden;
 }
 #item {
-  margin-top: 15px;
-  padding: 10px;
+  margin: 0;
+  padding: 15px 10px 10px 10px;
   color: black;
 }
 .feed-item-container {
