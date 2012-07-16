@@ -459,8 +459,7 @@ MenuView.prototype.set_window_dimensions = function (width, height) {
 
 /* button close animation */
 MenuView.prototype.menu_main_close = function () {
-
-    window.app.exit();	
+    window.app.exit();
 	/*
 	if ($("#main_menu").css("opacity") === 0) {
 		$("#main_menu").css("opacity", "1");
