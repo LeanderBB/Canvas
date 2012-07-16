@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE>
 <html class="no-js" lang="en">
 <head>
 	<meta charset="utf-8">
@@ -7,9 +7,12 @@
 	<title></title>
 	<meta name="description" content="">
 	<meta name="author" content="">
-
+    
 	<meta name="viewport" content="width=device-width">
-
+    <script> 
+           Components.utils.import("resource://canvas_module/canvas.jsm");
+    </script>
+    <script src="../../core/canvas_app.js"></script>
 	<link rel="stylesheet/less" href="less/style.less">
 
 <!-- Use SimpLESS (Win/Linux/Mac) or LESS.app (Mac) to compile your .less files
@@ -86,7 +89,7 @@ to style.css, and replace the 2 lines above by this one:
 	<script>
     google.load("feeds", "1"); // Load Google Feeds API
     </script>
-    <script type="text/javascript" src="../../../core/toolkit.js"></script>
+    <script type="text/javascript" src="../../core/toolkit.js"></script>
     <script type="text/javascript" src="js/models.js"></script>
     <script type="text/javascript" src="js/views.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>
