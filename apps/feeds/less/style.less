@@ -24,12 +24,15 @@
 @border_color_gradient_end: #c07300;
 
 //------------------------------------------------------
+* {
+	.fontFaceContent();
+}
+
 body {
 	color: white;
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-
 	.fontFaceContent();
 }
 
@@ -51,18 +54,24 @@ ul, ol {
 // SUBSCRIPTION NAVIGATION -----------------------------
 
 #logo-container {
-	margin-top: 0;
-	width: 100%;
-	height: 90px;
-	border-bottom: @border_color solid 2px;
-	z-index: 100;
+	position: relative;
+	width: 80%;
+	height: 20%;
+	margin: 0 auto;
+	//border-bottom: @border_color solid 2px; // coiso
+	z-index: 1000;
 	background-color: black;
 }
 
 #app-logo {
-	margin: 30px auto;
-	height: 60px;
+	position: absolute;
+	left: 50%;
+	right: 0;
+	top: 0;
+	margin-top: 32.5px;
+	height: 65px;
 	width: 60px;
+	margin-left: -30px;
 	background: url(../resources/logo_feeds.svg) no-repeat;
 	background-size: contain;
 }
@@ -70,6 +79,25 @@ ul, ol {
 #navigation-subscriptions {
 	z-index: 10;
 	background-color: black;
+
+	.element-down-arrow{
+		display: block;
+	}
+
+	&.new {
+		#logo-container {
+			border-bottom: @border_color solid 2px;
+		}
+
+		.element-up-arrow {
+			display: block;
+		}
+
+		.element-down-arrow {
+			display: none;
+		}
+
+	}
 }
 
 #subscriptions {
@@ -88,17 +116,17 @@ ul, ol {
 	// ---
 }
 
-.element-up-arrow {
-	font-size: 0px; line-height: 0%; width: 0px;
-	border-bottom: 20px solid @border_color;
-	border-left: 30px solid @border_color;
-	border-right: 30px solid @border_color;
-}
-
 .feed-description-container {
 	.box-sizing(border-box);
-	padding-left: 30px;
 	border-bottom: @border_color solid 2px;
+	height: 80px;
+
+	h1 {
+		text-transform: uppercase;
+		text-align: right;
+		line-height: 80px;
+		padding: 0 20px 0 20px;
+	}
 
 	&.active {
 		background-color: @border_color;
@@ -142,6 +170,41 @@ li.feed-description-container {
 	padding-bottom: 20px;
 }
 
+#wrapper-subscriptions {
+	position: relative;
+	z-index: 1;
+	width: 80%;
+	height: 100%;
+	margin: 0 auto;
+}
+
+.element-down-arrow {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -15px;
+	font-size: 0px; line-height: 0%; width: 0px; height: 0;
+	border-top: 10px solid black;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	z-index: 100000;
+	display: none;
+}
+
+.element-up-arrow {
+	position: absolute;
+	top: 0px;
+	margin-top: -10px;
+	left: 50%;
+	margin-left: -15px;
+	font-size: 0px; line-height: 0%; width: 0px; height: 0;
+	border-bottom: 10px solid @border_color;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	z-index: 100000;
+	display: none;
+}
+
 #subscriptions {
 }
 
@@ -150,7 +213,7 @@ li.feed-description-container {
 	.wrapper {
 		display: block;
 		position: relative;
-		margin: 15px 25px 15px 25px;
+		margin: 10px 40px 10px 40px;
 	}
 
 	div.thumbnail {
@@ -164,23 +227,30 @@ li.feed-description-container {
 	}
 
 	div.title {
-
 		.box-sizing(border-box);
 		position: relative;
 		display: inline-block;
 		width: 100%;
 		margin-top: 0;
 		padding: 10px;
-		background-color: orange;
 
 		h1 {
-			color: white;
+			text-transform: uppercase;
+			text-align: right;
+			color: black;
 			max-height: 50px;
 			line-height: 25px;
 			word-wrap: break-word;
 			font-size: 25px;
 			overflow: hidden;
 			text-overflow: ellipsis;
+		}
+	}
+
+	&.active {
+		div.title {
+			color: white;
+			background-color: orange;
 		}
 	}
 
@@ -193,14 +263,31 @@ li.feed-description-container {
 #navigation-item {
 	position: relative;
 	height: 100%;
-	width: 50%;
+	width: 45%;
 	left: 50%;
 	.opacity(100);
 	.transition(opacity 0.25s ease-in);
+	z-index: 100;
 	//ANIMATION
 	&.animate{	
 		.opacity(0);
 		visibility: hidden;
+	}
+
+	&.active{
+		.message-box {
+			display: none;
+		}
+	}
+
+	div.message-box {
+		z-index: 10;
+		position: absolute;
+		top: 50%;
+		right: 40%;
+		width: 200px;
+		height: 100px;
+		color: @border_color;
 	}
 	// ---
 
@@ -230,7 +317,13 @@ li {
 	position: absolute;
 	background-size: cover;
 	z-index: 1000;
-	visibility: hidden;
+
+	&.arrow_big_left {
+		position: relative;
+		background-image: url(../resources/arrow_big_left.svg);
+		width: 32px;
+		height: 32px;
+	}
 
 	&.up {
 		top: 0;
@@ -238,6 +331,7 @@ li {
 	}
 
 	&.gfx-arrow_small_up {
+		visibility: hidden;
 		background-image: url(../resources/arrow_small_up.svg);
 		width: 22px;
 		height: 22px;		
@@ -249,6 +343,7 @@ li {
 	}
 
 	&.gfx-arrow_small_down {
+		visibility: hidden;
 		background-image: url(../resources/arrow_small_down.svg);
 		width: 22px;
 		height: 22px;
@@ -257,6 +352,42 @@ li {
 	&.active {
 		visibility: visible;
 	}
+}
+
+
+#navigation-item {
+	
+	& .gfx-arrow.up {
+			top: 0;
+			right: 50%;
+			margin-right: -22px;
+	}
+
+	& .gfx-arrow.down {
+		bottom: 0;
+		right: 50%;
+		margin-right: -22px;
+	}
+}
+
+.g_close {
+    background-image: url('../resources/close.svg');
+    z-index: 9999999;
+    background-color: white;
+    opacity: 0.5;
+}
+
+.feed_app_exit{
+	position: fixed;
+    right: 1em;
+    top: 1em;
+    width: 4.625em;
+    height: 4.625em;
+    background-size: contain;
+    background-position: center;
+}
+
+.inline-mix {
 }
 
 //-------------------------------------------------------

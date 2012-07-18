@@ -13,15 +13,30 @@ AppNS.Views.Item = Backbone.View.extend({
         AppNS.Events.bind("click_item_selection", this.itemSelectionListener);
     },
 
-    render: function (content) {
+    render: function (model) {
+        var tmpl = _.template(this.template);
         $("#navigation-item").addClass("animate");
-        var c = $(content).sanitizeHTML();
-        $(this.el).html(c);
+        console.log(model.content);
+        //var c = $(model.content).sanitizeHTML();
+        //$(this.el).html(c);
+        console.log(model.title);
+        var output = {
+            title: model.title,
+            content: model.content
+        };
+        $(this.el).html(tmpl(output));
+
+        $("#item").bind("click",function(e){
+            e.stopPropagation();
+            e.preventDefault();
+        })
+        $("#navigation-item").addClass("active");
+
         return this;
     },
 
-    itemSelectionListener: function(content){
-        this.render(content);
+    itemSelectionListener: function(model){
+        this.render(model);
     }
 });
 
@@ -46,7 +61,9 @@ AppNS.Views.FeedItemDescription = Backbone.View.extend({
     },
 
     itemSelectionDispatcher: function(e){
-        AppNS.Events.trigger("click_item_selection", this.model.content);
+        $(".feed-item-container.active").removeClass("active");
+        this.$el.addClass("active");
+        AppNS.Events.trigger("click_item_selection", this.model);
     }
 });
 
@@ -59,12 +76,13 @@ AppNS.Views.Feed = Backbone.View.extend({
         AppNS.Events.bind("click_feed_selection", this.feedSelectionListener);
 
         this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
-
     },
  
     render: function(args) {
 
+        // ANIMATION
         $("#navigation-feed").removeClass("my_hidden").addClass("animate");
+        // -----
         $(this.el).html("");
 
         for(var i=0; i<args[0].length; i++){
@@ -78,6 +96,8 @@ AppNS.Views.Feed = Backbone.View.extend({
     },
 
     feedSelectionListener: function(e){
+        $("#navigation-item").removeClass("active");
+        $("#item").html("");
         this.render(arguments);
     }
 });
@@ -107,6 +127,7 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
     },
 
     feedSelectionDispatcher : function(e){
+        $("#navigation-subscriptions").removeClass("new");
         $(".feed-description-container.active").removeClass("active");
         $(e.currentTarget).addClass("active");
         var args = this.model.attributes.content;

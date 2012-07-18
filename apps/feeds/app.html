@@ -27,23 +27,26 @@ to style.css, and replace the 2 lines above by this one:
 <!--<script data-main="js/main" src="js/require-jquery.js"></script>-->
 </head>
 <body>
-	<header>
-
-	</header>
+    <div id="app_close" class="feed_app_exit g_close"></div>
+	<header></header>
 	<div id="main">
-		<div id="navigation-subscriptions" class="navigation app_nav">
+		<div id="navigation-subscriptions" class="new navigation app_nav">
 			<div class="gfx-arrow gfx-arrow_small_up up"></div>
 			<div class="gfx-arrow gfx-arrow_small_down down"></div>
 			<div id="logo-container">
 				<div id="app-logo">
 				</div>
 			</div>
-			<ul id="subscriptions" class="slider new">
-				<!-- Subscriptions Template -->
-				<script id="subscriptionsTemplate" type="text/template">
-				<h1><%= title %></h1>
-				</script>
-				<!-- ***** -->
+			<div id="wrapper-subscriptions">
+				<div class="element-up-arrow"></div>
+				<div class="element-down-arrow"></div>
+				<ul id="subscriptions" class="slider new">
+					<!-- Subscriptions Template -->
+					<script id="subscriptionsTemplate" type="text/template">
+					<h1><%= title %></h1>
+					</script>
+					<!-- ***** -->
+				</div>
 			</div>
 			<div id="navigation-feed" class="my_hidden navigation app_nav">
 				<div class="gfx-arrow gfx-arrow_small_up up"></div>
@@ -66,9 +69,17 @@ to style.css, and replace the 2 lines above by this one:
 			<div id="navigation-item" class="navigation">
 				<div class="gfx-arrow gfx-arrow_small_up up"></div>
 				<div class="gfx-arrow gfx-arrow_small_down down"></div>
+				<div class="message-box">
+					<ul class="inline-mix"> 
+						<li><div class="gfx-arrow arrow_big_left"></li>
+						<li><h1>Select topic to read</h1></li>
+					</ul>
+				</div>
 				<div id="item" class="slider">
 					<!-- Item Template -->
 					<script id="itemTemplate" type="text/template">
+						<h1><%= title %></h1>
+						<div><%= content %></div>
 					</script>
 					<!-- ***** -->
 				</div>

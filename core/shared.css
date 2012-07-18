@@ -13,7 +13,6 @@ body,html {
     height: 100%;
 }
 
-
 @media screen and (device-aspect-ratio: 16/9) and (width: 1920px) {
     body {
         font-size: 100%;
@@ -25,7 +24,6 @@ body,html {
         font-size: 71.1%;
     }
 }
-
 
 @media screen and (device-aspect-ratio: 16/9) and (width: 1280px) {
     body {

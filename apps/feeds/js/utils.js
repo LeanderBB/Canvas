@@ -3,8 +3,22 @@ $.fn.sanitizeHTML = function() {
   var $children = $(this).children();
   $children.each(function() {
     if ($(this).not("b").not("i").not("p").not("br").length > 0) {
-      $(this).replaceWith($(this).text());
-    } else {
+      /*
+      if($(this).is("img")){
+        $(this).attr("style","");
+      }
+      else if ($(this).is("a")){
+        $(this).attr("href","");
+        $(this).attr("style","");
+        var b = $("b").html($(this).html());
+        $(this).replaceWith(b);
+      }
+      else {
+        */
+        $(this).replaceWith($(this).text());
+      //}
+    }
+    else {
       $(this).sanitizeHTML();
     }
   });
