@@ -6,6 +6,9 @@ $("div, ul").bind(CSS3_TRANSITION_END, function(){
     $(this).removeClass("animate");
 });
 
+$("#app_close").bind("mouseup", function(){
+    window.app.exit();
+});
 // setOnLoadCallback is a static function that registers the specified handler function
 // to be called once the page containing this call loads
 google.setOnLoadCallback(function(){
