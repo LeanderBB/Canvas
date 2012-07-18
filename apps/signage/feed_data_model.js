@@ -1,4 +1,4 @@
-//'use strict';
+'use strict';
 
 /*
 @params
@@ -13,7 +13,8 @@ function IFeedModel(url, options) {
 
     this.url = url;
     this.num_entries = options.num_entries || 10;
-    this.content=undefined;
+    this.content = undefined;
+    this.title = "No Title";
 }
 
 IFeedModel.prototype.init = function(callback) {
@@ -25,18 +26,25 @@ IFeedModel.prototype.init = function(callback) {
         function(result) {
             /* Feed has been loaded. Update the model with the feed's content */
             that.content = result.feed.entries;
+            that.title = result.feed.title;
             callback();
     });
 };
 
 IFeedModel.prototype.getItemCount = function () {
-    if (this.content!==undefined) { 
-        return this.content.length; }
-    else return 0;
+    if (this.content !== undefined) { 
+        return this.content.length; 
+    } else {
+        return 0;
+    }
+};
+
+IFeedModel.prototype.getTitle = function () {
+    return this.title;
 };
 
 IFeedModel.prototype.getItems = function () {
-        return this.content;
+    return this.content;
 };
 
 IFeedModel.prototype.getItemAtIndex = function (index) {
@@ -45,20 +53,15 @@ IFeedModel.prototype.getItemAtIndex = function (index) {
     else return undefined;
 };
 
-/* -------------------- */
-/*  Callback function - feed has been loaded and model is up-to-date */
-var callback = function(){
-    // ... //
-};
 
 /* -------------------- */
 /* APP INITIALIZATION CODE STARTS HERE */
 
-google.load("feeds","1"); // Load Google Feeds API
-ifeedmodel = new IFeedModel("http://feeds.feedburner.com/publicoRSS"); // example url provided
+//google.load("feeds","1"); // Load Google Feeds API
+//ifeedmodel = new IFeedModel("http://feeds.feedburner.com/publicoRSS"); // example url provided
 // setOnLoadCallback is a static function that registers the specified handler function
 // to be called once the page containing this call loads
-google.setOnLoadCallback(function(){
-    ifeedmodel.init(callback);
-});
+//google.setOnLoadCallback(function(){
+//    ifeedmodel.init(callback);
+//});
 

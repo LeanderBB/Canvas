@@ -2,6 +2,10 @@
 <html>
     <head>
         <title> SIGNAGE APP </title>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script> 
+            google.load("feeds","1");
+        </script>
         <script> 
            Components.utils.import("resource://canvas_module/canvas.jsm");
         </script>
@@ -11,7 +15,7 @@
         <script src="../../core/canvas_app.js"></script>
         <script src="../../core/toolkit.js"></script>
         <script src="../../core/video.js"></script>
-        <script src="config.js"></script>
+         <script src="feed_data_model.js"></script>
         <script src="app.js"></script>
     </head>
     <body>
@@ -20,15 +24,20 @@
     </div>
     <div id="footer" class="s_footer">
         <div class="s_entry_title">
-            <h1>Feed Title<h1>
+            <h1 id="feed_name"></h1>
         </div>
         <div class="s_entries">
-            <ul class="s_entries_list">
-            <li> Entry one </li>
+            <div>
+            <ul id="feed_titles" class="s_entries_list">
+            <!--li> Entry one </li>
             <li> Entry two </li>
-            <li> Entry three</li>
+            <li> Entry three</li-->
             </ul>
+            </div>
         </div>
     </div>
+     <div id="footer_loading" class="s_footer_loading">
+
+     </div>
     </body>
 </hmtl>
