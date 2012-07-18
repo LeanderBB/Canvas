@@ -6,20 +6,21 @@ AppNS.Views.Item = Backbone.View.extend({
     tagName: "div",
     className: "item-container",
     template: $("#itemTemplate").html(),
+
     
     initialize: function() {
         // Listen for UI Events
         this.itemSelectionListener = _.bind(this.itemSelectionListener, this);
         AppNS.Events.bind("click_item_selection", this.itemSelectionListener);
+
+        this.slider_object = $("#navigation-item").KineticSlider();
     },
 
     render: function (model) {
         var tmpl = _.template(this.template);
         $("#navigation-item").addClass("animate");
-        console.log(model.content);
         //var c = $(model.content).sanitizeHTML();
         //$(this.el).html(c);
-        console.log(model.title);
         var output = {
             title: model.title,
             content: model.content
@@ -76,6 +77,8 @@ AppNS.Views.Feed = Backbone.View.extend({
         AppNS.Events.bind("click_feed_selection", this.feedSelectionListener);
 
         this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
+
+        this.slider_object = $("#navigation-feed").KineticSlider();
     },
  
     render: function(args) {
@@ -114,6 +117,7 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
         // call "this" in "render" it will always reference this instance
         this.render = _.bind(this.render, this);
         this.model.bind('change', this.render);
+
     },
     
     render: function () {
@@ -127,6 +131,8 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
     },
 
     feedSelectionDispatcher : function(e){
+
+        AppNS.App.feed_view.slider_object.scrollToPercentage(0, 0);
         $("#navigation-subscriptions").removeClass("new");
         $(".feed-description-container.active").removeClass("active");
         $(e.currentTarget).addClass("active");
@@ -141,6 +147,8 @@ AppNS.Views.Subscriptions = Backbone.View.extend({
     initialize: function () {
         this.collection = new AppNS.Collections.Subscriptions(feed_subscriptions_configuration);
         this.render();
+
+        this.slider_object = $("#navigation-subscriptions").KineticSlider();
     },
  
     render: function () {

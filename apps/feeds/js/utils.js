@@ -62,7 +62,6 @@ $.fn.KineticSlider = function(options) {
         }
         var threshold_y = Math.abs($(slider).height()-700);
         var current_y = Math.round(Math.abs(amount.y));
-        console.log(threshold_y + "  " + current_y);
         if((threshold_y>current_y)){
             $down.addClass("active");
         }
@@ -72,7 +71,7 @@ $.fn.KineticSlider = function(options) {
       });
   })(kinetic_slider, div_id, slider);
 
-  return $(this);
+  return kinetic_slider;
 };
 
 
