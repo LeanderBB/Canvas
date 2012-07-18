@@ -62,6 +62,7 @@ AppNS.Views.FeedItemDescription = Backbone.View.extend({
     },
 
     itemSelectionDispatcher: function(e){
+        AppNS.App.item_view.slider_object.scrollToPercentage(0, 0);
         $(".feed-item-container.active").removeClass("active");
         this.$el.addClass("active");
         AppNS.Events.trigger("click_item_selection", this.model);
@@ -133,6 +134,8 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
     feedSelectionDispatcher : function(e){
 
         AppNS.App.feed_view.slider_object.scrollToPercentage(0, 0);
+        AppNS.App.item_view.slider_object.scrollToPercentage(0, 0);
+
         $("#navigation-subscriptions").removeClass("new");
         $(".feed-description-container.active").removeClass("active");
         $(e.currentTarget).addClass("active");
