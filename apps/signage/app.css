@@ -1,0 +1,49 @@
+
+
+.s_main {
+    width:100%;
+    height: 90%;
+    background-color: black;
+    overflow: hidden;
+}
+
+.s_footer {
+    width: 100%;
+    height: 6.75em;
+    color: white;
+    overflow: hidden;
+}
+
+.s_footer > div {
+    display: inline-block;
+    float: left;
+}
+
+.s_entry_title {
+    width: 18.75em;
+    line-height: 6.75em; 
+    height: 100%;
+    background-color: RGB(50,50,50);
+}
+.s_entry_title h1{
+    width: 100%;
+    font-size: 6em;
+    text-align: center;
+}
+
+.s_entries {
+    width: 101.25em;
+    height: 100%;
+    background-color: RGB(10,10,10);
+}
+
+.s_entries_list {
+}
+
+.s_entries_list li {
+     display:inline;
+     font-size: 5em;
+     font-family: 'CanvasAvenir';
+}
+
+
