@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="180"
+   height="180"
+   id="svg2">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(0,-872.36218)"
+     id="layer1"
+     style="display:inline">
+    <g
+       transform="matrix(1.0104628,0,0,0.99986752,-0.01109559,200.07318)"
+       id="g2991"
+       style="stroke:none" />
+    <g
+       transform="matrix(0.50272062,0,0,0.49003516,0.99445022,682.6586)"
+       id="g2994"
+       style="stroke:none" />
+    <g
+       transform="matrix(0.50272062,0,0,0.49003516,100.4921,682.6586)"
+       id="g2998"
+       style="stroke:none" />
+    <g
+       transform="matrix(0.50272062,0,0,0.49003516,199.98974,682.6586)"
+       id="g3014"
+       style="stroke:none" />
+    <g
+       transform="matrix(0.50272062,0,0,0.49003516,299.48739,682.6586)"
+       id="g3018"
+       style="stroke:none" />
+  </g>
+  <g
+     transform="translate(0,-120)"
+     id="layer2"
+     style="display:inline">
+    <path
+       d="m 90,127.07107 c -45.800378,0 -82.9289322,37.12855 -82.9289322,82.92893 0,45.80038 37.1285542,82.92893 82.9289322,82.92893 45.80038,0 82.92893,-37.12855 82.92893,-82.92893 0,-45.80038 -37.12855,-82.92893 -82.92893,-82.92893 z m 0,18.42865 c 14.97617,0 28.73189,5.14283 39.67919,13.70631 L 39.206029,249.67919 C 30.642548,238.73189 25.499719,224.97617 25.499719,210 25.499719,174.37747 54.377472,145.49972 90,145.49972 z m 53.61586,28.56441 c 6.89994,10.26811 10.88442,22.6349 10.88442,35.93587 0,35.62253 -28.87775,64.50028 -64.50028,64.50028 -13.300971,0 -25.667758,-3.98448 -35.935871,-10.88442 l 89.551731,-89.55173 z"
+       id="path3101"
+       style="opacity:0.95999995;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
+  </g>
+</svg>

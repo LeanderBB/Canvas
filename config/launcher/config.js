@@ -27,7 +27,7 @@
             "name": "Signage",
             "path": "signage",
             "icon": "icon_launcher.svg",
-            "color": "RGB(255,255,0)",
+            "color": "#390458",
             "hidden": true
         }
     },

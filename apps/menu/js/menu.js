@@ -26,7 +26,7 @@ var menuController;
 google.load("gdata", "2.x");
 
 $(document).ready(function () {
-    window.app = new CanvasApp("menu");
+	window.app = new CanvasApp("menu");
 	menuController = new MenuController();
 });
 
@@ -57,8 +57,13 @@ MenuController.prototype.actualize_data = function () {
 	var data = this.menumodel.get_calendar_data();
 	this.menuview.set_calendar_data(data);
 	this.menuview.actualize_interface();
+	window.app.ready();
+};
 
-    window.app.ready();
+/* error has happened (some or all calendars are not loaded) */
+MenuController.prototype.error_has_happened = function () {
+	this.menumodel.error_has_happened = true;
+	this.menuview.error_has_happened();
 };
 
 
@@ -69,9 +74,11 @@ MenuController.prototype.actualize_data = function () {
 ********************************************************************************
 *******************************************************************************/
 function MenuModel(parent) {
-	this.calendar_data     = {};
-	this.controller        = parent;
-	this.loaded_calendars  = 0;
+	this.calendar_data      = {};
+	this.controller         = parent;
+	this.loaded_calendars   = 0;
+	this.error_has_happened = false;
+
 	for (var c in calendar_list) {
 		console.log(calendar_list[c]);
 		this.load_calendar_by_address(calendar_list[c]);
@@ -110,6 +117,11 @@ MenuModel.prototype.load_calendar = function (calendar_url) {
 
 /** e is an instance of an Error */
 MenuModel.prototype.handle_error = function (error) {
+
+	if (this.error_has_happened === false) {
+		this.controller.error_has_happened();
+	}
+	
 	if (error instanceof Error) {
 		console.log('Error at line ' + error.lineNumber + ' in ' +
 						error.fileName + '\n' + 'Message: ' + error.message);
@@ -119,6 +131,11 @@ MenuModel.prototype.handle_error = function (error) {
 
 /* feedRoot is the root of the feed, containing all entries */
 MenuModel.prototype.handle_events = function (feed_root) {
+
+	if (this.error_has_happened === true) {
+		return;
+	}
+
 	var type, entries, len, entry, title, times, startDateTime, startJSDate,
 		year, week, day, info, i;
 
@@ -459,7 +476,8 @@ MenuView.prototype.set_window_dimensions = function (width, height) {
 
 /* button close animation */
 MenuView.prototype.menu_main_close = function () {
-    window.app.exit();
+
+    window.app.exit();	
 	/*
 	if ($("#main_menu").css("opacity") === 0) {
 		$("#main_menu").css("opacity", "1");
@@ -571,6 +589,12 @@ MenuView.prototype.menu_bind_animations = function () {
 	$("#main_left").mouseup($.proxy(this.menu_main_left, this));
 	$("#sidebar_up").mouseup($.proxy(this.sidebar_up, this));
 	$("#sidebar_down").mouseup($.proxy(this.sidebar_down, this));
+};
+
+MenuView.prototype.error_has_happened = function () {
+	window.app.ready();
+	$("#main_error").css("visibility", "visible");
+	$("#main_error").click($.proxy(this.menu_main_close, this));
 };
 
 Date.prototype.getWeek = function () {

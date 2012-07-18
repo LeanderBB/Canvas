@@ -39,7 +39,7 @@ Gallery.Model = function () {
     this.galleries = [];
 };
 
-Gallery.Model.prototype.getGalleryCoubt = function () {
+Gallery.Model.prototype.getGalleryCount = function () {
     return this.galleries.length;
 };
 

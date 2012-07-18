@@ -1,7 +1,30 @@
+@font-face {
+  font-family: 'CanvasAvenir';
+  src: url('fonts/avenir-book-webfont.eot');
+  src: url('fonts/avenir-book-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/avenir-book-webfont.woff') format('woff'), url('fonts/avenir-book-webfont.ttf') format('truetype'), url('fonts/avenir-book-webfont.svg#Avenir45BookRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CanvasRBNo2Light';
+  src: url('fonts/rbno2light-webfont.eot');
+  src: url('fonts/rbno2light-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/rbno2light-webfont.woff') format('woff'), url('fonts/rbno2light-webfont.ttf') format('truetype'), url('fonts/rbno2light-webfont.svg#RBNo2LightRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'CanvasRBNo2LightAlternative';
+  src: url('fonts/rbno2light_a-webfont.eot');
+  src: url('fonts/rbno2light_a-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/rbno2light_a-webfont.woff') format('woff'), url('fonts/rbno2light_a-webfont.ttf') format('truetype'), url('fonts/rbno2light_a-webfont.svg#RBNo2LightAlternativeRegular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
 	margin: 0;
 	padding: 0;
-    font-family: "RBNo2 Light";
+    font-family: "CanvasRBNo2Light";
     font-weight: normal;
 	cursor: default;
 	-moz-user-select: none;
