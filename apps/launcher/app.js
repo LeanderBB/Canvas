@@ -59,7 +59,7 @@ Launcher.prototype.init = function () {
                     Canvas.MSG_INTERACTION,
                     "launcher",
                     {"status": "up"}), "*");
-   }, false);
+    }, false);
 };
 
 Launcher.prototype.launchApp = function (app) {
@@ -75,7 +75,7 @@ Launcher.prototype.launchApp = function (app) {
 };
 
 Launcher.prototype.restartTimeout = function () {
-    Canvas.log("RESTART","TIMEOUT");
+    Canvas.log("RESTART", "TIMEOUT");
     clearTimeout(this.timer);
     var that = this;
     this.timer = setTimeout(function () {
@@ -84,13 +84,13 @@ Launcher.prototype.restartTimeout = function () {
 };
 
 Launcher.prototype.stopTimeout = function () {
-    Canvas.log("STOP","TIMEOUT");
+    Canvas.log("STOP", "TIMEOUT");
     clearTimeout(this.timer);
     this.timer = null;
 };
 
 Launcher.prototype.onTimeout = function () {
-    Canvas.log("Application timed out","launcher");
+    Canvas.log("Application timed out", "launcher");
     this.timed_out = true;
     if (this.app_frame.isVisible()) {
         this.closeApp();
@@ -107,7 +107,7 @@ Launcher.prototype.handleTimeout = function () {
 };
 
 Launcher.prototype.closeApp = function () {
-    function on_close_trigger (e) {
+    function on_close_trigger(e) {
         window.l.app_frame.reset();
         e.target.removeEventListener("transitionend", on_close_trigger, false);
         window.l.handleTimeout();
@@ -115,7 +115,7 @@ Launcher.prototype.closeApp = function () {
     if (this.cur_app_ref) {
         this.app_frame.hide();
         this.load_screen.hide();
-        this.cur_app_ref = null;    
+        this.cur_app_ref = null;
         this.app_frame.getFrame().addEventListener("transitionend",
             on_close_trigger, false);
     }
@@ -129,7 +129,7 @@ Launcher.prototype.handleMessage = function (message) {
         this.app_frame.show();
         break;
     case Canvas.MSG_ERROR:
-        Canvas.log(message.data.msg,"ERROR");
+        Canvas.log(message.data.msg, "ERROR");
         this.closeApp();
         this.load_screen.hide();
         this.cur_app_ref = null;
@@ -234,9 +234,9 @@ Launcher.AppFrame = function () {
         if (that.isVisible() === false) {
             window.postMessage(new Canvas.Message(Canvas.MSG_ERROR,
                 "AppFrame",
-                {"msg": "Timeout - Failed to open the application."}),"*");
+                {"msg": "Timeout - Failed to open the application."}), "*");
         }
-    }
+    };
     this.reset();
 };
 
@@ -305,7 +305,7 @@ Launcher.View.prototype._newElement = function (key, app) {
     that = this;
     div.style.backgroundImage = "url('" + app.getIconPath() + "')";
     li.appendChild(div);
-    li.innerHTML += app.getName();
+    li.innerHTML += "<h1>" + app.getName() + "</h1>";
 
     li.addEventListener("mousedown", function () {
         this.style.color = app.getColor();

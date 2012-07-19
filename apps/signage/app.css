@@ -1,6 +1,7 @@
 
 body {
     background-color: black;
+    overflow: hidden;
 }
 
 .s_main {
@@ -9,6 +10,14 @@ body {
     background-color: black;
     overflow: hidden;
 }
+
+.s_main_item {
+    width:100%;
+    height: 90%;
+    position:absolute;
+    -moz-transition: -moz-transform 1s ease, opacity 0.4s linear;
+}
+
 
 .s_footer {
     width: 100%;
@@ -31,7 +40,7 @@ body {
 }
 .s_entry_title h1{
     width: 100%;
-    font-size: 6em;
+    font-size: 3em;
     text-align: center;
 }
 
@@ -85,6 +94,22 @@ body {
     -moz-transition: opacity 0.5s linear;
 }
 
+.s_main_loading {
+    position: fixed;
+    top: -moz-calc(45% - 3.375em);
+    left: -moz-calc(50% - 3.375em); 
+    width: 6.75em;
+    height: 6.75em;
+    background-image: url('resources/loading.svg');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    -moz-animation: s_loader_rotate 1.2s linear infinite;
+    -moz-transition: opacity 0.5s linear;
+}
+
+
+
 @-moz-keyframes s_loader_rotate {
     from {
         -moz-transform: rotate(0deg);
@@ -93,4 +118,5 @@ body {
         -moz-transform: rotate(360deg);
     }
 }
+
 

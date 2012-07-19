@@ -14,13 +14,15 @@
 function VideoPlayer(options) {
     var that = this;
     this.video = document.createElement("video");
-    this.video.addEventListener("mouseup", function () {
-        if (that.isPlaying()) {
-            that.pause();
-        } else {
-            that.play();
-        }
-    }, true);
+    if (options.automatic === undefined) {
+        this.video.addEventListener("mouseup", function () {
+            if (that.isPlaying()) {
+                that.pause();
+            } else {
+                that.play();
+            }
+        }, true);
+    }
     this.video.preload = "metadata";
     this.state = VideoPlayer.NO_SOURCE;
     this.EvtPlay = new Event();
@@ -91,7 +93,9 @@ VideoPlayer.prototype.setSource = function (url, poster_url) {
     this.state = VideoPlayer.LOADING;
     this.EvtStateChange.trigger(this.state);
     this.video.src = url;
-    this.video.poster = poster_url;
+    if (poster_url !== undefined) {
+        this.video.poster = poster_url;
+    }
     this.video.load();
 };
 /**
@@ -186,8 +190,13 @@ VideoPlayer.View = function (controller, options) {
     }
     this.container.classList.add("c3_video_container");
     this.ui_elements = 0;
-    this._setupInterface();
     this.controller.EvtStateChange.addListener(this, this._handleStateChange);
+    if (options.automatic !== undefined) {
+        this.interface_elements = false;
+    } else {
+        this.interface_elements = true;
+    }
+    this._setupInterface();
 };
 
 VideoPlayer.View.prototype._setupInterface = function () {
@@ -207,7 +216,9 @@ VideoPlayer.View.prototype._setupInterface = function () {
     this.bt_progress = new VideoPlayer.View.Progress({
             "style": "c3_video_progress",
             "mouseup": function (progress) {
-                that.controller.setElapsedPercentage(progress);
+                if (that.interface_elements) {
+                    that.controller.setElapsedPercentage(progress);
+                }
             }
         });
     this.bt_main = new VideoPlayer.View.MainButton(
@@ -233,7 +244,9 @@ VideoPlayer.View.prototype._setupInterface = function () {
 VideoPlayer.View.prototype._handleStateChange = function (state) {
     if (state & VideoPlayer.ERROR) {
         this.bt_main.setStateError();
-        this.bt_main.show();
+        if (this.interface_elements) {
+            this.bt_main.show();
+        }
         return;
     }
 
@@ -242,14 +255,18 @@ VideoPlayer.View.prototype._handleStateChange = function (state) {
         this.bt_progress.setProgress(0);
         this.bt_main.setStateLoad();
         this.bt_play.setDisabled(true);
-        this.bt_main.show();
+        if (this.interface_elements) {
+            this.bt_main.show();
+        }
     }
 
     if (state & VideoPlayer.READY) {
         this.bt_play.setDisabled(false);
         this.bt_main.setStatePlay();
     } else if (state & VideoPlayer.ERROR) {
-        this.bt_main.show();
+        if (this.interface_elements) {
+            this.bt_main.show();
+        }
         this.bt_main.setStateError();
     }
 
@@ -262,13 +279,17 @@ VideoPlayer.View.prototype._handleStateChange = function (state) {
         } else {
             this.bt_main.setStatePlay();
         }
-        this.bt_main.show();
+        if (this.interface_elements) {
+            this.bt_main.show();
+        }
     }
 
     
     if (state & VideoPlayer.ENDED) {
         this.bt_main.setStatePlay();
-        this.bt_main.show();
+        if (this.interface_elements) {
+            this.bt_main.show();
+        }
     }
 };
 
