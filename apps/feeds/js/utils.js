@@ -3,8 +3,22 @@ $.fn.sanitizeHTML = function() {
   var $children = $(this).children();
   $children.each(function() {
     if ($(this).not("b").not("i").not("p").not("br").length > 0) {
-      $(this).replaceWith($(this).text());
-    } else {
+      /*
+      if($(this).is("img")){
+        $(this).attr("style","");
+      }
+      else if ($(this).is("a")){
+        $(this).attr("href","");
+        $(this).attr("style","");
+        var b = $("b").html($(this).html());
+        $(this).replaceWith(b);
+      }
+      else {
+        */
+        $(this).replaceWith($(this).text());
+      //}
+    }
+    else {
       $(this).sanitizeHTML();
     }
   });
@@ -48,7 +62,6 @@ $.fn.KineticSlider = function(options) {
         }
         var threshold_y = Math.abs($(slider).height()-700);
         var current_y = Math.round(Math.abs(amount.y));
-        console.log(threshold_y + "  " + current_y);
         if((threshold_y>current_y)){
             $down.addClass("active");
         }
@@ -58,7 +71,7 @@ $.fn.KineticSlider = function(options) {
       });
   })(kinetic_slider, div_id, slider);
 
-  return $(this);
+  return kinetic_slider;
 };
 
 

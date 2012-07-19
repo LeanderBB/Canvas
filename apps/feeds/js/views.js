@@ -6,22 +6,38 @@ AppNS.Views.Item = Backbone.View.extend({
     tagName: "div",
     className: "item-container",
     template: $("#itemTemplate").html(),
+
     
     initialize: function() {
         // Listen for UI Events
         this.itemSelectionListener = _.bind(this.itemSelectionListener, this);
         AppNS.Events.bind("click_item_selection", this.itemSelectionListener);
+
+        this.slider_object = $("#navigation-item").KineticSlider();
     },
 
-    render: function (content) {
+    render: function (model) {
+        var tmpl = _.template(this.template);
         $("#navigation-item").addClass("animate");
-        var c = $(content).sanitizeHTML();
-        $(this.el).html(c);
+        //var c = $(model.content).sanitizeHTML();
+        //$(this.el).html(c);
+        var output = {
+            title: model.title,
+            content: model.content
+        };
+        $(this.el).html(tmpl(output));
+
+        $("#item").bind("click",function(e){
+            e.stopPropagation();
+            e.preventDefault();
+        })
+        $("#navigation-item").addClass("active");
+
         return this;
     },
 
-    itemSelectionListener: function(content){
-        this.render(content);
+    itemSelectionListener: function(model){
+        this.render(model);
     }
 });
 
@@ -46,7 +62,10 @@ AppNS.Views.FeedItemDescription = Backbone.View.extend({
     },
 
     itemSelectionDispatcher: function(e){
-        AppNS.Events.trigger("click_item_selection", this.model.content);
+        AppNS.App.item_view.slider_object.scrollToPercentage(0, 0);
+        $(".feed-item-container.active").removeClass("active");
+        this.$el.addClass("active");
+        AppNS.Events.trigger("click_item_selection", this.model);
     }
 });
 
@@ -60,11 +79,14 @@ AppNS.Views.Feed = Backbone.View.extend({
 
         this.feedSelectionListener = _.bind(this.feedSelectionListener, this);
 
+        this.slider_object = $("#navigation-feed").KineticSlider();
     },
  
     render: function(args) {
 
+        // ANIMATION
         $("#navigation-feed").removeClass("my_hidden").addClass("animate");
+        // -----
         $(this.el).html("");
 
         for(var i=0; i<args[0].length; i++){
@@ -78,6 +100,8 @@ AppNS.Views.Feed = Backbone.View.extend({
     },
 
     feedSelectionListener: function(e){
+        $("#navigation-item").removeClass("active");
+        $("#item").html("");
         this.render(arguments);
     }
 });
@@ -94,6 +118,7 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
         // call "this" in "render" it will always reference this instance
         this.render = _.bind(this.render, this);
         this.model.bind('change', this.render);
+
     },
     
     render: function () {
@@ -107,6 +132,11 @@ AppNS.Views.FeedDescription = Backbone.View.extend({
     },
 
     feedSelectionDispatcher : function(e){
+
+        AppNS.App.feed_view.slider_object.scrollToPercentage(0, 0);
+        AppNS.App.item_view.slider_object.scrollToPercentage(0, 0);
+
+        $("#navigation-subscriptions").removeClass("new");
         $(".feed-description-container.active").removeClass("active");
         $(e.currentTarget).addClass("active");
         var args = this.model.attributes.content;
@@ -120,6 +150,8 @@ AppNS.Views.Subscriptions = Backbone.View.extend({
     initialize: function () {
         this.collection = new AppNS.Collections.Subscriptions(feed_subscriptions_configuration);
         this.render();
+
+        this.slider_object = $("#navigation-subscriptions").KineticSlider();
     },
  
     render: function () {
