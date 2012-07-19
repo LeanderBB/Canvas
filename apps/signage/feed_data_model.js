@@ -9,31 +9,36 @@ options:
     { num_entries: INTEGER } || number of feed entries to fetch
 */
 function IFeedModel(url, options) {
-    if (options === undefined) options={};
-
+    if (options === undefined) {
+        options = {};
+    }
     this.url = url;
     this.num_entries = options.num_entries || 10;
     this.content = undefined;
     this.title = "No Title";
 }
 
-IFeedModel.prototype.init = function(callback) {
-    var that = this;
-    // Download the feed from google servers. Calls the callback when done.
-    var feed = new google.feeds.Feed(this.url);
+IFeedModel.prototype.init = function (callback) {
+    var that = this, feed = new google.feeds.Feed(this.url);
     feed.setNumEntries(this.num_entries);
     feed.load(
-        function(result) {
-            /* Feed has been loaded. Update the model with the feed's content */
-            that.content = result.feed.entries;
-            that.title = result.feed.title;
+        function (result) {
+            if (!result.error) {
+                /* Feed has been loaded. Update the model with the
+                feed's content */
+                that.content = result.feed.entries;
+                that.title = result.feed.title;
+            } else {
+                that.title = "Error";
+                that.content = IFeedModel.DummyContent;
+            }
             callback();
-    });
+        });
 };
 
 IFeedModel.prototype.getItemCount = function () {
-    if (this.content !== undefined) { 
-        return this.content.length; 
+    if (this.content !== undefined) {
+        return this.content.length;
     } else {
         return 0;
     }
@@ -48,18 +53,25 @@ IFeedModel.prototype.getItems = function () {
 };
 
 IFeedModel.prototype.getItemAtIndex = function (index) {
-    if (this.content!==undefined){
-        return this.content[index]; }
-    else return undefined;
+    if (this.content !== undefined) {
+        return this.content[index];
+    } else {
+        return undefined;
+    }
 };
 
+IFeedModel.DummyContent = [{"title": "Could not load the request feed. \
+    Please verify tat the url is correct and that you have network \
+    connectivity."}];
 
 /* -------------------- */
 /* APP INITIALIZATION CODE STARTS HERE */
 
 //google.load("feeds","1"); // Load Google Feeds API
-//ifeedmodel = new IFeedModel("http://feeds.feedburner.com/publicoRSS"); // example url provided
-// setOnLoadCallback is a static function that registers the specified handler function
+//ifeedmodel = new IFeedModel("http://feeds.feedburner.com/publicoRSS");
+// example url provided
+// setOnLoadCallback is a static function that registers the specified
+// handler function
 // to be called once the page containing this call loads
 //google.setOnLoadCallback(function(){
 //    ifeedmodel.init(callback);
