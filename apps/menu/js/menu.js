@@ -231,7 +231,7 @@ function MenuView() {
 MenuView.prototype.actualize_interface = function () {
 	if (this.entries_count > 0) {
 		this.sidebar_selected = "r0";
-		$("#r0").css("background-color", "#FFFF00");
+		$("#r0").css("background-color", "#FFE503");
 		$("#r0> h1").css("color", "#000000");
 		$("#r0> h2").css("color", "#000000");
 	}
@@ -549,9 +549,9 @@ MenuView.prototype.menu_sidebar_click = function (event) {
 
 	$("#" + this.sidebar_selected).css("background-color", "transparent");
 	$("#" + this.sidebar_selected + "> h1").css("color", "#FFFFFF");
-	$("#" + this.sidebar_selected + "> h2").css("color", "#FFFF00");
+	$("#" + this.sidebar_selected + "> h2").css("color", "#FFE503");
 	
-	$("#" + id).css("background-color", "#FFFF00");
+	$("#" + id).css("background-color", "#FFE503");
 	$("#" + id + "> h1").css("color", "#000000");
 	$("#" + id + "> h2").css("color", "#000000");
 
