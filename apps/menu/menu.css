@@ -55,7 +55,7 @@ body{
 	padding-bottom: 7%;
 	padding-left: 10%;
 	text-align: right;
-	border-top: 1px solid #FFFF00;
+	border-top: 1px solid #FFE503;
 	-moz-transition: background-color 0.4s ease-in;
 }
 
@@ -66,7 +66,7 @@ body{
 }
 
 #sidebar_table li h2{
-	color: #FFFF00;
+	color: #FFE503;
 	font-family: "Avenir";
 	font-size: 1em;
 	-moz-transition: color 0.4s ease-in;
@@ -79,7 +79,7 @@ body{
 	width: 1.5%;
 	height: 2.67%;
 	height: -moz-calc(1.5% * 1.7777);
-	background: #FFFF00;
+	background: #FFE503;
 	background-image: url('images/arrow_small_down.svg');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -92,7 +92,7 @@ body{
 	left: 23.5%;
 	width: 1.5%;
 	height: 2.67%;
-	background: #FFFF00;
+	background: #FFE503;
 	background-image: url('images/arrow_small_up.svg');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -119,18 +119,16 @@ body{
 
 #main_close{
 	position: fixed;
-	top: 4%;
-	right: 2.25%;
-	right: -moz-calc(4% / 1.7777);
-	width: 3.5%;
-	height: 6.22%;
-	height: -moz-calc(3.5% * 1.7777);
-	background: #4A4A49;
+	right: 4.6em;
+	top: 3em;
+	width: 4.625em;
+	height: 4.625em;
+	background-size: contain;
+	background-position: center;
 	background-image: url('images/close.svg');
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
+	z-index: 9999999;
+	background-color: #4A4A49;
 }
-
 
 #main_menu{
 	position: fixed;
@@ -184,7 +182,7 @@ body{
 	width: 2.2%;
 	height: 3.91%;	
 	height: -moz-calc(2.2% * 1.7777);
-	background: #FFFF00;
+	background: #FFE503;
 	background-image: url('images/arrow_big_right.svg');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -197,7 +195,7 @@ body{
 	width: 2.2%;
 	height: 3.91%;
 	height: -moz-calc(2.2% * 1.7777);
-	background: #FFFF00;
+	background: #FFE503;
 	background-image: url('images/arrow_big_left.svg');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -214,7 +212,7 @@ body{
 }
 
 .main_box_today{
-	background: #FFFF00;
+	background: #FFE503;
 }
 
 .main_box_header{
