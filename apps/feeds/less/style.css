@@ -566,6 +566,9 @@ li.feed-description-container {
   padding: 15px 10px 10px 10px;
   color: black;
 }
+#item h1 {
+  margin-bottom: 15px;
+}
 .feed-item-container {
   overflow: hidden;
   text-overflow: ellipsis;
