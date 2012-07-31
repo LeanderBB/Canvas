@@ -109,7 +109,7 @@ MenuModel.prototype.load_calendar = function (calendar_url) {
 	query = new google.gdata.calendar.CalendarEventQuery(calendar_url);
 	query.setOrderBy('starttime');
 	query.setSortOrder('ascending');
-	query.setMinimumStartTime(date);
+	//query.setMinimumStartTime(date);
 
 	service.getEventsFeed(query, $.proxy(this.handle_events, this),
 											$.proxy(this.handle_error,  this));
