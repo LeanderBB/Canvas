@@ -109,7 +109,7 @@ MenuModel.prototype.load_calendar = function (calendar_url) {
 	query = new google.gdata.calendar.CalendarEventQuery(calendar_url);
 	query.setOrderBy('starttime');
 	query.setSortOrder('ascending');
-	//query.setMinimumStartTime(date);
+	query.setMinimumStartTime(date);
 
 	service.getEventsFeed(query, $.proxy(this.handle_events, this),
 											$.proxy(this.handle_error,  this));
@@ -587,8 +587,8 @@ MenuView.prototype.menu_bind_animations = function () {
 	$("#main_close").click($.proxy(this.menu_main_close, this));
 	$("#main_right").mouseup($.proxy(this.menu_main_right, this));
 	$("#main_left").mouseup($.proxy(this.menu_main_left, this));
-	$("#sidebar_up").mouseup($.proxy(this.sidebar_up, this));
-	$("#sidebar_down").mouseup($.proxy(this.sidebar_down, this));
+	//$("#sidebar_up").mouseup($.proxy(this.sidebar_up, this));
+	//$("#sidebar_down").mouseup($.proxy(this.sidebar_down, this));
 };
 
 MenuView.prototype.error_has_happened = function () {
