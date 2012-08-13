@@ -31,6 +31,9 @@ AppNS.Views.Item = Backbone.View.extend({
         })
         $("#navigation-item").addClass("active");
         $("#navigation-item").find("a").attr("href", "");
+        $("#navigation-item").children().each(function(){
+            $(this).attr("style", "");
+        });
 
         return this;
     },

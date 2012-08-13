@@ -7,7 +7,7 @@
             "icon": "icon_launcher.svg",
             "color": "RGB(190,22,34)",
             "hidden": false
-        },
+},
         "reader": {
             "name": "Reader",
             "path": "feeds",

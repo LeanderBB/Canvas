@@ -18,6 +18,9 @@
 }
 
 //------------------------------------------------------
+@text_color: black;
+
+//------------------------------------------------------
 /* Color Definitions */
 
 @border_color: #ff9900;
@@ -28,7 +31,7 @@
 	.fontFaceContent();
 }
 
-body {
+body, html {
 	color: white;
 	width: 100%;
 	height: 100%;
@@ -182,7 +185,6 @@ li.feed-description-container {
 	position: absolute;
 	top: 0;
 	left: 50%;
-	margin-left: -15px;
 	font-size: 0px; line-height: 0%; width: 0px; height: 0;
 	border-top: 10px solid black;
 	border-left: 10px solid transparent;
@@ -263,7 +265,7 @@ li.feed-description-container {
 #navigation-item {
 	position: relative;
 	height: 100%;
-	width: 45%;
+	width: 50%;
 	left: 50%;
 	.opacity(100);
 	.transition(opacity 0.25s ease-in);
@@ -362,35 +364,26 @@ li {
 	
 	& .gfx-arrow.up {
 			top: 0;
-			right: 50%;
-			margin-right: -22px;
+			right: 0;
 	}
 
 	& .gfx-arrow.down {
 		bottom: 0;
-		right: 50%;
-		margin-right: -22px;
+		right: 0;
 	}
 }
 
 .g_close {
     background-image: url('../resources/close.svg');
     z-index: 9999999;
-    background-color: white;
     opacity: 0.5;
 }
 
-.feed_app_exit{
-	position: fixed;
-    right: 1em;
-    top: 1em;
-    width: 4.625em;
-    height: 4.625em;
-    background-size: contain;
-    background-position: center;
-}
+// LINKS
 
-.inline-mix {
+a {
+	color: @text_color !important;
+	text-decoration: none !important;
 }
 
 //-------------------------------------------------------
@@ -399,6 +392,29 @@ li {
 h1, h2, h3, h4, h5, h6 {
 	.fontFaceTitles();
 }
+
+p{
+	font-size: 2em;
+}
+
+h1 {
+		font-size: 3em;
+} 
+
+h2 {
+		font-size: 1.75em;
+} 
+
+h3 {
+	font-size: 1.5em;
+}
+
+h4{
+	font-size: 1.25em;
+}
+
+
+
 
 //-------------------------------------------------------
 
