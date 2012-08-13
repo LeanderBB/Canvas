@@ -7,7 +7,6 @@ AppNS.Views.Item = Backbone.View.extend({
     className: "item-container",
     template: $("#itemTemplate").html(),
 
-    
     initialize: function() {
         // Listen for UI Events
         this.itemSelectionListener = _.bind(this.itemSelectionListener, this);
@@ -19,7 +18,6 @@ AppNS.Views.Item = Backbone.View.extend({
     render: function (model) {
         var tmpl = _.template(this.template);
         $("#navigation-item").addClass("animate");
-        //var c = $(model.content).sanitizeHTML();
         //$(this.el).html(c);
         var output = {
             title: model.title,
@@ -32,6 +30,10 @@ AppNS.Views.Item = Backbone.View.extend({
             e.preventDefault();
         })
         $("#navigation-item").addClass("active");
+        $("#navigation-item").find("a").attr("href", "");
+        $("#navigation-item").children().each(function(){
+            $(this).attr("style", "");
+        });
 
         return this;
     },
