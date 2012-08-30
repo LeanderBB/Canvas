@@ -145,6 +145,7 @@ body,html {
     height: 4.625em;
     background-size: contain;
     background-position: center;
+    background-color: RGB(255,255,255);
 }
 .debug {
     background-color: blue;

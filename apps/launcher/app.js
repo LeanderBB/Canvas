@@ -12,6 +12,8 @@ window.onload = function () {
     window.app = new CanvasApp("launcher", false);
     window.l = new Launcher();
     window.l.init();
+
+    document.getElementsByTagName('body')[0].mozRequestFullScreen();
 };
 
 

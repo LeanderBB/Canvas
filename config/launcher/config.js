@@ -32,7 +32,7 @@
         }
     },
 
-    "timeout" : 0.2,   
+    "timeout" : 5,   
     "timeout-action": "signage",
     "launch_timeout": 2 
 }

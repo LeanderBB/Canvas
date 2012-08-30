@@ -80,11 +80,39 @@ body {
 }
 
 .l_logo {
-    width: 50%;
-    height: 100%;
+    width: -moz-calc(50% - 100px);
+    height: -moz-calc(100% - 100px) ;
+    text-align: right;
+    color: white;
+    padding: 50px;
 }
 
+.logo_placement {
+    margin-top: 25%;
+    text-align: center;
+}
+.logo_placement h1 {
+    font-size: 6.25em;
+}
 
+.credits {
+    margin-top:50%;
+    color: rgb(50,50,50);
+}
+
+.credits h2 {
+    font-family: 'CanvasRBNo2Light';
+    font-weight: bold;
+    color: rgb(40,40,40);
+    font-size: 130%;
+}
+.credits h3 {
+    font-family: 'CanvasAvenir'; 
+}
+.credits h4 {
+    font-family: 'CanvasAvenir';
+    font-size: 80%;
+}
 .l_apps {
     position: relative;
     top: 10%;
