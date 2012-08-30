@@ -150,7 +150,9 @@ AppNS.Views.Subscriptions = Backbone.View.extend({
     el : $("#subscriptions"),
  
     initialize: function () {
-        this.collection = new AppNS.Collections.Subscriptions(feed_subscriptions_configuration);
+        //this.collection = new AppNS.Collections.Subscriptions(feed_subscriptions_configuration);
+        window.app.loadConfig();
+        this.collection = new AppNS.Collections.Subscriptions(window.app.getConfig()["feeds"]);
         this.render();
 
         this.slider_object = $("#navigation-subscriptions").KineticSlider();
