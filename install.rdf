@@ -5,7 +5,7 @@
 
   <Description about="urn:mozilla:install-manifest">
     <em:id>canvas@3code.com</em:id>
-    <em:version>%VERSION%</em:version>
+    <em:version>4</em:version>
     <em:type>2</em:type>
    
     <!-- Target Application this extension can install into, 

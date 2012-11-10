@@ -23,10 +23,10 @@ else
 fi
 
 # validate project path
-if [[ ! $PROJECT_DIR =~ ^\/ ]]; then
-    echo "Project path is not absolute!"
-    exit 1
-fi
+#if [[ ! $PROJECT_DIR =~ ^\/ ]]; then
+#    echo "Project path is not absolute!"
+#    exit 1
+#fi
 
 if [[ ! $PROJECT_DIR =~ \/$ ]]; then
     PROJECT_DIR="$PROJECT_DIR/"

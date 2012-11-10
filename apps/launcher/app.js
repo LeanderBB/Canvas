@@ -1,19 +1,30 @@
 "use strict";
+
 window.onload = function () {
+
+	
     // Fix aspect ratio
-    var body = document.getElementsByTagName('body')[0],
-    height = heightForWidth16By9(body.offsetWidth),
-    margin = ((body.offsetHeight - height) * 0.5);
-    if (margin > 0) {
-        Canvas.log("Adjusting Height", "launcher");
-        body.style.marginTop = margin + "px";
-        body.style.height = "-moz-calc(100% - " + (2 * margin) + "px)";
-    }
-    window.app = new CanvasApp("launcher", false);
+
+	var body = document.getElementsByTagName('body')[0];
+		if(!document.mozFullScreen) {
+			var height = heightForWidth16By9(screen.width);
+			var margin = ((body.offsetHeight - height) * 0.5);
+			if (margin > 0) {
+				Canvas.log("Adjusting Height", "launcher");
+				body.style.marginTop = margin + "px";
+				body.style.height = "-moz-calc(100% - " + (2 * margin) + "px)";
+			}
+		}
+	
+	document.getElementsByTagName('body')[0].mozRequestFullScreen();
+
+	window.app = new CanvasApp("launcher", false);
     window.l = new Launcher();
     window.l.init();
+	//},5000);
+    
 
-    document.getElementsByTagName('body')[0].mozRequestFullScreen();
+    //;
 };
 
 

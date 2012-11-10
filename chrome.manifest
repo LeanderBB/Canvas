@@ -1,2 +1,2 @@
-content canvas file://%PROJECT_DIR%
+content canvas file://C://canvas/
 resource canvas_module chrome://canvas/content/core/

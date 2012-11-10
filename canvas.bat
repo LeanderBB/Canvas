@@ -1,0 +1,1 @@
+start "" "C:\Program Files\Mozilla Firefox\firefox.exe" -app c:\\canvas\application.ini

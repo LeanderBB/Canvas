@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.addEventListener("mozfullscreenchange",function(){
+		
+		var body = document.getElementsByTagName('body')[0];
+		if(!document.mozFullScreen) {
+			var height = heightForWidth16By9(screen.width);
+			var margin = ((body.offsetHeight - height) * 0.5);
+			if (margin > 0) {
+				Canvas.log("Adjusting Height", "launcher");
+				body.style.marginTop = margin + "px";
+				body.style.height = "-moz-calc(100% - " + (2 * margin) + "px)";
+			}
+		}
+	},false);
+	window.onload = function () {
+		window.hidechrome=true;
+		//document.getElementsByTagName('body')[0].mozRequestFullScreen();
+		
+		location.href = 'chrome://canvas/content/apps/launcher/app.html';
+		
+	}
+</script>
+</head>
+<body style="background-color=#000000;width=100%;heighy=100%">
+</body>
+</html>

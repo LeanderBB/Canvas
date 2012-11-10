@@ -1,4 +1,6 @@
-
+body {
+margin:0;
+}
 .g_close {
     background-image: url('resources/close.svg');
     z-index: 9999999;
