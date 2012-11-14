@@ -13,9 +13,9 @@ This project started out with the objective of creating an interactive digital s
 touch enabled displays and managment performed through a web based backend. Due to some complications 
 and different interests of the parties involved in the project, we had to stop its development. 
 
-The state of the application contained in this repository is as follows: The application contains a 
+The application consists of a 
 simple digital signage system which will activate on timeout and a set of simple Apps which allow a 
-user to browse media, reed feeds and check the menu of the canteen (University of Minho). Overall, 
+user to browse media, reed feeds and check the menu of the canteen at the University of Minho. Overall, 
 the application could be qualified as a beta version, since there are some minor quirks left to solve.
 
 
