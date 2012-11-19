@@ -19,7 +19,7 @@
  *  along with Zeta.  If not, see <http://www.gnu.org/licenses/>.
  */
 html {
-    background-color: blue;
+    background-color: black;
 }
 
 body,html {
@@ -107,7 +107,7 @@ body {
 }
 
 .logo_placement {
-    margin-top: 25%;
+    margin-top: 10%;
     text-align: center;
 }
 .logo_placement h1 {
@@ -115,7 +115,7 @@ body {
 }
 
 .credits {
-    margin-top:50%;
+    margin-top:20%;
     color: rgb(50,50,50);
 }
 
